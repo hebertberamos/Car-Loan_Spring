@@ -1,2 +1,2 @@
-INSERT INTO tb_client (first_Name, last_Name, email, password, cpf, age) VALUES ('Hebert', 'Benigno', 'hebertramos09@gmail.com', 'HeMa04#*', '08693666371', 21);
-INSERT INTO tb_client (first_Name, last_Name, email, password, cpf, age) VALUES ('Mayane', 'Aguiar', 'mayanelaguiar@gmail.com', 'seila1404', '08692761371', 20);
+INSERT INTO tb_user (first_Name, last_Name, email, password, cpf, age) VALUES ('Hebert', 'Benigno', 'hebertramos09@gmail.com', 'HeMa04#*', '08693666371', 21);
+INSERT INTO tb_user (first_Name, last_Name, email, password, cpf, age) VALUES ('Mayane', 'Aguiar', 'mayanelaguiar@gmail.com', 'seila1404', '08692761371', 20);

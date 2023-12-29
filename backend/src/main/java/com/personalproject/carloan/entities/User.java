@@ -1,11 +1,16 @@
-package com.personalproject.carloan.dtos;
+package com.personalproject.carloan.entities;
 
-import com.personalproject.carloan.entities.Client;
+import jakarta.persistence.*;
 
-import java.io.Serializable;
+import java.util.Objects;
 
-public class ClientDTO implements Serializable {
+@Entity
+@Table(name = "tb_user")
+public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
     private Long id;
     private String firstName;
     private String lastName;
@@ -14,10 +19,10 @@ public class ClientDTO implements Serializable {
     private String cpf;
     private Integer age;
 
-    public ClientDTO (){
+    public User(){
     }
 
-    public ClientDTO(Long id, String firstName, String lastName, String email, String password, String cpf, Integer age) {
+    public User(Long id, String firstName, String lastName, String email, String password, String cpf, Integer age){
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -25,25 +30,6 @@ public class ClientDTO implements Serializable {
         this.password = password;
         this.cpf = cpf;
         this.age = age;
-    }
-
-    //Construção de um ClientDTO a partir de um objeto Client
-    public ClientDTO(Client client){
-        id = client.getId();
-        firstName = client.getFirstName();
-        lastName = client.getLastName();
-        email = client.getEmail();
-        password = client.getPassword();
-        cpf = client.getCpf();
-        age = client.getAge();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getFirstName() {
@@ -92,5 +78,26 @@ public class ClientDTO implements Serializable {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

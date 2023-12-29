@@ -1,16 +1,11 @@
-package com.personalproject.carloan.entities;
+package com.personalproject.carloan.dtos;
 
-import jakarta.persistence.*;
+import com.personalproject.carloan.entities.User;
 
-import java.util.Objects;
+import java.io.Serializable;
 
-@Entity
-@Table(name = "tb_client")
-public class Client {
+public class UserDTO implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
     private Long id;
     private String firstName;
     private String lastName;
@@ -19,10 +14,10 @@ public class Client {
     private String cpf;
     private Integer age;
 
-    public Client(){
+    public UserDTO(){
     }
 
-    public Client(Long id, String firstName, String lastName, String email, String password, String cpf, Integer age){
+    public UserDTO(Long id, String firstName, String lastName, String email, String password, String cpf, Integer age) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -30,6 +25,25 @@ public class Client {
         this.password = password;
         this.cpf = cpf;
         this.age = age;
+    }
+
+    //Construção de um ClientDTO a partir de um objeto Client
+    public UserDTO(User user){
+        id = user.getId();
+        firstName = user.getFirstName();
+        lastName = user.getLastName();
+        email = user.getEmail();
+        password = user.getPassword();
+        cpf = user.getCpf();
+        age = user.getAge();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -78,26 +92,5 @@ public class Client {
 
     public void setAge(Integer age) {
         this.age = age;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Client client = (Client) o;
-        return Objects.equals(id, client.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 }
