@@ -1,9 +1,12 @@
 package com.personalproject.carloan.entities;
 
 import com.personalproject.carloan.entities.enums.StatusVehicle;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
+
+import java.util.Objects;
 
 @Entity
+@Table(name = "tb_car")
 public class Car extends Vehicle{
 
     private Integer numberOfDoors;
@@ -11,8 +14,8 @@ public class Car extends Vehicle{
     public Car(){
     }
 
-    public Car(Long id, String name, String brand, String plate, Integer yearManufacture, StatusVehicle statusVehicle, Integer numberOfDoors) {
-        super(id, name, brand, plate, yearManufacture, statusVehicle);
+    public Car(Long id, String vehicleName, String brand, String plate, Integer yearManufacture, StatusVehicle statusVehicle, String description, Integer numberOfDoors) {
+        super(id, vehicleName, brand, plate, yearManufacture, statusVehicle, description);
         this.numberOfDoors = numberOfDoors;
     }
 
@@ -23,5 +26,4 @@ public class Car extends Vehicle{
     public void setNumberOfDoors(Integer numberOfDoors) {
         this.numberOfDoors = numberOfDoors;
     }
-
 }

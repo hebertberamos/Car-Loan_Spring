@@ -1,7 +1,10 @@
 package com.personalproject.carloan.entities;
 
 import com.personalproject.carloan.entities.enums.StatusVehicle;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "tb_motorcycle")
 public class Motorcycle extends Vehicle{
 
     private Boolean hasFairing;
@@ -9,8 +12,8 @@ public class Motorcycle extends Vehicle{
     public Motorcycle(){
     }
 
-    public Motorcycle(Long id, String name, String brand, String plate, Integer yearManufacture, StatusVehicle statusVehicle, Boolean hasFairing) {
-        super(id, name, brand, plate, yearManufacture, statusVehicle);
+    public Motorcycle(Long id, String vehicleName, String brand, String plate, Integer yearManufacture, StatusVehicle statusVehicle, String description, Boolean hasFairing) {
+        super(id, vehicleName, brand, plate, yearManufacture, statusVehicle, description);
         this.hasFairing = hasFairing;
     }
 

@@ -5,29 +5,56 @@ import jakarta.persistence.*;
 
 import java.util.Objects;
 
-@Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@MappedSuperclass
 public abstract class Vehicle {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    private String vehicleName;
     private String brand;
     private String plate;
     private Integer yearManufacture;
+    @Enumerated(EnumType.STRING)
     private StatusVehicle statusVehicle;
+    @Column(columnDefinition = "TEXT")
+    private String description;
+    private Double pricePerHour;
+    private Double pricePerDay;
+
 
     public Vehicle(){
     }
 
-    public Vehicle(Long id, String name, String brand, String plate, Integer yearManufacture, StatusVehicle statusVehicle) {
+    public Vehicle(Long id, String vehicleName, String brand, String plate, Integer yearManufacture, StatusVehicle statusVehicle, String description) {
         this.id = id;
-        this.name = name;
+        this.vehicleName = vehicleName;
         this.brand = brand;
         this.plate = plate;
         this.yearManufacture = yearManufacture;
         this.statusVehicle = statusVehicle;
+        this.description = description;
+
+        switch (this.statusVehicle){
+            case VIP : {
+                pricePerHour = 120.0;
+                pricePerDay = 500.0;
+                break;
+            }
+            case POPULAR : {
+                pricePerHour = 70.0;
+                pricePerDay = 300.0;
+                break;
+            }
+            case ANTIQUITY : {
+                pricePerHour = 250.0;
+                pricePerDay = 1000.0;
+                break;
+            }
+            default :
+                throw new IllegalArgumentException("Vehicle status not identify");
+        }
     }
 
     public Long getId() {
@@ -38,12 +65,12 @@ public abstract class Vehicle {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getVehicleName() {
+        return vehicleName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setVehicleName(String vehicleName) {
+        this.vehicleName = vehicleName;
     }
 
     public String getBrand() {
@@ -76,6 +103,30 @@ public abstract class Vehicle {
 
     public void setStatusVehicle(StatusVehicle statusVehicle) {
         this.statusVehicle = statusVehicle;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Double getPricePerHour() {
+        return pricePerHour;
+    }
+
+    public void setPricePerHour(Double pricePerHour) {
+        this.pricePerHour = pricePerHour;
+    }
+
+    public Double getPricePerDay() {
+        return pricePerDay;
+    }
+
+    public void setPricePerDay(Double pricePerDay) {
+        this.pricePerDay = pricePerDay;
     }
 
     @Override
