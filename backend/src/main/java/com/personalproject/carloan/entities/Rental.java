@@ -6,14 +6,18 @@ import java.time.Instant;
 import java.util.Objects;
 
 @Entity
-@Table(name = "tb_retal")
+@Table(name = "tb_rental")
 public class Rental {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant checkin;
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant checkout;
+
+
 
     public Rental(){}
 

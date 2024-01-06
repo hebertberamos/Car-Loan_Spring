@@ -11,6 +11,9 @@ public class Car extends Vehicle{
 
     private Integer numberOfDoors;
 
+//    @OneToOne(mappedBy = "car")
+//    private Rental rental;
+
     public Car(){
     }
 

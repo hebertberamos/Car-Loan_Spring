@@ -19,6 +19,7 @@ public class User {
     private String cpf;
     private Integer age;
 
+
     public User(){
     }
 

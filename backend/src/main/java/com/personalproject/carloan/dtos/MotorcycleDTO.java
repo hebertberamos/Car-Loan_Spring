@@ -39,6 +39,9 @@ public class MotorcycleDTO {
         plate = motorcycle.getPlate();
         yearManufacture = motorcycle.getYearManufacture();
         statusVehicle = motorcycle.getStatusVehicle();
+        description = motorcycle.getDescription();
+        pricePerHour = motorcycle.getPricePerHour();
+        pricePerDay = motorcycle.getPricePerDay();
         hasFairing = motorcycle.getHasFairing();
     }
 
