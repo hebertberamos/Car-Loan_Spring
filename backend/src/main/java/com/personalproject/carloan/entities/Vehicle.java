@@ -1,17 +1,20 @@
 package com.personalproject.carloan.entities;
 
 import com.personalproject.carloan.entities.enums.StatusVehicle;
+import com.personalproject.carloan.entities.enums.TypeVehicle;
 import jakarta.persistence.*;
 
 import java.util.Objects;
 
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@MappedSuperclass
-public abstract class Vehicle {
+@Entity
+@Table(name = "tb_vehicle")
+public class Vehicle {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Enumerated(EnumType.STRING)
+    private TypeVehicle typeVehicle;
     private String vehicleName;
     private String brand;
     private String plate;
@@ -27,8 +30,9 @@ public abstract class Vehicle {
     public Vehicle(){
     }
 
-    public Vehicle(Long id, String vehicleName, String brand, String plate, Integer yearManufacture, StatusVehicle statusVehicle, String description) {
+    public Vehicle(Long id, TypeVehicle typeVehicle, String vehicleName, String brand, String plate, Integer yearManufacture, StatusVehicle statusVehicle, String description) {
         this.id = id;
+        this.typeVehicle = typeVehicle;
         this.vehicleName = vehicleName;
         this.brand = brand;
         this.plate = plate;
@@ -63,6 +67,14 @@ public abstract class Vehicle {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public TypeVehicle getTypeVehicle() {
+        return typeVehicle;
+    }
+
+    public void setTypeVehicle(TypeVehicle typeVehicle) {
+        this.typeVehicle = typeVehicle;
     }
 
     public String getVehicleName() {

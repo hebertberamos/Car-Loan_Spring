@@ -17,7 +17,13 @@ public class Rental {
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant checkout;
 
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
+    @OneToOne
+    @JoinColumn(name = "vehicle_id", referencedColumnName = "id")
+    private Vehicle vehicle;
 
     public Rental(){}
 
@@ -49,6 +55,22 @@ public class Rental {
 
     public void setCheckout(Instant checkout) {
         this.checkout = checkout;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
     }
 
     @Override
