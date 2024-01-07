@@ -7,7 +7,7 @@ import com.personalproject.carloan.entities.enums.TypeVehicle;
 public class VehicleDTO {
 
     private Long id;
-    private TypeVehicle typeVehicle;
+    private String typeVehicle;
     private String vehicleName;
     private String brand;
     private String plate;
@@ -20,7 +20,7 @@ public class VehicleDTO {
     public VehicleDTO(){
     }
 
-    public VehicleDTO(Long id, TypeVehicle typeVehicle, String vehicleName, String brand, String plate, Integer yearManufacture, StatusVehicle statusVehicle, String description, Double pricePerHour, Double pricePerDay) {
+    public VehicleDTO(Long id, String typeVehicle, String vehicleName, String brand, String plate, Integer yearManufacture, StatusVehicle statusVehicle, String description, Double pricePerHour, Double pricePerDay) {
         this.id = id;
         this.typeVehicle = typeVehicle;
         this.vehicleName = vehicleName;
@@ -54,11 +54,11 @@ public class VehicleDTO {
         this.id = id;
     }
 
-    public TypeVehicle getTypeVehicle() {
+    public String getTypeVehicle() {
         return typeVehicle;
     }
 
-    public void setTypeVehicle(TypeVehicle typeVehicle) {
+    public void setTypeVehicle(String typeVehicle) {
         this.typeVehicle = typeVehicle;
     }
 

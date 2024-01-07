@@ -2,6 +2,7 @@ package com.personalproject.carloan.services;
 
 import com.personalproject.carloan.dtos.VehicleDTO;
 import com.personalproject.carloan.entities.Vehicle;
+import com.personalproject.carloan.entities.enums.TypeVehicle;
 import com.personalproject.carloan.repositories.VehicleRepository;
 import com.personalproject.carloan.services.exceptions.ResourcesNotFoundException;
 import jakarta.transaction.Transactional;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,6 +33,13 @@ public class VehicleService {
         Optional<Vehicle> optional = repository.findById(id);
         Vehicle vehicle = optional.orElseThrow(() -> new ResourcesNotFoundException("Id not found"));
         return new VehicleDTO(vehicle);
+    }
+
+    //Buscando todos o veículos que são do tipo carro
+    @Transactional
+    public List<VehicleDTO> findAllVehicleTypeCar(String typeVehicle){
+        List<Vehicle> cars = repository.getAllVehicleTypeCar(typeVehicle);
+        return cars.stream().map(x -> new VehicleDTO(x)).collect(Collectors.toList());
     }
 
     // Atualizar
@@ -70,7 +79,7 @@ public class VehicleService {
     }
 
     //Inserir
-    public VehicleDTO insert(VehicleDTO dto){
+    public VehicleDTO insert(VehicleDTO dto) {
         Vehicle vehicle = new Vehicle();
 
         vehicle.setId(dto.getId());
@@ -88,5 +97,4 @@ public class VehicleService {
         dto = new VehicleDTO(vehicle);
         return dto;
     }
-
 }

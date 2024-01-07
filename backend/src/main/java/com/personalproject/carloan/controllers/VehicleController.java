@@ -1,6 +1,7 @@
 package com.personalproject.carloan.controllers;
 
 import com.personalproject.carloan.dtos.VehicleDTO;
+import com.personalproject.carloan.entities.enums.TypeVehicle;
 import com.personalproject.carloan.services.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,16 +19,22 @@ public class VehicleController {
     private VehicleService service;
 
 
-    @GetMapping
-    public ResponseEntity<List<VehicleDTO>> findAll(){
-        List<VehicleDTO> dtos = service.findAll();
-        return  ResponseEntity.ok().body(dtos);
-    }
+//    @GetMapping
+//    public ResponseEntity<List<VehicleDTO>> findAll(){
+//        List<VehicleDTO> dtos = service.findAll();
+//        return  ResponseEntity.ok().body(dtos);
+//    }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<VehicleDTO> findById(@PathVariable Long id){
         VehicleDTO dto = service.findById(id);
         return ResponseEntity.ok().body(dto);
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<VehicleDTO>> findAllCars(@RequestParam("type_Vehicle")String typeVehicle){
+        List<VehicleDTO> cars = service.findAllVehicleTypeCar(typeVehicle);
+        return ResponseEntity.ok().body(cars);
     }
 
     @PutMapping(value = "/{id}")
