@@ -13,8 +13,8 @@ public class Vehicle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Enumerated(EnumType.STRING)
-    private TypeVehicle typeVehicle;
+    @Column(name = "type_Vehicle")
+    private String typeVehicle;
     private String vehicleName;
     private String brand;
     private String plate;
@@ -30,7 +30,7 @@ public class Vehicle {
     public Vehicle(){
     }
 
-    public Vehicle(Long id, TypeVehicle typeVehicle, String vehicleName, String brand, String plate, Integer yearManufacture, StatusVehicle statusVehicle, String description) {
+    public Vehicle(Long id, String typeVehicle, String vehicleName, String brand, String plate, Integer yearManufacture, StatusVehicle statusVehicle, String description) {
         this.id = id;
         this.typeVehicle = typeVehicle;
         this.vehicleName = vehicleName;
@@ -69,11 +69,11 @@ public class Vehicle {
         this.id = id;
     }
 
-    public TypeVehicle getTypeVehicle() {
+    public String getTypeVehicle() {
         return typeVehicle;
     }
 
-    public void setTypeVehicle(TypeVehicle typeVehicle) {
+    public void setTypeVehicle(String typeVehicle) {
         this.typeVehicle = typeVehicle;
     }
 
