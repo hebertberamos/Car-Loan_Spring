@@ -2,7 +2,6 @@ package com.personalproject.carloan.services;
 
 import com.personalproject.carloan.dtos.VehicleDTO;
 import com.personalproject.carloan.entities.Vehicle;
-import com.personalproject.carloan.entities.enums.TypeVehicle;
 import com.personalproject.carloan.repositories.VehicleRepository;
 import com.personalproject.carloan.services.exceptions.ResourcesNotFoundException;
 import jakarta.transaction.Transactional;
@@ -10,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -90,8 +89,50 @@ public class VehicleService {
         vehicle.setYearManufacture(dto.getYearManufacture());
         vehicle.setStatusVehicle(dto.getStatusVehicle());
         vehicle.setDescription(dto.getDescription());
-        vehicle.setPricePerHour(dto.getPricePerHour());
-        vehicle.setPricePerDay(dto.getPricePerDay());
+        if (Objects.equals(dto.getTypeVehicle(), "MOTORCYCLE")) {
+            switch (dto.getStatusVehicle()){
+                case "VIP" : {
+                    vehicle.setPricePerHour(100.0);
+                    vehicle.setPricePerDay(300.0);
+                    break;
+                }
+                case "POPULAR" : {
+                    vehicle.setPricePerHour(50.0);
+                    vehicle.setPricePerDay(200.0);
+                    break;
+                }
+                case "ANTIQUITY" : {
+                    vehicle.setPricePerHour(250.0);
+                    vehicle.setPricePerDay(600.0);
+                    break;
+                }
+                default :
+                    throw new IllegalArgumentException("Vehicle status not identify");
+            }
+        }
+
+        if(Objects.equals(dto.getTypeVehicle(), "CAR")){
+            switch (dto.getStatusVehicle()){
+                case "VIP" : {
+                    vehicle.setPricePerHour(120.0);
+                    vehicle.setPricePerDay(500.0);
+                    break;
+                }
+                case "POPULAR" : {
+                    vehicle.setPricePerHour(70.0);
+                    vehicle.setPricePerDay(300.0);
+                    break;
+                }
+                case "ANTIQUITY" : {
+                    vehicle.setPricePerHour(350.0);
+                    vehicle.setPricePerDay(1000.0);
+                    break;
+                }
+                default :
+                    throw new IllegalArgumentException("Vehicle status not identify");
+            }
+        }
+
 
         repository.save(vehicle);
         dto = new VehicleDTO(vehicle);

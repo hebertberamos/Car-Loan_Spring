@@ -1,8 +1,8 @@
 package com.personalproject.carloan.controllers;
 
 import com.personalproject.carloan.dtos.VehicleDTO;
-import com.personalproject.carloan.entities.enums.TypeVehicle;
 import com.personalproject.carloan.services.VehicleService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,7 +53,7 @@ public class VehicleController {
     }
 
     @PostMapping
-    public ResponseEntity<VehicleDTO> insert(@RequestBody VehicleDTO dto){
+    public ResponseEntity<VehicleDTO> insert(@Valid @RequestBody VehicleDTO dto){
         dto = service.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
         return ResponseEntity.created(uri).body(dto);

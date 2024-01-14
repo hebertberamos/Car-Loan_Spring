@@ -1,17 +1,28 @@
 package com.personalproject.carloan.dtos;
 
 import com.personalproject.carloan.entities.User;
+import jakarta.validation.constraints.*;
+import org.hibernate.validator.constraints.br.CPF;
 
 import java.io.Serializable;
 
 public class UserDTO implements Serializable {
 
     private Long id;
+    @NotBlank
     private String firstName;
+    @NotBlank
     private String lastName;
+    @NotBlank
+    @Email(message = "Email inválido. Informe um váido, por favor.")
     private String email;
+    @NotBlank(message = "Este campo deve ser preenchido com algum valor")
     private String password;
+    @NotBlank
+    @CPF
     private String cpf;
+    @NotNull
+    @Min(value = 18, message = "O usuário deve ter pelo menos 18 anos")
     private Integer age;
 
     public UserDTO(){

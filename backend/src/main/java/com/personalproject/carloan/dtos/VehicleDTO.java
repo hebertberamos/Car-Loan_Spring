@@ -1,18 +1,29 @@
 package com.personalproject.carloan.dtos;
 
 import com.personalproject.carloan.entities.Vehicle;
-import com.personalproject.carloan.entities.enums.StatusVehicle;
-import com.personalproject.carloan.entities.enums.TypeVehicle;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 public class VehicleDTO {
 
     private Long id;
+    @NotBlank(message = "Campo obrigatório")
+    @Pattern(regexp = "CAR|MOTORCYCLE", message = "Os tipos de veículos aceitos são (CAR e MOTORCYCLE)")
     private String typeVehicle;
+    @NotBlank(message = "Campo obrigatório")
     private String vehicleName;
+    @NotBlank(message = "Campo obrigatório")
     private String brand;
+    @NotBlank(message = "Campo obrigatório")
+    @Pattern(regexp = "^[a-zA-Z]{3}[0-9][A-Za-z0-9][0-9]{2}$", message = "Formao de placa inválido. Utilize o padrão (TTTNTNN)")
     private String plate;
+    @NotNull(message = "Campo obrigatório")
     private Integer yearManufacture;
-    private StatusVehicle statusVehicle;
+    @NotBlank
+    @Pattern(regexp = "VIP|POPULAR|ANTIQUITY", message = "Os tipos de veículos aceitos são (VIP, POPULAR e ANTIQUITY)")
+    private String statusVehicle;
+    @NotBlank(message = "Campo obrigatório")
     private String description;
     private Double pricePerHour;
     private Double pricePerDay;
@@ -20,7 +31,7 @@ public class VehicleDTO {
     public VehicleDTO(){
     }
 
-    public VehicleDTO(Long id, String typeVehicle, String vehicleName, String brand, String plate, Integer yearManufacture, StatusVehicle statusVehicle, String description, Double pricePerHour, Double pricePerDay) {
+    public VehicleDTO(Long id, String typeVehicle, String vehicleName, String brand, String plate, Integer yearManufacture, String statusVehicle, String description, Double pricePerHour, Double pricePerDay) {
         this.id = id;
         this.typeVehicle = typeVehicle;
         this.vehicleName = vehicleName;
@@ -31,6 +42,17 @@ public class VehicleDTO {
         this.description = description;
         this.pricePerHour = pricePerHour;
         this.pricePerDay = pricePerDay;
+    }
+
+    public VehicleDTO(Long id, String typeVehicle, String vehicleName, String brand, String plate, Integer yearManufacture, String statusVehicle, String description) {
+        this.id = id;
+        this.typeVehicle = typeVehicle;
+        this.vehicleName = vehicleName;
+        this.brand = brand;
+        this.plate = plate;
+        this.yearManufacture = yearManufacture;
+        this.statusVehicle = statusVehicle;
+        this.description = description;
     }
 
     public VehicleDTO(Vehicle vehicle){
@@ -94,11 +116,11 @@ public class VehicleDTO {
         this.yearManufacture = yearManufacture;
     }
 
-    public StatusVehicle getStatusVehicle() {
+    public String getStatusVehicle() {
         return statusVehicle;
     }
 
-    public void setStatusVehicle(StatusVehicle statusVehicle) {
+    public void setStatusVehicle(String statusVehicle) {
         this.statusVehicle = statusVehicle;
     }
 

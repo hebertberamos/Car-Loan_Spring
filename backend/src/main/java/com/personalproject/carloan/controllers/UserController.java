@@ -2,6 +2,7 @@ package com.personalproject.carloan.controllers;
 
 import com.personalproject.carloan.dtos.UserDTO;
 import com.personalproject.carloan.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,7 +47,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> insert(@RequestBody UserDTO userDTO){
+    public ResponseEntity<UserDTO> insert(@Valid @RequestBody UserDTO userDTO){
         userDTO = service.insert(userDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(userDTO.getId()).toUri();
         return ResponseEntity.created(uri).body(userDTO);

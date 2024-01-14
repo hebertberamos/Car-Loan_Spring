@@ -1,7 +1,5 @@
 package com.personalproject.carloan.entities;
 
-import com.personalproject.carloan.entities.enums.StatusVehicle;
-import com.personalproject.carloan.entities.enums.TypeVehicle;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -17,10 +15,10 @@ public class Vehicle {
     private String typeVehicle;
     private String vehicleName;
     private String brand;
+    @Column(unique = true)
     private String plate;
     private Integer yearManufacture;
-    @Enumerated(EnumType.STRING)
-    private StatusVehicle statusVehicle;
+    private String statusVehicle;
     @Column(columnDefinition = "TEXT")
     private String description;
     private Double pricePerHour;
@@ -30,7 +28,7 @@ public class Vehicle {
     public Vehicle(){
     }
 
-    public Vehicle(Long id, String typeVehicle, String vehicleName, String brand, String plate, Integer yearManufacture, StatusVehicle statusVehicle, String description) {
+    public Vehicle(Long id, String typeVehicle, String vehicleName, String brand, String plate, Integer yearManufacture, String statusVehicle, String description) {
         this.id = id;
         this.typeVehicle = typeVehicle;
         this.vehicleName = vehicleName;
@@ -40,24 +38,47 @@ public class Vehicle {
         this.statusVehicle = statusVehicle;
         this.description = description;
 
-        switch (this.statusVehicle){
-            case VIP : {
-                pricePerHour = 120.0;
-                pricePerDay = 500.0;
-                break;
+        if(this.typeVehicle == "CAR"){
+            switch (this.statusVehicle){
+                case "VIP" : {
+                    pricePerHour = 120.0;
+                    pricePerDay = 500.0;
+                    break;
+                }
+                case "POPULAR" : {
+                    pricePerHour = 70.0;
+                    pricePerDay = 300.0;
+                    break;
+                }
+                case "ANTIQUITY" : {
+                    pricePerHour = 350.0;
+                    pricePerDay = 1000.0;
+                    break;
+                }
+                default :
+                    throw new IllegalArgumentException("Vehicle status not identify");
             }
-            case POPULAR : {
-                pricePerHour = 70.0;
-                pricePerDay = 300.0;
-                break;
+        }
+        else if(this.typeVehicle == "MOTORCYCLE"){
+            switch (this.statusVehicle){
+                case "VIP" : {
+                    pricePerHour = 100.0;
+                    pricePerDay = 300.0;
+                    break;
+                }
+                case "POPULAR" : {
+                    pricePerHour = 50.0;
+                    pricePerDay = 200.0;
+                    break;
+                }
+                case "ANTIQUITY" : {
+                    pricePerHour = 250.0;
+                    pricePerDay = 600.0;
+                    break;
+                }
+                default :
+                    throw new IllegalArgumentException("Vehicle status not identify");
             }
-            case ANTIQUITY : {
-                pricePerHour = 250.0;
-                pricePerDay = 1000.0;
-                break;
-            }
-            default :
-                throw new IllegalArgumentException("Vehicle status not identify");
         }
     }
 
@@ -109,11 +130,11 @@ public class Vehicle {
         this.yearManufacture = yearManufacture;
     }
 
-    public StatusVehicle getStatusVehicle() {
+    public String getStatusVehicle() {
         return statusVehicle;
     }
 
-    public void setStatusVehicle(StatusVehicle statusVehicle) {
+    public void setStatusVehicle(String statusVehicle) {
         this.statusVehicle = statusVehicle;
     }
 
