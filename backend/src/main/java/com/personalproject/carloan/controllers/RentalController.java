@@ -2,6 +2,7 @@ package com.personalproject.carloan.controllers;
 
 import com.personalproject.carloan.dtos.RentalDTO;
 import com.personalproject.carloan.services.RentalService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,7 +47,7 @@ public class RentalController {
     }
 
     @PostMapping
-    public ResponseEntity<RentalDTO> insert(@RequestBody RentalDTO dto){
+    public ResponseEntity<RentalDTO> insert(@Valid @RequestBody RentalDTO dto){
         dto = service.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
         return ResponseEntity.created(uri).body(dto);

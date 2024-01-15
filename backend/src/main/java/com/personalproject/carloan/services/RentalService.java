@@ -68,6 +68,8 @@ public class RentalService {
         rental.setId(dto.getId());
         rental.setCheckin(dto.getCheckin());
         rental.setCheckout(dto.getCheckout());
+        rental.setUser(dto.getUser());
+        rental.setVehicle(dto.getVehicle());
 
         repository.save(rental);
         dto = new RentalDTO(rental);

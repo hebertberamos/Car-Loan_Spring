@@ -3,15 +3,23 @@ package com.personalproject.carloan.dtos;
 import com.personalproject.carloan.entities.Rental;
 import com.personalproject.carloan.entities.User;
 import com.personalproject.carloan.entities.Vehicle;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.Instant;
 
 public class RentalDTO {
 
     private Long id;
+    @NotNull
+    @FutureOrPresent(message = "A data de aluguel não pode ser instanciada com uma data passada")
     private Instant checkin;
+    @NotNull
+    @FutureOrPresent (message = "A data de devolução não pode ser instanciada com uma data passada")
     private Instant checkout;
+    @NotNull(message = "Obrigatória a instanciação de um usuário para o aluguel")
     private User user;
+    @NotNull(message = "Obrigatória a instanciação de um veículo para o aluguel")
     private Vehicle vehicle;
 
     public RentalDTO(){}

@@ -17,11 +17,11 @@ public class Rental {
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant checkout;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER) // Pega instantaneamente o Usuário no banco de dados
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER) // Pega instantaneamente o Veículo do banco de dados
     @JoinColumn(name = "vehicle_id", referencedColumnName = "id")
     private Vehicle vehicle;
 
