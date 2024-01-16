@@ -50,7 +50,7 @@ public class ResourceExceptionHandler {
         StandardError err = new StandardError();
         err.setTimestamp(Instant.now());
         err.setStatus(status.value());
-        err.setError("Value conflict. Attribute with this value already exists within the database");
+        err.setError("Value conflict. Tentatica de adicionar um valor que já existe no banco de dados");
         err.setPath(request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }

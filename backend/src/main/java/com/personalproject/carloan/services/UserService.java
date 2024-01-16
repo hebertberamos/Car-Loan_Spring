@@ -1,12 +1,15 @@
 package com.personalproject.carloan.services;
 
 import com.personalproject.carloan.dtos.UserDTO;
+import com.personalproject.carloan.dtos.UserInsertDTO;
+import com.personalproject.carloan.dtos.UserUpdateDTO;
 import com.personalproject.carloan.entities.User;
 import com.personalproject.carloan.repositories.UserRepository;
 import com.personalproject.carloan.services.exceptions.ResourcesNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +18,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService {
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     private UserRepository repository;
@@ -35,19 +41,16 @@ public class UserService {
 
     // Atualizar
     @Transactional
-    public UserDTO update(Long id, UserDTO dto){
+    public UserDTO update(Long id, UserUpdateDTO dto){
         User user = repository.findById(id).orElseThrow(() -> new ResourcesNotFoundException("Id not found"));
 
-        user.setId(dto.getId());
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
         user.setEmail(dto.getEmail());
-        user.setPassword(dto.getPassword());
-        user.setCpf(dto.getCpf());
         user.setAge(dto.getAge());
 
         repository.save(user);
-        return dto = new UserDTO(user);
+        return new UserDTO(user);
     }
 
     // Deletar
@@ -67,18 +70,18 @@ public class UserService {
     }
 
     //Inserir
-    public UserDTO insert(UserDTO dto){
+    @Transactional
+    public UserDTO insert(UserInsertDTO dto){
         User user = new User();
         user.setId(dto.getId());
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
         user.setEmail(dto.getEmail());
-        user.setPassword(dto.getPassword());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setCpf(dto.getCpf());
         user.setAge(dto.getAge());
 
-        repository.save(user);
-        dto = new UserDTO(user);
-        return dto;
+        user = repository.save(user);
+        return new UserDTO(user);
     }
 }
