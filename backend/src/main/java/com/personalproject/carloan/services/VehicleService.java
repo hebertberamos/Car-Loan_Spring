@@ -36,7 +36,7 @@ public class VehicleService {
 
     //Buscando todos o veículos que são do tipo carro
     @Transactional
-    public List<VehicleDTO> findAllVehicleTypeCar(String typeVehicle){
+    public List<VehicleDTO> findAllVehicleByType(String typeVehicle){
         List<Vehicle> cars = repository.getAllVehicleTypeCar(typeVehicle);
         return cars.stream().map(x -> new VehicleDTO(x)).collect(Collectors.toList());
     }

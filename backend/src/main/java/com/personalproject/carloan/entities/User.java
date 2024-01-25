@@ -1,12 +1,18 @@
 package com.personalproject.carloan.entities;
 
+import com.personalproject.carloan.entities.enums.UserRole;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "tb_user")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +26,7 @@ public class User {
     @Column(unique = true)
     private String cpf;
     private Integer age;
+    private UserRole role;
 
 
     public User(){
@@ -33,6 +40,27 @@ public class User {
         this.password = password;
         this.cpf = cpf;
         this.age = age;
+    }
+
+    public User(Long id, String firstName, String lastName, String email, String password, String cpf, Integer age, UserRole role){
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.cpf = cpf;
+        this.age = age;
+        this.role = role;
+    }
+
+    public User ( String firstName, String lastName, String email, String password, String cpf, Integer age, UserRole role){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.cpf = cpf;
+        this.age = age;
+        this.role = role;
     }
 
     public String getFirstName() {
@@ -91,6 +119,14 @@ public class User {
         this.id = id;
     }
 
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -102,5 +138,41 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    // Configuração de permição de acordo com o Role do User
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(this.role == UserRole.ADMIN){
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        }
+        else{
+            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        }
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

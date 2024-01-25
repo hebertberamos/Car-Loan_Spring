@@ -19,11 +19,11 @@ public class VehicleController {
     private VehicleService service;
 
 
-//    @GetMapping
-//    public ResponseEntity<List<VehicleDTO>> findAll(){
-//        List<VehicleDTO> dtos = service.findAll();
-//        return  ResponseEntity.ok().body(dtos);
-//    }
+    @GetMapping
+    public ResponseEntity<List<VehicleDTO>> findAll(){
+        List<VehicleDTO> dtos = service.findAll();
+        return  ResponseEntity.ok().body(dtos);
+    }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<VehicleDTO> findById(@PathVariable Long id){
@@ -31,9 +31,9 @@ public class VehicleController {
         return ResponseEntity.ok().body(dto);
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<VehicleDTO>> findAllCars(@RequestParam("type_Vehicle")String typeVehicle){
-        List<VehicleDTO> cars = service.findAllVehicleTypeCar(typeVehicle);
+    @RequestMapping(method = RequestMethod.GET, value = "/type")
+    public ResponseEntity<List<VehicleDTO>> findAllByType(@RequestParam("type_Vehicle")String typeVehicle){
+        List<VehicleDTO> cars = service.findAllVehicleByType(typeVehicle);
         return ResponseEntity.ok().body(cars);
     }
 

@@ -1,6 +1,7 @@
 package com.personalproject.carloan.dtos;
 
 import com.personalproject.carloan.entities.User;
+import com.personalproject.carloan.entities.enums.UserRole;
 import jakarta.validation.constraints.*;
 import org.hibernate.validator.constraints.br.CPF;
 
@@ -19,19 +20,20 @@ public class UserDTO implements Serializable {
     @NotNull
     @Min(value = 18, message = "O usuário deve ter pelo menos 18 anos")
     private Integer age;
+    private UserRole role;
 
     public UserDTO(){
     }
 
-    public UserDTO(Long id, String firstName, String lastName, String email, String cpf, Integer age) {
+    public UserDTO(Long id, String firstName, String lastName, String email, String cpf, Integer age, UserRole role) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.age = age;
+        this.role = role;
     }
 
-    //Construção de um ClientDTO a partir de um objeto Client
     public UserDTO(User user){
         id = user.getId();
         firstName = user.getFirstName();
@@ -78,5 +80,13 @@ public class UserDTO implements Serializable {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
     }
 }

@@ -1,6 +1,6 @@
 -- Users
-INSERT INTO tb_user (first_Name, last_Name, email, password, cpf, age) VALUES ('Hebert', 'Benigno', 'hebertramos09@gmail.com', 'HeMa04#*', '08693666371', 21);
-INSERT INTO tb_user (first_Name, last_Name, email, password, cpf, age) VALUES ('Mayane', 'Aguiar', 'mayanelaguiar@gmail.com', 'seila1404', '08692761371', 20);
+INSERT INTO tb_user (first_Name, last_Name, email, password, cpf, age, role) VALUES ('Hebert', 'Benigno', 'hebertramos09@gmail.com', '$2a$10$0v0lLt6MTiwHnTlz5lWzs.54jGXr8EPDTUafUzU1YUEuwzrGIUyV.', '08693666371', 21, 0); --Senha = HeMa04#*
+INSERT INTO tb_user (first_Name, last_Name, email, password, cpf, age, role) VALUES ('Solene', 'Benigno', 'solene@gmail.com', '$2a$10$ts5Mu4naEvmZJy16q.d9oevxXk/f6JTIvwAV0SyxKL6QXnN03Hpqu', '09767399097', 41, 1); --Senha = isadora123
 
 -- Vehicle
 INSERT INTO tb_vehicle (type_Vehicle, vehicle_Name, brand, plate, year_Manufacture, status_Vehicle, description, price_Per_Hour, price_Per_Day) VALUES ('CAR', 'Mercedes-Benz AMG EQS', 'Mercedes', 'A1AAA11', 2023, 'VIP', 'Descubra o futuro da AMG Driving Performance. O Mercedes-AMG EQS 53 4MATIC+ abre as portas para o empolgante futuro da AMG Driving Performance. E temos excelentes novidades, porque criamos um veículo totalmente elétrico que também é um autêntico AMG. Como sempre, praticidade no dia a dia e fascinação estão incluídas. Venha para a linha de largada. Podem ter ocorrido alterações no produto após a produção dos conteúdos.', 120.0, 500.0);

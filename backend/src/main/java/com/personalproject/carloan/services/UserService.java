@@ -80,6 +80,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setCpf(dto.getCpf());
         user.setAge(dto.getAge());
+        user.setRole(dto.getRole());
 
         user = repository.save(user);
         return new UserDTO(user);

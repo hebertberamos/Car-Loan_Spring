@@ -33,7 +33,7 @@ public class ResourceExceptionHandler {
         ValidationError err = new ValidationError();
         err.setTimestamp(Instant.now());
         err.setStatus(status.value());
-        err.setError("Resource not found");
+        err.setError("Database sintaxe error");
         err.setPath(request.getRequestURI());
 
         for(FieldError fieldError : exception.getBindingResult().getFieldErrors()){
