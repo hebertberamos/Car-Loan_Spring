@@ -1,6 +1,8 @@
 -- Users
-INSERT INTO tb_user (first_Name, last_Name, email, password, cpf, age, role) VALUES ('Hebert', 'Benigno', 'hebertramos09@gmail.com', '$2a$10$0v0lLt6MTiwHnTlz5lWzs.54jGXr8EPDTUafUzU1YUEuwzrGIUyV.', '08693666371', 21, 0); --Senha = HeMa04#*
-INSERT INTO tb_user (first_Name, last_Name, email, password, cpf, age, role) VALUES ('Solene', 'Benigno', 'solene@gmail.com', '$2a$10$ts5Mu4naEvmZJy16q.d9oevxXk/f6JTIvwAV0SyxKL6QXnN03Hpqu', '09767399097', 41, 1); --Senha = isadora123
+INSERT INTO tb_user (first_Name, last_Name, email, password, cpf, age, role) VALUES ('Hebert', 'Benigno', 'hebert@gmail.com', '$2a$10$9wPtp4E2PeIHpmSjI3Xk/u2WhHLLSDsCJJfSdFucm9xQ2do1q18Km', '91002028000', 21, 0); --Senha = hebert1234 ADMIN
+INSERT INTO tb_user (first_Name, last_Name, email, password, cpf, age, role) VALUES ('Solene', 'Benigno', 'solene@gmail.com', '$2a$10$ts5Mu4naEvmZJy16q.d9oevxXk/f6JTIvwAV0SyxKL6QXnN03Hpqu', '09767399097', 41, 1); --Senha = isadora123 USER
+INSERT INTO tb_user (first_Name, last_Name, email, password, cpf, age, role) VALUES ('Osny', 'Ramos', 'osny@gmail.com', '$2a$10$iZJfArq9JeROAMWF7t8Ww.LuN1PQyyMZyykjXuvwHppxmjxPLD1S6', '15353082060', 41, 2); --Senha = osny1212 EMPLOYEE
+
 
 -- Vehicle
 INSERT INTO tb_vehicle (type_Vehicle, vehicle_Name, brand, plate, year_Manufacture, status_Vehicle, description, price_Per_Hour, price_Per_Day) VALUES ('CAR', 'Mercedes-Benz AMG EQS', 'Mercedes', 'A1AAA11', 2023, 'VIP', 'Descubra o futuro da AMG Driving Performance. O Mercedes-AMG EQS 53 4MATIC+ abre as portas para o empolgante futuro da AMG Driving Performance. E temos excelentes novidades, porque criamos um veículo totalmente elétrico que também é um autêntico AMG. Como sempre, praticidade no dia a dia e fascinação estão incluídas. Venha para a linha de largada. Podem ter ocorrido alterações no produto após a produção dos conteúdos.', 120.0, 500.0);

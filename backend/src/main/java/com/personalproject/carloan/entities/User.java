@@ -143,12 +143,23 @@ public class User implements UserDetails {
     // Configuração de permição de acordo com o Role do User
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(this.role == UserRole.ADMIN){
-            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        switch(this.role) {
+            case ADMIN:
+                return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_EMPLOYEE"), new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_ANONYMOUS"));
+            case EMPLOYEE:
+                return List.of(new SimpleGrantedAuthority("ROLE_EMPLOYEE"), new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_ANONYMOUS"));
+            case USER:
+                return List.of(new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_ANONYMOUS"));
+            default:
+                return List.of(new SimpleGrantedAuthority("ROLE_ANONYMOUS"));
         }
-        else{
-            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
-        }
+
+//        if(this.role == UserRole.ADMIN){
+//            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+//        }
+//        else{
+//            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+//        }
     }
 
     @Override
