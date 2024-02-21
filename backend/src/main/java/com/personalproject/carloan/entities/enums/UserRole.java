@@ -2,8 +2,8 @@ package com.personalproject.carloan.entities.enums;
 
 public enum UserRole {
     ADMIN("admin"),
-    USER("user"),
-    EMPLOYEE("employee");
+    MEMBER("member"),
+    USER("user");
 
     private String role;
 
