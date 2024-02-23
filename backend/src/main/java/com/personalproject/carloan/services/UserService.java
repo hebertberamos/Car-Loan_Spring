@@ -31,7 +31,6 @@ public class UserService {
         return users.stream().map(x -> new UserDTO(x)).collect(Collectors.toList());
     }
 
-    // Buscando pelo id
     @Transactional
     public UserDTO findById(Long id){
         Optional<User> optional = repository.findById(id);
@@ -39,13 +38,11 @@ public class UserService {
         return new UserDTO(user);
     }
 
-    // Atualizar
     @Transactional
     public UserDTO update(Long id, UserUpdateDTO dto){
         User user = repository.findById(id).orElseThrow(() -> new ResourcesNotFoundException("Id not found"));
 
-        user.setFirstName(dto.getFirstName());
-        user.setLastName(dto.getLastName());
+        user.setName(dto.getName());
         user.setEmail(dto.getEmail());
         user.setAge(dto.getAge());
 
@@ -53,7 +50,6 @@ public class UserService {
         return new UserDTO(user);
     }
 
-    // Deletar
     @Transactional
     public UserDTO delete(Long id){
         try {
@@ -69,13 +65,11 @@ public class UserService {
         return null;
     }
 
-    //Inserir
     @Transactional
     public UserDTO insert(UserInsertDTO dto){
         User user = new User();
         user.setId(dto.getId());
-        user.setFirstName(dto.getFirstName());
-        user.setLastName(dto.getLastName());
+        user.setName(dto.getName());
         user.setEmail(dto.getEmail());
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setCpf(dto.getCpf());

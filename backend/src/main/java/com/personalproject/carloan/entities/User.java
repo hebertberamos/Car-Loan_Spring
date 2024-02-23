@@ -6,20 +6,21 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "tb_user")
-public class User implements UserDetails {
+public class User implements UserDetails, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, unique = true)
     private Long id;
-    private String firstName;
-    private String lastName;
+    private String name;
     @Column(unique = true)
     private String email;
     private String password;
@@ -28,24 +29,25 @@ public class User implements UserDetails {
     private Integer age;
     private UserRole role;
 
+    @OneToMany(mappedBy = "user")
+    private List<Notification> notifications = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Rental> rentals = new ArrayList<>();
+
+    @OneToMany(mappedBy = "payer")
+    private List<Payment> payments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "author")
+    private List<Review> reviews = new ArrayList<>();
+
 
     public User(){
     }
 
-    public User(Long id, String firstName, String lastName, String email, String password, String cpf, Integer age){
+    public User(Long id, String name, String email, String password, String cpf, Integer age, UserRole role){
         this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.cpf = cpf;
-        this.age = age;
-    }
-
-    public User(Long id, String firstName, String lastName, String email, String password, String cpf, Integer age, UserRole role){
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.name = name;
         this.email = email;
         this.password = password;
         this.cpf = cpf;
@@ -53,9 +55,8 @@ public class User implements UserDetails {
         this.role = role;
     }
 
-    public User ( String firstName, String lastName, String email, String password, String cpf, Integer age, UserRole role){
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public User (String name, String email, String password, String cpf, Integer age, UserRole role){
+        this.name = name;
         this.email = email;
         this.password = password;
         this.cpf = cpf;
@@ -63,20 +64,12 @@ public class User implements UserDetails {
         this.role = role;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -125,6 +118,22 @@ public class User implements UserDetails {
 
     public void setRole(UserRole role) {
         this.role = role;
+    }
+
+    public List<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public List<Rental> getRentals() {
+        return rentals;
+    }
+
+    public List<Payment> getPayments() {
+        return payments;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
     }
 
     @Override

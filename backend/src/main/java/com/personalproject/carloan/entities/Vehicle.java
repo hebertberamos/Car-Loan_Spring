@@ -1,85 +1,51 @@
 package com.personalproject.carloan.entities;
 
+import com.personalproject.carloan.entities.enums.StatusVehicle;
 import jakarta.persistence.*;
 
-import java.util.Objects;
+import java.io.Serializable;
+import java.util.*;
 
 @Entity
 @Table(name = "tb_vehicle")
-public class Vehicle {
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Vehicle implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "type_Vehicle")
-    private String typeVehicle;
-    private String vehicleName;
+    private String name;
     private String brand;
-    @Column(unique = true)
     private String plate;
-    private Integer yearManufacture;
-    private String statusVehicle;
+    private Integer manufactureYear;
+    private StatusVehicle status;
     @Column(columnDefinition = "TEXT")
     private String description;
     private Double pricePerHour;
-    private Double pricePerDay;
+    private Double PricePerDay;
+    private boolean available;
+    private Double rating;
 
+    @OneToMany(mappedBy = "vehicle")
+    private List<Review> reviews = new ArrayList<>();
 
-    public Vehicle(){
-    }
+    @ManyToMany(mappedBy = "rentedVehicles")
+    private Set<Rental> rentalsDone = new HashSet<>();
 
-    public Vehicle(Long id, String typeVehicle, String vehicleName, String brand, String plate, Integer yearManufacture, String statusVehicle, String description) {
+    public Vehicle() {}
+
+    public Vehicle(Long id, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, Double pricePerHour, Double pricePerDay, boolean available, Double rating) {
         this.id = id;
-        this.typeVehicle = typeVehicle;
-        this.vehicleName = vehicleName;
+        this.name = name;
         this.brand = brand;
         this.plate = plate;
-        this.yearManufacture = yearManufacture;
-        this.statusVehicle = statusVehicle;
+        this.manufactureYear = manufactureYear;
+        this.status = status;
         this.description = description;
-
-        if(this.typeVehicle == "CAR"){
-            switch (this.statusVehicle){
-                case "VIP" : {
-                    pricePerHour = 120.0;
-                    pricePerDay = 500.0;
-                    break;
-                }
-                case "POPULAR" : {
-                    pricePerHour = 70.0;
-                    pricePerDay = 300.0;
-                    break;
-                }
-                case "ANTIQUITY" : {
-                    pricePerHour = 350.0;
-                    pricePerDay = 1000.0;
-                    break;
-                }
-                default :
-                    throw new IllegalArgumentException("Vehicle status not identify");
-            }
-        }
-        else if(this.typeVehicle == "MOTORCYCLE"){
-            switch (this.statusVehicle){
-                case "VIP" : {
-                    pricePerHour = 100.0;
-                    pricePerDay = 300.0;
-                    break;
-                }
-                case "POPULAR" : {
-                    pricePerHour = 50.0;
-                    pricePerDay = 200.0;
-                    break;
-                }
-                case "ANTIQUITY" : {
-                    pricePerHour = 250.0;
-                    pricePerDay = 600.0;
-                    break;
-                }
-                default :
-                    throw new IllegalArgumentException("Vehicle status not identify");
-            }
-        }
+        this.pricePerHour = pricePerHour;
+        this.PricePerDay = pricePerDay;
+        this.available = available;
+        this.rating = rating;
     }
 
     public Long getId() {
@@ -90,20 +56,12 @@ public class Vehicle {
         this.id = id;
     }
 
-    public String getTypeVehicle() {
-        return typeVehicle;
+    public String getName() {
+        return name;
     }
 
-    public void setTypeVehicle(String typeVehicle) {
-        this.typeVehicle = typeVehicle;
-    }
-
-    public String getVehicleName() {
-        return vehicleName;
-    }
-
-    public void setVehicleName(String vehicleName) {
-        this.vehicleName = vehicleName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getBrand() {
@@ -122,20 +80,20 @@ public class Vehicle {
         this.plate = plate;
     }
 
-    public Integer getYearManufacture() {
-        return yearManufacture;
+    public Integer getManufactureYear() {
+        return manufactureYear;
     }
 
-    public void setYearManufacture(Integer yearManufacture) {
-        this.yearManufacture = yearManufacture;
+    public void setManufactureYear(Integer manufactureYear) {
+        this.manufactureYear = manufactureYear;
     }
 
-    public String getStatusVehicle() {
-        return statusVehicle;
+    public StatusVehicle getStatus() {
+        return status;
     }
 
-    public void setStatusVehicle(String statusVehicle) {
-        this.statusVehicle = statusVehicle;
+    public void setStatus(StatusVehicle status) {
+        this.status = status;
     }
 
     public String getDescription() {
@@ -155,11 +113,35 @@ public class Vehicle {
     }
 
     public Double getPricePerDay() {
-        return pricePerDay;
+        return PricePerDay;
     }
 
     public void setPricePerDay(Double pricePerDay) {
-        this.pricePerDay = pricePerDay;
+        PricePerDay = pricePerDay;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
+
+    public Double getRating() {
+        return rating;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
+    }
+
+    public Set<Rental> getRentalsDone() {
+        return rentalsDone;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
     }
 
     @Override
