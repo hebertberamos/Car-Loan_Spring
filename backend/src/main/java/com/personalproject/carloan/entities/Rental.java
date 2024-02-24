@@ -33,7 +33,7 @@ public class Rental {
     @OneToMany(mappedBy = "rental")
     private List<Review> reviews = new ArrayList<>();
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(
             name = "tb_rentals_done",
             joinColumns = @JoinColumn(name = "rental_id"),

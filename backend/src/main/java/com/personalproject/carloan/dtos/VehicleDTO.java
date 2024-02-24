@@ -1,40 +1,34 @@
-package com.personalproject.carloan.entities;
+package com.personalproject.carloan.dtos;
 
+import com.personalproject.carloan.entities.Rental;
+import com.personalproject.carloan.entities.Review;
+import com.personalproject.carloan.entities.Vehicle;
 import com.personalproject.carloan.entities.enums.StatusVehicle;
-import jakarta.persistence.*;
 
-import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-@Entity
-@Table(name = "tb_vehicle")
-@Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Vehicle implements Serializable {
+public class VehicleDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String brand;
     private String plate;
     private Integer manufactureYear;
     private StatusVehicle status;
-    @Column(columnDefinition = "TEXT")
     private String description;
     private Double pricePerHour;
     private Double pricePerDay;
     private boolean available;
     private Double rating;
+    private List<ReviewDTO> reviews = new ArrayList<>();
+    private Set<RentalDTO> rentalsDone = new HashSet<>();
 
-    @OneToMany(mappedBy = "vehicle", fetch = FetchType.EAGER)
-    private List<Review> reviews = new ArrayList<>();
+    public VehicleDTO() {}
 
-    @ManyToMany(mappedBy = "rentedVehicles", fetch = FetchType.EAGER)
-    private Set<Rental> rentalsDone = new HashSet<>();
-
-    public Vehicle() {}
-
-    public Vehicle(Long id, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, Double pricePerHour, Double pricePerDay, boolean available, Double rating) {
+    public VehicleDTO(Long id, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, Double pricePerHour, Double pricePerDay, boolean available, Double rating) {
         this.id = id;
         this.name = name;
         this.brand = brand;
@@ -46,6 +40,31 @@ public abstract class Vehicle implements Serializable {
         this.pricePerDay = pricePerDay;
         this.available = available;
         this.rating = rating;
+    }
+
+    public VehicleDTO(Vehicle entity) {
+        name = entity.getName();
+        brand = entity.getBrand();
+        plate = entity.getBrand();
+        manufactureYear = entity.getManufactureYear();
+        status = entity.getStatus();
+        description = entity.getDescription();
+        pricePerHour = entity.getPricePerDay();
+        pricePerHour = entity.getPricePerDay();
+        available = entity.isAvailable();
+        rating = entity.getRating();
+
+        if(entity.getReviews() != null) {
+            for(Review r : entity.getReviews()){
+                this.reviews.add(new ReviewDTO(r));
+            }
+        }
+
+        if(entity.getRentalsDone() != null){
+            for(Rental r : entity.getRentalsDone()){
+                this.rentalsDone.add(new RentalDTO(r));
+            }
+        }
     }
 
     public Long getId() {
@@ -136,24 +155,11 @@ public abstract class Vehicle implements Serializable {
         this.rating = rating;
     }
 
-    public Set<Rental> getRentalsDone() {
-        return rentalsDone;
-    }
-
-    public List<Review> getReviews() {
+    public List<ReviewDTO> getReviews() {
         return reviews;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Vehicle vehicle = (Vehicle) o;
-        return Objects.equals(id, vehicle.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public Set<RentalDTO> getRentalsDone() {
+        return rentalsDone;
     }
 }

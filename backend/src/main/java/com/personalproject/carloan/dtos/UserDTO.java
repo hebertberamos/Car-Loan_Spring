@@ -1,10 +1,14 @@
 package com.personalproject.carloan.dtos;
 
-import com.personalproject.carloan.entities.User;
+import com.personalproject.carloan.entities.*;
 import com.personalproject.carloan.entities.enums.UserRole;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDTO implements Serializable {
 
@@ -14,10 +18,16 @@ public class UserDTO implements Serializable {
     @NotBlank
     @Email(message = "Email inválido. Informe um váido, por favor.")
     private String email;
+    private String cpf;
     @NotNull
     @Min(value = 18, message = "O usuário deve ter pelo menos 18 anos")
     private Integer age;
     private UserRole role;
+    private List<NotificationDTO> notifications = new ArrayList<>();
+    private List<Long> rentalsId = new ArrayList<>();
+    private List<Long> paymentsId = new ArrayList<>();
+    private List<Long> reviewsId = new ArrayList<>();
+
 
     public UserDTO(){
     }
@@ -26,6 +36,7 @@ public class UserDTO implements Serializable {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.cpf = cpf;
         this.age = age;
         this.role = role;
     }
@@ -34,7 +45,23 @@ public class UserDTO implements Serializable {
         id = user.getId();
         name = user.getName();
         email = user.getEmail();
+        cpf = user.getCpf();
         age = user.getAge();
+        role = user.getRole();
+
+        for(Notification n : user.getNotifications()){
+            notifications.add(new NotificationDTO(n));
+        }
+
+        for(Payment p : user.getPayments()){
+            this.paymentsId.add(p.getId());
+        }
+
+        for(Review r : user.getReviews()){
+            this.reviewsId.add(r.getId());
+        }
+
+
     }
 
     public Long getId() {
@@ -75,5 +102,29 @@ public class UserDTO implements Serializable {
 
     public void setRole(UserRole role) {
         this.role = role;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public List<NotificationDTO> getNotifications() {
+        return notifications;
+    }
+
+    public List<Long> getRentalsId() {
+        return rentalsId;
+    }
+
+    public List<Long> getPaymentsId() {
+        return paymentsId;
+    }
+
+    public List<Long> getReviewsId() {
+        return reviewsId;
     }
 }

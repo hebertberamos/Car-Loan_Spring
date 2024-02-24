@@ -2,6 +2,7 @@
 INSERT INTO tb_user (name, email, password, cpf, age, role) VALUES ('Hebert', 'hebert@gmail.com', '$2a$10$9wPtp4E2PeIHpmSjI3Xk/u2WhHLLSDsCJJfSdFucm9xQ2do1q18Km', '91002028000', 21, 0); --Senha = hebert1234 ADMIN
 INSERT INTO tb_user (name, email, password, cpf, age, role) VALUES ('Solene', 'solene@gmail.com', '$2a$10$ts5Mu4naEvmZJy16q.d9oevxXk/f6JTIvwAV0SyxKL6QXnN03Hpqu', '09767399097', 41, 1); --Senha = isadora123 MEMBER
 INSERT INTO tb_user (name, email, password, cpf, age, role) VALUES ('Osny', 'osny@gmail.com', '$2a$10$iZJfArq9JeROAMWF7t8Ww.LuN1PQyyMZyykjXuvwHppxmjxPLD1S6', '15353082060', 41, 2); --Senha = osny1212 USER
+INSERT INTO tb_user (name, email, password, cpf, age, role) VALUES ('Mayane', 'mayane@gmail.com', '$2a$10$aLvCEIVBa.CI0GvO5pDAV.D88wplztsxr9tItRCxCVOXvD2465cvS', '91002028080', 41, 2); --Senha = 123456 USER
 
 
 --Notification
