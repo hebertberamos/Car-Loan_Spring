@@ -26,20 +26,15 @@ public class Review implements Serializable {
     @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
 
-    @ManyToOne
-    @JoinColumn(name = "rental_id")
-    private Rental rental;
-
     public Review() {}
 
-    public Review(Long id, String text, Integer quantityStars, Instant moment, User author, Vehicle vehicle, Rental rental) {
+    public Review(Long id, String text, Integer quantityStars, Instant moment, User author, Vehicle vehicle) {
         this.id = id;
         this.text = text;
         this.quantityStars = quantityStars;
         this.moment = moment;
         this.author = author;
         this.vehicle = vehicle;
-        this.rental = rental;
     }
 
     public Long getId() {
@@ -88,14 +83,6 @@ public class Review implements Serializable {
 
     public void setVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
-    }
-
-    public Rental getRental() {
-        return rental;
-    }
-
-    public void setRental(Rental rental) {
-        this.rental = rental;
     }
 
     @Override

@@ -29,12 +29,12 @@ public abstract class Vehicle implements Serializable {
     @OneToMany(mappedBy = "vehicle", fetch = FetchType.EAGER)
     private List<Review> reviews = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "rentedVehicles", fetch = FetchType.EAGER)
-    private Set<Rental> rentalsDone = new HashSet<>();
+    @OneToOne(mappedBy = "rentedVehicle", cascade = CascadeType.ALL)
+    private Rental rental;
 
     public Vehicle() {}
 
-    public Vehicle(Long id, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, Double pricePerHour, Double pricePerDay, boolean available, Double rating) {
+    public Vehicle(Long id, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, Double pricePerHour, Double pricePerDay, boolean available, Double rating, Rental rental) {
         this.id = id;
         this.name = name;
         this.brand = brand;
@@ -46,6 +46,7 @@ public abstract class Vehicle implements Serializable {
         this.pricePerDay = pricePerDay;
         this.available = available;
         this.rating = rating;
+        this.rental = rental;
     }
 
     public Long getId() {
@@ -136,8 +137,12 @@ public abstract class Vehicle implements Serializable {
         this.rating = rating;
     }
 
-    public Set<Rental> getRentalsDone() {
-        return rentalsDone;
+    public Rental getRental() {
+        return rental;
+    }
+
+    public void setRental(Rental rental) {
+        this.rental = rental;
     }
 
     public List<Review> getReviews() {

@@ -12,8 +12,8 @@ public class Motorcycle extends Vehicle{
 
     public Motorcycle() {}
 
-    public Motorcycle(Long id, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, Double pricePerHour, Double pricePerDay, boolean available, Double rating, boolean hasFairing) {
-        super(id, name, brand, plate, manufactureYear, status, description, pricePerHour, pricePerDay, available, rating);
+    public Motorcycle(Long id, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, Double pricePerHour, Double pricePerDay, boolean available, Double rating, boolean hasFairing, Rental rental) {
+        super(id, name, brand, plate, manufactureYear, status, description, pricePerHour, pricePerDay, available, rating, rental);
         this.hasFairing = hasFairing;
     }
 

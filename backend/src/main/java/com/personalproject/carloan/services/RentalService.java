@@ -1,8 +1,12 @@
 package com.personalproject.carloan.services;
 
 import com.personalproject.carloan.dtos.RentalDTO;
+import com.personalproject.carloan.dtos.ShowUserToReview;
 import com.personalproject.carloan.entities.Rental;
+import com.personalproject.carloan.entities.User;
+import com.personalproject.carloan.repositories.DeliverRepository;
 import com.personalproject.carloan.repositories.RentalRepository;
+import com.personalproject.carloan.repositories.UserRepository;
 import com.personalproject.carloan.services.exceptions.ResourcesNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +23,16 @@ public class RentalService {
     @Autowired
     private RentalRepository repository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private DeliverRepository deliverRepository;
+
     @Transactional(readOnly = true)
     public List<RentalDTO> findAll(){
         List<Rental> rentals = repository.findAll();
-        return rentals.stream().map(x -> new RentalDTO(x)).collect(Collectors.toList());
+        return rentals.stream().map(x -> new RentalDTO(x.getCheckin(), x.getCheckout(), x.getRefundMoment(), x.isRunning(), x.getDeliver(), x.getPayment(), x.getUser(), x.getRentedVehicle())).collect(Collectors.toList());
     }
 
     // Buscando pelo id

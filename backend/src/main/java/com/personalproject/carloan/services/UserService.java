@@ -28,7 +28,7 @@ public class UserService {
     @Transactional
     public List<UserDTO> findAll(){
         List<User> users = repository.findAll();
-        return users.stream().map(x -> new UserDTO(x)).collect(Collectors.toList());
+        return users.stream().map(x -> new UserDTO(x.getName(), x.getEmail(), x.getRole(), x.getAge())).collect(Collectors.toList());
     }
 
     @Transactional

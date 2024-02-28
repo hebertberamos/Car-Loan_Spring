@@ -2,8 +2,6 @@ package com.personalproject.carloan.dtos;
 
 import com.personalproject.carloan.entities.*;
 import com.personalproject.carloan.entities.enums.UserRole;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.*;
 
 import java.io.Serializable;
@@ -24,7 +22,7 @@ public class UserDTO implements Serializable {
     private Integer age;
     private UserRole role;
     private List<NotificationDTO> notifications = new ArrayList<>();
-    private List<Long> rentalsId = new ArrayList<>();
+    private List<ShowRentalToUser> rentals = new ArrayList<>();
     private List<Long> paymentsId = new ArrayList<>();
     private List<Long> reviewsId = new ArrayList<>();
 
@@ -32,36 +30,31 @@ public class UserDTO implements Serializable {
     public UserDTO(){
     }
 
-    public UserDTO(Long id, String name, String email, String cpf, Integer age, UserRole role) {
-        this.id = id;
+    public UserDTO(String name, String email, UserRole role, Integer age) {
         this.name = name;
         this.email = email;
-        this.cpf = cpf;
-        this.age = age;
         this.role = role;
+        this.age = age;
     }
 
     public UserDTO(User user){
-        id = user.getId();
         name = user.getName();
         email = user.getEmail();
         cpf = user.getCpf();
         age = user.getAge();
         role = user.getRole();
 
-        for(Notification n : user.getNotifications()){
-            notifications.add(new NotificationDTO(n));
+        if(user.getNotifications() != null){
+            for(Notification n : user.getNotifications()) {
+                notifications.add(new NotificationDTO(n));
+            }
         }
 
-        for(Payment p : user.getPayments()){
-            this.paymentsId.add(p.getId());
+        for(Rental r : user.getRentals()){
+            if(r.isRunning() == true){
+                this.rentals.add(new ShowRentalToUser(r));
+            }
         }
-
-        for(Review r : user.getReviews()){
-            this.reviewsId.add(r.getId());
-        }
-
-
     }
 
     public Long getId() {
@@ -116,8 +109,8 @@ public class UserDTO implements Serializable {
         return notifications;
     }
 
-    public List<Long> getRentalsId() {
-        return rentalsId;
+    public List<ShowRentalToUser> getRentalsId() {
+        return rentals;
     }
 
     public List<Long> getPaymentsId() {

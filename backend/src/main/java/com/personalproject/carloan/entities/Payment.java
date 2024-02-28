@@ -1,6 +1,5 @@
 package com.personalproject.carloan.entities;
 
-import com.personalproject.carloan.entities.enums.PaymentStatus;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -14,7 +13,7 @@ public class Payment implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private PaymentStatus status;
+    private boolean payed;
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant paymentMoment;
     private Double paymentAmount;
@@ -29,9 +28,9 @@ public class Payment implements Serializable {
 
     public Payment() {};
 
-    public Payment(Long id, PaymentStatus status, Instant paymentMoment, Double paymentAmount, Rental rental, User payer) {
+    public Payment(Long id, boolean payed, Instant paymentMoment, Double paymentAmount, Rental rental, User payer) {
         this.id = id;
-        this.status = status;
+        this.payed = payed;
         this.paymentMoment = paymentMoment;
         this.paymentAmount = paymentAmount;
         this.rental = rental;
@@ -46,12 +45,12 @@ public class Payment implements Serializable {
         this.id = id;
     }
 
-    public PaymentStatus getStatus() {
-        return status;
+    public boolean isPayed() {
+        return payed;
     }
 
-    public void setStatus(PaymentStatus status) {
-        this.status = status;
+    public void setPayed(boolean payed) {
+        this.payed = payed;
     }
 
     public Instant getPaymentMoment() {

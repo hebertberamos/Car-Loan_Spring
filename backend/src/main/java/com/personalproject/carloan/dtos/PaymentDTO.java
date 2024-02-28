@@ -1,14 +1,13 @@
 package com.personalproject.carloan.dtos;
 
 import com.personalproject.carloan.entities.Payment;
-import com.personalproject.carloan.entities.enums.PaymentStatus;
 
 import java.time.Instant;
 
 public class PaymentDTO {
 
     private Long id;
-    private PaymentStatus status;
+    private boolean payed;
     private Instant paymentMoment;
     private Double paymentAmount;
     private Long rentalId;
@@ -16,9 +15,9 @@ public class PaymentDTO {
 
     public PaymentDTO() {}
 
-    public PaymentDTO(Long id, PaymentStatus status, Instant paymentMoment, Double paymentAmount, Long rentalId, Long payerId) {
+    public PaymentDTO(Long id, boolean payed, Instant paymentMoment, Double paymentAmount, Long rentalId, Long payerId) {
         this.id = id;
-        this.status = status;
+        this.payed = payed;
         this.paymentMoment = paymentMoment;
         this.paymentAmount = paymentAmount;
         this.rentalId = rentalId;
@@ -27,7 +26,7 @@ public class PaymentDTO {
 
     public PaymentDTO (Payment entity){
         id = entity.getId();
-        status = entity.getStatus();
+        payed = entity.isPayed();
         paymentMoment = entity.getPaymentMoment();
         paymentAmount = entity.getPaymentAmount();
         rentalId = entity.getRental().getId();
@@ -42,12 +41,12 @@ public class PaymentDTO {
         this.id = id;
     }
 
-    public PaymentStatus getStatus() {
-        return status;
+    public boolean isPayed() {
+        return payed;
     }
 
-    public void setStatus(PaymentStatus status) {
-        this.status = status;
+    public void setPayed(boolean payed) {
+        this.payed = payed;
     }
 
     public Instant getPaymentMoment() {

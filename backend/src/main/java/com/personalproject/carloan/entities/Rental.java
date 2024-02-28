@@ -30,28 +30,22 @@ public class Rental {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "rental")
-    private List<Review> reviews = new ArrayList<>();
-
-    @ManyToMany
-    @JoinTable(
-            name = "tb_rentals_done",
-            joinColumns = @JoinColumn(name = "rental_id"),
-            inverseJoinColumns = @JoinColumn(name = "vehicle_id")
-    )
-    private Set<Vehicle> rentedVehicles = new HashSet<>();
+    @OneToOne
+    @JoinColumn(name = "vehicle_id")
+    private Vehicle rentedVehicle;
 
     public Rental(){}
 
-    public Rental(Long id, Instant checkin, Instant checkout, Instant refundMoment, boolean running, User user, Deliver deliver, Payment payment) {
+    public Rental(Long id, Instant checkin, Instant checkout, Instant refundMoment, boolean running, User user, Deliver deliver, Payment payment, Vehicle rentedVehicle) {
         this.id = id;
         this.checkin = checkin;
         this.checkout = checkout;
         this.refundMoment = refundMoment;
         this.running = running;
         this.user = user;
-        this.deliver =deliver;
+        this.deliver = deliver;
         this.payment = payment;
+        this.rentedVehicle = rentedVehicle;
     }
 
     public Long getId() {
@@ -118,12 +112,12 @@ public class Rental {
         this.payment = payment;
     }
 
-    public Set<Vehicle> getRentedVehicles() {
-        return rentedVehicles;
+    public Vehicle getRentedVehicle() {
+        return rentedVehicle;
     }
 
-    public List<Review> getReviews() {
-        return reviews;
+    public void setRentedVehicle(Vehicle rentedVehicle) {
+        this.rentedVehicle = rentedVehicle;
     }
 
     @Override

@@ -13,18 +13,16 @@ public class ReviewDTO implements Serializable {
     private Instant moment;
     private Long authorId;
     private Long vehicleId;
-    private Long rentalId;
 
     public ReviewDTO() {}
 
-    public ReviewDTO(Long id, String text, Integer quantityStars, Instant moment, Long authorId, Long vehicleId, Long rentalId) {
+    public ReviewDTO(Long id, String text, Integer quantityStars, Instant moment, Long authorId, Long vehicleId) {
         this.id = id;
         this.text = text;
         this.quantityStars = quantityStars;
         this.moment = moment;
         this.authorId = authorId;
         this.vehicleId = vehicleId;
-        this.rentalId = rentalId;
     }
 
     public ReviewDTO (Review entity) {
@@ -34,7 +32,6 @@ public class ReviewDTO implements Serializable {
         moment = entity.getMoment();
         authorId  = entity.getAuthor().getId();
         vehicleId = entity.getVehicle().getId();
-        rentalId = entity.getRental().getId();
     }
 
     public Long getId() {
@@ -83,13 +80,5 @@ public class ReviewDTO implements Serializable {
 
     public void setVehicleId(Long vehicleId) {
         this.vehicleId = vehicleId;
-    }
-
-    public Long getRentalId() {
-        return rentalId;
-    }
-
-    public void setRentalId(Long rentalId) {
-        this.rentalId = rentalId;
     }
 }

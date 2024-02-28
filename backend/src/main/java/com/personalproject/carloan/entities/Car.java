@@ -14,8 +14,8 @@ public class Car extends Vehicle{
 
     public Car() {}
 
-    public Car(Long id, String name, String brand, String plate, Integer year, StatusVehicle status, String description, Double pricePerHour, Double pricePerDay, boolean available, Double rating, Integer numberOfDoors, Double trunkSpace, boolean hasStep) {
-        super(id, name, brand, plate, year, status, description, pricePerHour, pricePerDay, available, rating);
+    public Car(Long id, String name, String brand, String plate, Integer year, StatusVehicle status, String description, Double pricePerHour, Double pricePerDay, boolean available, Double rating, Integer numberOfDoors, Double trunkSpace, boolean hasStep, Rental rental) {
+        super(id, name, brand, plate, year, status, description, pricePerHour, pricePerDay, available, rating, rental);
         this.numberOfDoors = numberOfDoors;
         TrunkSpace = trunkSpace;
         this.hasStep = hasStep;

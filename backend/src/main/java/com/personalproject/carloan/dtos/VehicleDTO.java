@@ -1,14 +1,11 @@
 package com.personalproject.carloan.dtos;
 
-import com.personalproject.carloan.entities.Rental;
 import com.personalproject.carloan.entities.Review;
 import com.personalproject.carloan.entities.Vehicle;
 import com.personalproject.carloan.entities.enums.StatusVehicle;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class VehicleDTO {
 
@@ -23,12 +20,12 @@ public class VehicleDTO {
     private Double pricePerDay;
     private boolean available;
     private Double rating;
-    private List<ReviewDTO> reviews = new ArrayList<>();
-    private Set<RentalDTO> rentalsDone = new HashSet<>();
+    private ShowRentalToVehicle rental;
+    private List<ShowReviewToVehicle> reviews = new ArrayList<>();
 
     public VehicleDTO() {}
 
-    public VehicleDTO(Long id, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, Double pricePerHour, Double pricePerDay, boolean available, Double rating) {
+    public VehicleDTO(Long id, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, Double pricePerHour, Double pricePerDay, boolean available, Double rating, ShowRentalToVehicle rental) {
         this.id = id;
         this.name = name;
         this.brand = brand;
@@ -40,6 +37,7 @@ public class VehicleDTO {
         this.pricePerDay = pricePerDay;
         this.available = available;
         this.rating = rating;
+        this.rental = rental;
     }
 
     public VehicleDTO(Vehicle entity) {
@@ -50,21 +48,29 @@ public class VehicleDTO {
         status = entity.getStatus();
         description = entity.getDescription();
         pricePerHour = entity.getPricePerDay();
-        pricePerHour = entity.getPricePerDay();
+        pricePerDay = entity.getPricePerDay();
         available = entity.isAvailable();
         rating = entity.getRating();
 
         if(entity.getReviews() != null) {
             for(Review r : entity.getReviews()){
-                this.reviews.add(new ReviewDTO(r));
+                this.reviews.add(new ShowReviewToVehicle(r));
             }
         }
+        if(entity.getRental() != null) {
+            if (entity.isAvailable() == false || entity.getRental().isRunning() == true) {
+                rental = new ShowRentalToVehicle(entity.getRental());
+            }
+        }
+    }
 
-        if(entity.getRentalsDone() != null){
-            for(Rental r : entity.getRentalsDone()){
-                this.rentalsDone.add(new RentalDTO(r));
-            }
-        }
+    // =>  Constructor to use in find all method
+    public VehicleDTO(String name, String brand, StatusVehicle status, boolean available, Double rating) {
+        this.name = name;
+        this.brand = brand;
+        this.status = status;
+        this.available = available;
+        this.rating = rating;
     }
 
     public Long getId() {
@@ -155,11 +161,15 @@ public class VehicleDTO {
         this.rating = rating;
     }
 
-    public List<ReviewDTO> getReviews() {
-        return reviews;
+    public ShowRentalToVehicle getRental() {
+        return rental;
     }
 
-    public Set<RentalDTO> getRentalsDone() {
-        return rentalsDone;
+    public void setRental(ShowRentalToVehicle rental) {
+        this.rental = rental;
+    }
+
+    public List<ShowReviewToVehicle> getReviews() {
+        return reviews;
     }
 }
