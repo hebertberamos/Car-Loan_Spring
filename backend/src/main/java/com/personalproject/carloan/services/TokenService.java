@@ -22,7 +22,7 @@ public class TokenService {
             return JWT.create()
                     .withIssuer("auth-api")
                     .withSubject(user.getEmail())
-                    .withExpiresAt(Instant.now().plusSeconds(36000)) // Token válido por 10 horas
+                    .withExpiresAt(Instant.now().plusSeconds(300)) // Token válido por 5 minutos
                     .sign(algorithm);
 
         } catch(JWTCreationException e){
