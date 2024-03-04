@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 // Help Spring Security identify how user authentication should be done
 @Service
-public class AuthorizationService implements UserDetailsService {
+public class AuthenticationService implements UserDetailsService {
 
     @Autowired
     private UserRepository repository;
@@ -46,5 +46,11 @@ public class AuthorizationService implements UserDetailsService {
     }
 
     // =>  Method to identify if User are self id or ADMIN
+    public void validateSelfOrAdmin(Long id){
+        User user = authenticated();
 
+        if(!user.getId().equals(id) && !user.hasRoleAdmin() == true){
+            throw new ForbiddenException("Access danied");
+        }
+    }
 }

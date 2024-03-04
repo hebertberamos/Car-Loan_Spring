@@ -25,6 +25,9 @@ public class UserService {
     @Autowired
     private UserRepository repository;
 
+    @Autowired
+    private AuthenticationService authenticationService;
+
     @Transactional
     public List<UserDTO> findAll(){
         List<User> users = repository.findAll();
@@ -33,6 +36,8 @@ public class UserService {
 
     @Transactional
     public UserDTO findById(Long id){
+        authenticationService.validateSelfOrAdmin(id); //  Verify if user is searching for your id or is a ADMIN
+
         Optional<User> optional = repository.findById(id);
         User user = optional.orElseThrow(() -> new ResourcesNotFoundException("Id not found"));
         return new UserDTO(user);

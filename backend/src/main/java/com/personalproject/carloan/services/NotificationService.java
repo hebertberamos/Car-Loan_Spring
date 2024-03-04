@@ -18,11 +18,11 @@ public class NotificationService {
     private NotificationRepository repository;
 
     @Autowired
-    private AuthorizationService authorizationService;
+    private AuthenticationService authenticationService;
 
     @Transactional(readOnly = true)
     public List<NotificationDTO> findByUser(){
-        User user = authorizationService.authenticated();
+        User user = authenticationService.authenticated();
 
         List<Notification> notifications = repository.findByUser(user);
         return notifications.stream().map(x -> new NotificationDTO(x)).collect(Collectors.toList());

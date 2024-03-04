@@ -187,4 +187,11 @@ public class User implements UserDetails, Serializable {
     public boolean isEnabled() {
         return true;
     }
+
+    public boolean hasRoleAdmin(){
+        if(this.role.equals(UserRole.ADMIN)){
+            return true;
+        }
+        return false;
+    }
 }
