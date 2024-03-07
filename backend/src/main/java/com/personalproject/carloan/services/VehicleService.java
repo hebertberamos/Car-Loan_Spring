@@ -30,4 +30,21 @@ public class VehicleService {
         Vehicle entity = optional.orElseThrow(() -> new ResourcesNotFoundException("Id not found"));
         return new VehicleDTO(entity);
     }
+
+    @Transactional
+    public VehicleDTO update(Long id, VehicleDTO dto){
+        Optional<Vehicle> optional = repository.findById(id);
+        Vehicle entity = optional.orElseThrow(() -> new ResourcesNotFoundException("Id not found"));
+
+        entity.setName(dto.getName());
+        entity.setBrand(dto.getBrand());
+        entity.setPlate(dto.getPlate());
+        entity.setManufactureYear(dto.getManufactureYear());
+        entity.setDescription(dto.getDescription());
+        entity.setPricePerHour(dto.getPricePerHour());
+        entity.setPricePerDay(dto.getPricePerDay());
+        entity.setAvailable(dto.isAvailable());
+
+        return new VehicleDTO(entity);
+    }
 }

@@ -1,18 +1,16 @@
 package com.personalproject.carloan.controllers;
 
 import com.personalproject.carloan.dtos.VehicleDTO;
+import com.personalproject.carloan.entities.Vehicle;
 import com.personalproject.carloan.services.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("vehicles")
+@RequestMapping("/vehicles")
 public class VehicleController {
 
     @Autowired
@@ -28,5 +26,12 @@ public class VehicleController {
     public ResponseEntity<VehicleDTO> findById(@PathVariable Long id){
         VehicleDTO dto = service.findById(id);
         return ResponseEntity.ok().body(dto);
+    }
+
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<VehicleDTO> update(@PathVariable Long id, @RequestBody VehicleDTO dto){
+        dto = service.update(id, dto);
+        return ResponseEntity.ok().build();
     }
 }

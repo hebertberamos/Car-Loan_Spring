@@ -11,6 +11,11 @@ public class ShowPaymentToRental {
 
     public ShowPaymentToRental() {}
 
+    public ShowPaymentToRental(Instant paymentMoment, Double paymentAmount){
+        this.paymentMoment = paymentMoment;
+        this.paymentAmount = paymentAmount;
+    }
+
     public  ShowPaymentToRental(Payment entity){
         paymentAmount = entity.getPaymentAmount();
         paymentMoment = entity.getPaymentMoment();
