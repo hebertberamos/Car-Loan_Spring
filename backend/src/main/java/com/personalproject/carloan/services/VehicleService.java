@@ -1,6 +1,10 @@
 package com.personalproject.carloan.services;
 
+import com.personalproject.carloan.dtos.MotorcycleDTO;
 import com.personalproject.carloan.dtos.VehicleDTO;
+import com.personalproject.carloan.entities.Motorcycle;
+import com.personalproject.carloan.entities.Rental;
+import com.personalproject.carloan.entities.Review;
 import com.personalproject.carloan.entities.Vehicle;
 import com.personalproject.carloan.repositories.VehicleRepository;
 import com.personalproject.carloan.services.exceptions.ResourcesNotFoundException;
@@ -10,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -47,4 +52,15 @@ public class VehicleService {
 
         return new VehicleDTO(entity);
     }
+
+
+    // =>  Methos to create a new Motorcycle
+    @Transactional
+    public MotorcycleDTO createMotorcycle(MotorcycleDTO dto){
+
+        Motorcycle entity = repository.save(new Motorcycle(dto.getName(), dto.getBrand(), dto.getPlate(), dto.getManufactureYear(), dto.getStatus(), dto.getDescription(), dto.getPricePerHour(), dto.getPricePerDay(), dto.isAvailable(), dto.getRating(), true, null));
+        return new MotorcycleDTO(entity);
+    }
+
+    // =>  Methos to create a new Car
 }

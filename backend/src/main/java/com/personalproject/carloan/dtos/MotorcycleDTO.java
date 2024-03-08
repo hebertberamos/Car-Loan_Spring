@@ -1,13 +1,13 @@
 package com.personalproject.carloan.dtos;
 
+import com.personalproject.carloan.entities.Motorcycle;
 import com.personalproject.carloan.entities.Review;
-import com.personalproject.carloan.entities.Vehicle;
 import com.personalproject.carloan.entities.enums.StatusVehicle;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class VehicleDTO {
+public class MotorcycleDTO {
 
     private Long id;
     private String name;
@@ -23,10 +23,11 @@ public class VehicleDTO {
     private ShowRentalToVehicle rental;
     private List<ShowReviewToVehicle> reviews = new ArrayList<>();
 
-    public VehicleDTO() {}
+    private boolean hasFairing;
 
-    public VehicleDTO(Long id, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, Double pricePerHour, Double pricePerDay, boolean available, Double rating, ShowRentalToVehicle rental) {
-        this.id = id;
+    public MotorcycleDTO(){}
+
+    public MotorcycleDTO(String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, Double pricePerHour, Double pricePerDay, boolean available, Double rating, ShowRentalToVehicle rental, List<ShowReviewToVehicle> reviews, boolean hasFairing) {
         this.name = name;
         this.brand = brand;
         this.plate = plate;
@@ -38,9 +39,11 @@ public class VehicleDTO {
         this.available = available;
         this.rating = rating;
         this.rental = rental;
+        this.reviews = reviews;
+        this.hasFairing = hasFairing;
     }
 
-    public VehicleDTO(Vehicle entity) {
+    public MotorcycleDTO(Motorcycle entity){
         name = entity.getName();
         brand = entity.getBrand();
         plate = entity.getPlate();
@@ -51,6 +54,7 @@ public class VehicleDTO {
         pricePerDay = entity.getPricePerDay();
         available = entity.isAvailable();
         rating = entity.getRating();
+        hasFairing = entity.isHasFairing();
 
         if(entity.getReviews() != null) {
             for(Review r : entity.getReviews()){
@@ -62,15 +66,6 @@ public class VehicleDTO {
                 rental = new ShowRentalToVehicle(entity.getRental());
             }
         }
-    }
-
-    // =>  Constructor to use in find all method
-    public VehicleDTO(String name, String brand, StatusVehicle status, boolean available, Double rating) {
-        this.name = name;
-        this.brand = brand;
-        this.status = status;
-        this.available = available;
-        this.rating = rating;
     }
 
     public Long getId() {
@@ -142,7 +137,7 @@ public class VehicleDTO {
     }
 
     public void setPricePerDay(Double pricePerDay) {
-        pricePerDay = pricePerDay;
+        this.pricePerDay = pricePerDay;
     }
 
     public boolean isAvailable() {
@@ -169,7 +164,15 @@ public class VehicleDTO {
         this.rental = rental;
     }
 
-    public List<ShowReviewToVehicle> getReviews() {
-        return reviews;
+    public void setReviews(List<ShowReviewToVehicle> reviews) {
+        this.reviews = reviews;
+    }
+
+    public boolean isHasFairing() {
+        return hasFairing;
+    }
+
+    public void setHasFairing(boolean hasFairing) {
+        this.hasFairing = hasFairing;
     }
 }

@@ -17,6 +17,11 @@ public class Motorcycle extends Vehicle{
         this.hasFairing = hasFairing;
     }
 
+    public Motorcycle(String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, Double pricePerHour, Double pricePerDay, boolean available, Double rating, boolean hasFairing, Rental rental) {
+        super(name, brand, plate, manufactureYear, status, description, pricePerHour, pricePerDay, available, rating, rental);
+        this.hasFairing = hasFairing;
+    }
+
     public boolean isHasFairing() {
         return hasFairing;
     }
