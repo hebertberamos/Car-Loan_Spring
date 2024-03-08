@@ -9,15 +9,22 @@ import jakarta.persistence.Table;
 public class Car extends Vehicle{
 
     private Integer numberOfDoors;
-    private Double TrunkSpace;
+    private Double trunkSpace;
     private boolean hasStep;
 
     public Car() {}
-
-    public Car(Long id, String name, String brand, String plate, Integer year, StatusVehicle status, String description, Double pricePerHour, Double pricePerDay, boolean available, Double rating, Integer numberOfDoors, Double trunkSpace, boolean hasStep, Rental rental) {
-        super(id, name, brand, plate, year, status, description, pricePerHour, pricePerDay, available, rating, rental);
+    
+    public Car (String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, Double pricePerHour, Double pricePerDay, boolean available, Double rating, Integer numberOfDoors, Double trunkSpace, boolean hasStep, Rental rental){
+        super(name, brand, plate, manufactureYear, status, description, pricePerHour, pricePerDay, available, rating, rental);
         this.numberOfDoors = numberOfDoors;
-        TrunkSpace = trunkSpace;
+        this.trunkSpace = trunkSpace;
+        this.hasStep = hasStep;
+    }
+
+    public Car(Long id, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, Double pricePerHour, Double pricePerDay, boolean available, Double rating, Integer numberOfDoors, Double trunkSpace, boolean hasStep, Rental rental) {
+        super(id, name, brand, plate, manufactureYear, status, description, pricePerHour, pricePerDay, available, rating, rental);
+        this.numberOfDoors = numberOfDoors;
+        this.trunkSpace = trunkSpace;
         this.hasStep = hasStep;
     }
 
@@ -30,11 +37,11 @@ public class Car extends Vehicle{
     }
 
     public Double getTrunkSpace() {
-        return TrunkSpace;
+        return trunkSpace;
     }
 
     public void setTrunkSpace(Double trunkSpace) {
-        TrunkSpace = trunkSpace;
+        trunkSpace = trunkSpace;
     }
 
     public boolean isHasStep() {

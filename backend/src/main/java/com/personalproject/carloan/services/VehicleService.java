@@ -1,20 +1,22 @@
 package com.personalproject.carloan.services;
 
+import com.personalproject.carloan.dtos.CarDTO;
 import com.personalproject.carloan.dtos.MotorcycleDTO;
 import com.personalproject.carloan.dtos.VehicleDTO;
+import com.personalproject.carloan.entities.Car;
 import com.personalproject.carloan.entities.Motorcycle;
-import com.personalproject.carloan.entities.Rental;
-import com.personalproject.carloan.entities.Review;
 import com.personalproject.carloan.entities.Vehicle;
 import com.personalproject.carloan.repositories.VehicleRepository;
+import com.personalproject.carloan.services.exceptions.DatabaseException;
 import com.personalproject.carloan.services.exceptions.ResourcesNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -62,5 +64,23 @@ public class VehicleService {
         return new MotorcycleDTO(entity);
     }
 
-    // =>  Methos to create a new Car
+    // =>  Method to create a new Car
+    @Transactional
+    public CarDTO createCar(CarDTO dto) {
+        Car entity = repository.save(new Car(dto.getName(), dto.getBrand(), dto.getPlate(), dto.getManufactureYear(), dto.getStatus(), dto.getDescription(), dto.getPricePerHour(), dto.getPricePerDay(), dto.isAvailable(), dto.getRating(), dto.getNumberOfDoors(), dto.getTrunkSpace(), dto.isHasStep(), null));
+        return new CarDTO(entity);
+    }
+
+    @Transactional
+    public void deleteById(Long id){
+        try{
+            repository.deleteById(id);
+        }
+        catch(EmptyResultDataAccessException e){
+            throw new ResourcesNotFoundException("Id not found (" + id + ")");
+        }
+        catch(DataIntegrityViolationException e){
+            throw new DatabaseException("This vehicle can't be deleted. LINKD VEHICLE");
+        }
+    }
 }

@@ -1,11 +1,10 @@
 package com.personalproject.carloan.controllers;
 
+import com.personalproject.carloan.dtos.CarDTO;
 import com.personalproject.carloan.dtos.MotorcycleDTO;
 import com.personalproject.carloan.dtos.VehicleDTO;
-import com.personalproject.carloan.entities.Motorcycle;
-import com.personalproject.carloan.entities.Vehicle;
 import com.personalproject.carloan.services.VehicleService;
-import org.apache.coyote.Response;
+import jakarta.persistence.PostRemove;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,6 +40,18 @@ public class VehicleController {
     @PostMapping(value = "/insert/motorcycle")
     public ResponseEntity<MotorcycleDTO> insertMotorcycle(@RequestBody MotorcycleDTO dto){
         dto = service.createMotorcycle(dto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(value = "/insert/car")
+    public ResponseEntity<CarDTO> insertCar(@RequestBody CarDTO dto){
+        dto = service.createCar(dto);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping(value = "/delete/{id}")
+    public ResponseEntity<VehicleDTO> delete(@PathVariable Long id){
+        service.deleteById(id);
         return ResponseEntity.ok().build();
     }
 }
