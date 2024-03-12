@@ -37,6 +37,14 @@ public class Payment implements Serializable {
         this.payer = payer;
     }
 
+    public Payment(boolean payed, Instant paymentMoment, Double paymentAmount, Rental rental, User payer) {
+        this.payed = payed;
+        this.paymentMoment = paymentMoment;
+        this.paymentAmount = paymentAmount;
+        this.rental = rental;
+        this.payer = payer;
+    }
+
     public Long getId() {
         return id;
     }

@@ -33,7 +33,7 @@ INSERT INTO tb_motorcycle (id, has_Fairing) VALUES (6, true);
 --Rental
 INSERT INTO tb_rental (checkin, checkout, refund_Moment, running, user_Id, vehicle_Id) VALUES (TIMESTAMP WITH TIME ZONE '2023-07-13T10:00:00.12345Z', TIMESTAMP WITH TIME ZONE '2023-07-30T17:30:00.12345Z', null, false, 3, 1);
 INSERT INTO tb_rental (checkin, checkout, refund_Moment, running, user_Id, vehicle_Id) VALUES (TIMESTAMP WITH TIME ZONE '2023-08-23T10:00:00.12345Z', TIMESTAMP WITH TIME ZONE '2023-08-30T12:00:00.12345Z', null, false, 3, 2);
-INSERT INTO tb_rental (checkin, checkout, refund_Moment, running, user_Id, vehicle_Id) VALUES (TIMESTAMP WITH TIME ZONE '2024-02-23T10:00:00.12345Z', TIMESTAMP WITH TIME ZONE '2024-02-28T12:00:00.12345Z', null, true, 3, 3); -- RUNNING
+INSERT INTO tb_rental (checkin, checkout, refund_Moment, running, user_Id, vehicle_Id) VALUES (TIMESTAMP WITH TIME ZONE '2024-02-23T10:00:00.12345Z', TIMESTAMP WITH TIME ZONE '2024-02-28T12:00:00.12345Z', null, false, 3, 3);
 
 
 -- Deliveries

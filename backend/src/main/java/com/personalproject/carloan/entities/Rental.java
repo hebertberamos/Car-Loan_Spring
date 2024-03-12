@@ -41,7 +41,33 @@ public class Rental {
         this.checkin = checkin;
         this.checkout = checkout;
         this.refundMoment = refundMoment;
+
+        if(Instant.now().isBefore(checkout)){
+            running = true;
+        }
+        else {
+            running = false;
+        }
+
+        this.user = user;
+        this.deliver = deliver;
+        this.payment = payment;
+        this.rentedVehicle = rentedVehicle;
+    }
+
+    public Rental(Instant checkin, Instant checkout, Instant refundMoment, boolean running, User user, Deliver deliver, Payment payment, Vehicle rentedVehicle) {
+        this.checkin = checkin;
+        this.checkout = checkout;
+        this.refundMoment = refundMoment;
         this.running = running;
+
+        if(Instant.now().isBefore(checkout)){
+            running = true;
+        }
+        else {
+            running = false;
+        }
+
         this.user = user;
         this.deliver = deliver;
         this.payment = payment;

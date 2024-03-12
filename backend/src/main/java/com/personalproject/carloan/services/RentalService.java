@@ -1,12 +1,14 @@
 package com.personalproject.carloan.services;
 
+import com.personalproject.carloan.dtos.CreateRentalDTO;
 import com.personalproject.carloan.dtos.RentalDTO;
-import com.personalproject.carloan.dtos.ShowUserToReview;
 import com.personalproject.carloan.entities.Rental;
 import com.personalproject.carloan.entities.User;
+import com.personalproject.carloan.entities.Vehicle;
 import com.personalproject.carloan.repositories.DeliverRepository;
 import com.personalproject.carloan.repositories.RentalRepository;
 import com.personalproject.carloan.repositories.UserRepository;
+import com.personalproject.carloan.repositories.VehicleRepository;
 import com.personalproject.carloan.services.exceptions.ResourcesNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,13 @@ public class RentalService {
     private UserRepository userRepository;
 
     @Autowired
+    private VehicleRepository vehicleRepository;
+
+    @Autowired
     private DeliverRepository deliverRepository;
+
+    @Autowired
+    private AuthenticationService authenticationService;
 
     @Transactional(readOnly = true)
     public List<RentalDTO> findAll(){
@@ -73,17 +81,21 @@ public class RentalService {
     }
 
     //Inserir
-//    public RentalDTO insert(RentalDTO dto){
-//        Rental rental = new Rental();
-//        rental.setId(dto.getId());
-//        rental.setCheckin(dto.getCheckin());
-//        rental.setCheckout(dto.getCheckout());
-//        rental.setUser(dto.getUser());
-//        rental.setVehicle(dto.getVehicle());
-//
-//        repository.save(rental);
-//        dto = new RentalDTO(rental);
-//        return dto;
-//    }
+   /* public String createNewByVehicleId(Long vehicleId){
+
+        // =>  Identify the user making the request
+        User user = authenticationService.authenticated();
+
+        // =>  Identify the vehicle the user are renting
+        Optional<Vehicle> optional = vehicleRepository.findById(vehicleId);
+        Vehicle vehicle = optional.orElseThrow(() -> new ResourcesNotFoundException("Vehicle not found"));
+
+        // =>  Create a new Rental by a dto and save at database
+        Rental entity = repository.save(new Rental());
+
+
+        return "User = " + user + "\nVehicle = " + vehicle;
+
+    }*/
 
 }

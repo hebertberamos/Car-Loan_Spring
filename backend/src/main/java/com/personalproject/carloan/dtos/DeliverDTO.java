@@ -14,13 +14,11 @@ public class DeliverDTO {
     public DeliverDTO() {}
 
     public DeliverDTO(Long id, Instant deliverMoment, Long rentalid) {
-        this.id = id;
         this.deliverMoment = deliverMoment;
         this.rentalid = rentalid;
     }
 
     public DeliverDTO(Deliver entity) {
-        id = entity.getId();
         deliverMoment = entity.getDeliverMoment();
         rentalid = entity.getRental().getId();
     }

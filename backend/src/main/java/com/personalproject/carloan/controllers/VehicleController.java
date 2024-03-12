@@ -1,10 +1,8 @@
 package com.personalproject.carloan.controllers;
 
-import com.personalproject.carloan.dtos.CarDTO;
-import com.personalproject.carloan.dtos.MotorcycleDTO;
-import com.personalproject.carloan.dtos.VehicleDTO;
+import com.personalproject.carloan.dtos.*;
+import com.personalproject.carloan.entities.Rental;
 import com.personalproject.carloan.services.VehicleService;
-import jakarta.persistence.PostRemove;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +29,7 @@ public class VehicleController {
     }
 
 
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/update/{id}")
     public ResponseEntity<VehicleDTO> update(@PathVariable Long id, @RequestBody VehicleDTO dto){
         dto = service.update(id, dto);
         return ResponseEntity.ok().build();
@@ -53,5 +51,11 @@ public class VehicleController {
     public ResponseEntity<VehicleDTO> delete(@PathVariable Long id){
         service.deleteById(id);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(value = "/rental/create/{id}")
+    public ResponseEntity<CreateRentalDTO> createRentalByVehicle(@PathVariable Long id, @RequestBody CreateRentalDTO rentalDto){
+        rentalDto = service.createRentalByVehicle(id, rentalDto);
+        return ResponseEntity.ok().body(rentalDto);
     }
 }

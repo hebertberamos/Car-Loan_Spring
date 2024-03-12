@@ -28,6 +28,11 @@ public class Deliver implements Serializable {
         this.rental = rental;
     }
 
+    public Deliver(Instant deliverMoment, Rental rental) {
+        this.deliverMoment = deliverMoment;
+        this.rental = rental;
+    }
+
     public Long getId() {
         return id;
     }

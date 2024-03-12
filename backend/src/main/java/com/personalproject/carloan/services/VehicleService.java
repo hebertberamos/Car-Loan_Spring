@@ -1,11 +1,11 @@
 package com.personalproject.carloan.services;
 
 import com.personalproject.carloan.dtos.CarDTO;
+import com.personalproject.carloan.dtos.CreateRentalDTO;
 import com.personalproject.carloan.dtos.MotorcycleDTO;
 import com.personalproject.carloan.dtos.VehicleDTO;
-import com.personalproject.carloan.entities.Car;
-import com.personalproject.carloan.entities.Motorcycle;
-import com.personalproject.carloan.entities.Vehicle;
+import com.personalproject.carloan.entities.*;
+import com.personalproject.carloan.repositories.RentalRepository;
 import com.personalproject.carloan.repositories.VehicleRepository;
 import com.personalproject.carloan.services.exceptions.DatabaseException;
 import com.personalproject.carloan.services.exceptions.ResourcesNotFoundException;
@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -24,6 +25,12 @@ public class VehicleService {
 
     @Autowired
     private VehicleRepository repository;
+
+    @Autowired
+    private RentalRepository rentalRepository;
+
+    @Autowired
+    private AuthenticationService authenticationService;
 
     @Transactional(readOnly = true)
     public Page<VehicleDTO> findAll(Pageable pageable){
@@ -82,5 +89,34 @@ public class VehicleService {
         catch(DataIntegrityViolationException e){
             throw new DatabaseException("This vehicle can't be deleted. LINKD VEHICLE");
         }
+    }
+
+
+    @Transactional
+    public CreateRentalDTO createRentalByVehicle(Long id, CreateRentalDTO rentalDto){
+
+        // =>  Identify the user making the request
+        User user = authenticationService.authenticated();
+
+        // =>  Identify the vehicle the user are renting
+        Optional<Vehicle> optional = repository.findById(id);
+        Vehicle vehicle = optional.orElseThrow(() -> new ResourcesNotFoundException("Vehicle not found"));
+
+        // =>  Create a new Rental by a dto and save at database
+        Rental rental = new Rental();
+        Deliver deliver = new Deliver(null, rental);
+        Payment payment = new Payment(true, rentalDto.getCheckin(), 500.00, rental, user);
+
+        rental.setCheckin(rentalDto.getCheckin());
+        rental.setCheckout(rentalDto.getCheckout());
+        rental.setRefundMoment(rentalDto.getRefundMoment());
+        rental.setRunning(rentalDto.isRunning());
+        rental.setDeliver(deliver);
+        rental.setPayment(payment);
+        rental.setUser(user);
+        rental.setRentedVehicle(vehicle);
+
+        rental = rentalRepository.save(rental);
+        return new CreateRentalDTO(rental);
     }
 }

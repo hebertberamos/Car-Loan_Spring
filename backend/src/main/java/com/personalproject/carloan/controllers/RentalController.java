@@ -1,5 +1,6 @@
 package com.personalproject.carloan.controllers;
 
+import com.personalproject.carloan.dtos.CreateRentalDTO;
 import com.personalproject.carloan.dtos.RentalDTO;
 import com.personalproject.carloan.services.RentalService;
 import jakarta.validation.Valid;
@@ -46,11 +47,12 @@ public class RentalController {
         return ResponseEntity.noContent().build();
     }
 
-//    @PostMapping
-//    public ResponseEntity<RentalDTO> insert(@Valid @RequestBody RentalDTO dto){
-//        dto = service.insert(dto);
-//        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
-//        return ResponseEntity.created(uri).body(dto);
+    // Lembrar que vai ter que informar o id do veículo na requisição, meu parceiro
+//    @PostMapping(value = "/create/new/{id}")
+//    public ResponseEntity<String> insert(/*@Valid @RequestBody CreateRentalDTO dto, */@PathVariable Long vehicleId){
+//        String text = service.createNewByVehicleId(vehicleId);
+//        /*URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();*/
+//        return ResponseEntity.ok().body(text);
 //    }
 
 }
