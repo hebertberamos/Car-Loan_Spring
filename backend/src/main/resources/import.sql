@@ -16,7 +16,7 @@ INSERT INTO tb_car (id, number_Of_Doors, Trunk_Space, has_Step) VALUES (1, 4, 2.
 INSERT INTO tb_vehicle (name, brand, plate, manufacture_Year, status, description, price_Per_Hour, price_Per_Day, available, rating) VALUES ('Fiat Mobi Like 1.0', 'Fiat', 'B1BBB11', 2021, 1, 'Descubra o futuro da AMG Driving Performance. E temos excelentes novidades, porque criamos um veículo totalmente elétrico que também é um autêntico AMG.', 70.0, 300.0, true, 4.5);
 INSERT INTO tb_car (id, number_Of_Doors, Trunk_Space, has_Step) VALUES (2, 4, 1.2, true);
 
-INSERT INTO tb_vehicle (name, brand, plate, manufacture_Year, status, description, price_Per_Hour, price_Per_Day, available, rating) VALUES ('Mercedes-Benz W113', 'Mercedes', 'C1CCC11', 1969, 2, 'Descubra o futuro da AMG Driving Performance. E temos excelentes novidades, porque criamos um veículo totalmente elétrico que também é um autêntico AMG. Como sempre, praticidade no dia a dia e fascinação estão incluídas. Venha para a linha de largada.', 350.0, 1000.0, false, 5.0);
+INSERT INTO tb_vehicle (name, brand, plate, manufacture_Year, status, description, price_Per_Hour, price_Per_Day, available, rating) VALUES ('Mercedes-Benz W113', 'Mercedes', 'C1CCC11', 1969, 2, 'Descubra o futuro da AMG Driving Performance. E temos excelentes novidades, porque criamos um veículo totalmente elétrico que também é um autêntico AMG. Como sempre, praticidade no dia a dia e fascinação estão incluídas. Venha para a linha de largada.', 350.0, 1000.0, true, 5.0);
 INSERT INTO tb_car (id, number_Of_Doors, Trunk_Space, has_Step) VALUES (3, 2, 2.3, false);
 
 -- Vehicle / motorcycle

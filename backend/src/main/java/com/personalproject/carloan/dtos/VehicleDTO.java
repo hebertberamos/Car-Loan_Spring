@@ -25,22 +25,9 @@ public class VehicleDTO {
 
     public VehicleDTO() {}
 
-    public VehicleDTO(Long id, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, Double pricePerHour, Double pricePerDay, boolean available, Double rating, ShowRentalToVehicle rental) {
-        this.id = id;
-        this.name = name;
-        this.brand = brand;
-        this.plate = plate;
-        this.manufactureYear = manufactureYear;
-        this.status = status;
-        this.description = description;
-        this.pricePerHour = pricePerHour;
-        this.pricePerDay = pricePerDay;
-        this.available = available;
-        this.rating = rating;
-        this.rental = rental;
-    }
-
+    // Constructor to create a new Vehicle by an entity
     public VehicleDTO(Vehicle entity) {
+        id = entity.getId();
         name = entity.getName();
         brand = entity.getBrand();
         plate = entity.getPlate();
@@ -65,7 +52,8 @@ public class VehicleDTO {
     }
 
     // =>  Constructor to use in find all method
-    public VehicleDTO(String name, String brand, StatusVehicle status, boolean available, Double rating) {
+    public VehicleDTO(Long id, String name, String brand, StatusVehicle status, boolean available, Double rating) {
+        this.id = id;
         this.name = name;
         this.brand = brand;
         this.status = status;

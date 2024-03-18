@@ -18,39 +18,34 @@ public class RentalDTO implements Serializable {
     private Instant checkout;
     private Instant refundMoment;
     private boolean running;
-    private ShowDeliverToRental deliver;
-    private ShowPaymentToRental payment;
-    @NotNull(message = "Obrigatória a instanciação de um usuário para o aluguel")
-    private ShowUserToReview user;
-    private ShowVehicleToRental vehicle;
+    private DeliverDTO deliver;
+    private PaymentDTO payment;
+    private UserDTO user;
+    private VehicleDTO vehicle;
 
     public RentalDTO(){}
 
-    public RentalDTO(Instant checkin, Instant checkout, Instant refundMoment, boolean running, Deliver deliver, Payment payment, User user, Vehicle vehicle) {
+    // =>  Create a Rental informing the values of the attributes.
+    public RentalDTO(Instant checkin, Instant checkout, Instant refundMoment, boolean running, DeliverDTO deliver, PaymentDTO payment, UserDTO user, VehicleDTO vehicle) {
         this.checkin = checkin;
         this.checkout = checkout;
         this.refundMoment = refundMoment;
         this.running = running;
-        this.payment = new ShowPaymentToRental(payment);
-        this.deliver = new ShowDeliverToRental(deliver);
-        this.user = new ShowUserToReview(user);
-        this.vehicle = new ShowVehicleToRental(vehicle);
+        this.deliver = deliver;
+        this.payment = payment;
+        this.user = user;
+        this.vehicle = vehicle;
     }
 
     public RentalDTO(Rental entity) {
-        id = entity.getId();
         checkin = entity.getCheckin();
         checkout = entity.getCheckout();
         refundMoment = entity.getRefundMoment();
         running = entity.isRunning();
-        deliver = new ShowDeliverToRental(entity.getDeliver());
-
-        if(entity.getPayment() != null){
-            payment = new ShowPaymentToRental(entity.getPayment());
-        }
-
-        user = new ShowUserToReview(entity.getUser());
-        vehicle = new ShowVehicleToRental(entity.getRentedVehicle());
+        deliver = new DeliverDTO(entity.getDeliver());
+        payment = new PaymentDTO(entity.getPayment());
+        user = new UserDTO(entity.getUser());
+        vehicle = new VehicleDTO(entity.getRentedVehicle());
     }
 
     public Long getId() {
@@ -93,35 +88,35 @@ public class RentalDTO implements Serializable {
         this.running = running;
     }
 
-    public ShowDeliverToRental getDeliverId() {
+    public DeliverDTO getDeliver() {
         return deliver;
     }
 
-    public void setDeliverId(ShowDeliverToRental deliverId) {
+    public void setDeliver(DeliverDTO deliver) {
         this.deliver = deliver;
     }
 
-    public ShowPaymentToRental getPaymentId() {
+    public PaymentDTO getPayment() {
         return payment;
     }
 
-    public void setPaymentId(ShowPaymentToRental payment) {
+    public void setPayment(PaymentDTO payment) {
         this.payment = payment;
     }
 
-    public ShowUserToReview getUserId() {
+    public UserDTO getUser() {
         return user;
     }
 
-    public void setUserId(ShowUserToReview userName) {
+    public void setUser(UserDTO user) {
         this.user = user;
     }
 
-    public ShowVehicleToRental getVehicle() {
+    public VehicleDTO getVehicle() {
         return vehicle;
     }
 
-    public void setVehicle(ShowVehicleToRental vehicle) {
+    public void setVehicle(VehicleDTO vehicle) {
         this.vehicle = vehicle;
     }
 }

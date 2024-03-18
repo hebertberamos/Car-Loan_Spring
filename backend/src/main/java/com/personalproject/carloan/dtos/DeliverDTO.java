@@ -1,7 +1,6 @@
 package com.personalproject.carloan.dtos;
 
 import com.personalproject.carloan.entities.Deliver;
-import com.personalproject.carloan.entities.Rental;
 
 import java.time.Instant;
 

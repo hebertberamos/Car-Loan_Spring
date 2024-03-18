@@ -1,15 +1,11 @@
 package com.personalproject.carloan.controllers;
 
-import com.personalproject.carloan.dtos.CreateRentalDTO;
 import com.personalproject.carloan.dtos.RentalDTO;
 import com.personalproject.carloan.services.RentalService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -46,13 +42,4 @@ public class RentalController {
         }
         return ResponseEntity.noContent().build();
     }
-
-    // Lembrar que vai ter que informar o id do veículo na requisição, meu parceiro
-//    @PostMapping(value = "/create/new/{id}")
-//    public ResponseEntity<String> insert(/*@Valid @RequestBody CreateRentalDTO dto, */@PathVariable Long vehicleId){
-//        String text = service.createNewByVehicleId(vehicleId);
-//        /*URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();*/
-//        return ResponseEntity.ok().body(text);
-//    }
-
 }

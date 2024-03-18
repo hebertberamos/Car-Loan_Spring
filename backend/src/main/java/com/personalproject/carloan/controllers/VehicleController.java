@@ -1,7 +1,6 @@
 package com.personalproject.carloan.controllers;
 
 import com.personalproject.carloan.dtos.*;
-import com.personalproject.carloan.entities.Rental;
 import com.personalproject.carloan.services.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -54,7 +53,7 @@ public class VehicleController {
     }
 
     @PostMapping(value = "/rental/create/{id}")
-    public ResponseEntity<CreateRentalDTO> createRentalByVehicle(@PathVariable Long id, @RequestBody CreateRentalDTO rentalDto){
+    public ResponseEntity<RentalDTO> createRentalByVehicle(@PathVariable Long id, @RequestBody RentalDTO rentalDto){
         rentalDto = service.createRentalByVehicle(id, rentalDto);
         return ResponseEntity.ok().body(rentalDto);
     }

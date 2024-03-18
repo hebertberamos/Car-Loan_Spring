@@ -1,9 +1,6 @@
 package com.personalproject.carloan.services;
 
-import com.personalproject.carloan.dtos.CarDTO;
-import com.personalproject.carloan.dtos.CreateRentalDTO;
-import com.personalproject.carloan.dtos.MotorcycleDTO;
-import com.personalproject.carloan.dtos.VehicleDTO;
+import com.personalproject.carloan.dtos.*;
 import com.personalproject.carloan.entities.*;
 import com.personalproject.carloan.repositories.RentalRepository;
 import com.personalproject.carloan.repositories.VehicleRepository;
@@ -17,7 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -35,7 +31,7 @@ public class VehicleService {
     @Transactional(readOnly = true)
     public Page<VehicleDTO> findAll(Pageable pageable){
         Page<Vehicle> page = repository.findAll(pageable);
-        return page.map(x -> new VehicleDTO(x.getName(), x.getBrand(), x.getStatus(), x.isAvailable(), x.getRating()));
+        return page.map(x -> new VehicleDTO(x.getId(), x.getName(), x.getBrand(), x.getStatus(), x.isAvailable(), x.getRating()));
     }
 
     @Transactional(readOnly = true)
@@ -93,7 +89,7 @@ public class VehicleService {
 
 
     @Transactional
-    public CreateRentalDTO createRentalByVehicle(Long id, CreateRentalDTO rentalDto){
+    public RentalDTO createRentalByVehicle(Long id, RentalDTO rentalDto){
 
         // =>  Identify the user making the request
         User user = authenticationService.authenticated();
@@ -117,6 +113,6 @@ public class VehicleService {
         rental.setRentedVehicle(vehicle);
 
         rental = rentalRepository.save(rental);
-        return new CreateRentalDTO(rental);
+        return new RentalDTO(rental);
     }
 }
