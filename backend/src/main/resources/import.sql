@@ -39,7 +39,7 @@ INSERT INTO tb_rental (checkin, checkout, refund_Moment, running, user_Id, vehic
 -- Deliveries
 INSERT INTO tb_deliver (deliver_Moment, rental_id) VALUES (TIMESTAMP WITH TIME ZONE '2023-07-30T18:40:00.12345Z', 1);
 INSERT INTO tb_deliver (deliver_Moment, rental_id) VALUES (TIMESTAMP WITH TIME ZONE '2023-08-30T11:58:00.12345Z', 2);
-INSERT INTO tb_deliver (deliver_Moment, rental_id) VALUES (null, 3);
+INSERT INTO tb_deliver (deliver_Moment, rental_id) VALUES (TIMESTAMP WITH TIME ZONE '2024-02-28T12:00:00.12345Z', 3);
 
 
 -- Payment

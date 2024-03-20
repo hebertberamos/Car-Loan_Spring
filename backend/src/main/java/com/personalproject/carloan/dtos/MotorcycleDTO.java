@@ -50,8 +50,22 @@ public class MotorcycleDTO {
         manufactureYear = entity.getManufactureYear();
         status = entity.getStatus();
         description = entity.getDescription();
-        pricePerHour = entity.getPricePerHour();
-        pricePerDay = entity.getPricePerDay();
+
+        switch(entity.getStatus()){
+            case ANTIQUITY:
+                pricePerHour = 250.0;
+                pricePerDay = 1100.0;
+                break;
+            case POPULAR:
+                pricePerHour = 50.0;
+                pricePerDay = 150.00;
+                break;
+            case VIP:
+                pricePerHour = 230.0;
+                pricePerDay = 900.00;
+                break;
+        }
+
         available = entity.isAvailable();
         rating = entity.getRating();
         hasFairing = entity.isHasFairing();

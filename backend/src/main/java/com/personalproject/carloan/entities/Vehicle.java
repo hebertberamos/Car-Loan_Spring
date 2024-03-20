@@ -34,7 +34,7 @@ public abstract class Vehicle implements Serializable {
 
     public Vehicle() {}
 
-    public Vehicle(Long id, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, Double pricePerHour, Double pricePerDay, boolean available, Double rating, Rental rental) {
+    public Vehicle(Long id, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, boolean available, Double rating, Rental rental) {
         this.id = id;
         this.name = name;
         this.brand = brand;
@@ -42,22 +42,18 @@ public abstract class Vehicle implements Serializable {
         this.manufactureYear = manufactureYear;
         this.status = status;
         this.description = description;
-        this.pricePerHour = pricePerHour;
-        this.pricePerDay = pricePerDay;
         this.available = available;
         this.rating = rating;
         this.rental = rental;
     }
 
-    public Vehicle(String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, Double pricePerHour, Double pricePerDay, boolean available, Double rating, Rental rental) {
+    public Vehicle(String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description,  boolean available, Double rating, Rental rental) {
         this.name = name;
         this.brand = brand;
         this.plate = plate;
         this.manufactureYear = manufactureYear;
         this.status = status;
         this.description = description;
-        this.pricePerHour = pricePerHour;
-        this.pricePerDay = pricePerDay;
         this.available = available;
         this.rating = rating;
         this.rental = rental;
@@ -132,7 +128,7 @@ public abstract class Vehicle implements Serializable {
     }
 
     public void setPricePerDay(Double pricePerDay) {
-        pricePerDay = pricePerDay;
+        this.pricePerDay = pricePerDay;
     }
 
     public boolean isAvailable() {

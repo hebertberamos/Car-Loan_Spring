@@ -37,8 +37,22 @@ public class CarDTO {
         this.manufactureYear = manufactureYear;
         this.status = status;
         this.description = description;
-        this.pricePerHour = pricePerHour;
-        this.pricePerDay = pricePerDay;
+
+        switch(status){
+            case ANTIQUITY:
+                this.pricePerHour = 350.0;
+                this.pricePerDay = 1500.0;
+                break;
+            case POPULAR:
+                this.pricePerHour = 80.0;
+                this.pricePerDay = 200.00;
+                break;
+            case VIP:
+                this.pricePerHour = 300.0;
+                this.pricePerDay = 1200.00;
+                break;
+        }
+
         this.available = available;
         this.rating = rating;
         this.rental = rental;
@@ -55,8 +69,22 @@ public class CarDTO {
         manufactureYear = entity.getManufactureYear();
         status = entity.getStatus();
         description = entity.getDescription();
-        pricePerHour = entity.getPricePerHour();
-        pricePerDay = entity.getPricePerDay();
+
+        switch(status){
+            case ANTIQUITY:
+                this.pricePerHour = 350.0;
+                this.pricePerDay = 1500.0;
+                break;
+            case POPULAR:
+                this.pricePerHour = 80.0;
+                this.pricePerDay = 200.00;
+                break;
+            case VIP:
+                this.pricePerHour = 300.0;
+                this.pricePerDay = 1200.00;
+                break;
+        }
+
         available = entity.isAvailable();
         rating = entity.getRating();
         numberOfDoors = entity.getNumberOfDoors();

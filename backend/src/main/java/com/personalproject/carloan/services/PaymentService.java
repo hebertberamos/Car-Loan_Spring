@@ -1,7 +1,6 @@
 package com.personalproject.carloan.services;
 
 import com.personalproject.carloan.dtos.PaymentDTO;
-import com.personalproject.carloan.dtos.ReviewDTO;
 import com.personalproject.carloan.entities.Payment;
 import com.personalproject.carloan.repositories.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;

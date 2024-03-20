@@ -12,13 +12,45 @@ public class Motorcycle extends Vehicle{
 
     public Motorcycle() {}
 
-    public Motorcycle(Long id, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, Double pricePerHour, Double pricePerDay, boolean available, Double rating, boolean hasFairing, Rental rental) {
-        super(id, name, brand, plate, manufactureYear, status, description, pricePerHour, pricePerDay, available, rating, rental);
+    public Motorcycle(Long id, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, boolean available, Double rating, boolean hasFairing, Rental rental) {
+        super(id, name, brand, plate, manufactureYear, status, description, available, rating, rental);
+
+        switch(status){
+            case ANTIQUITY:
+                setPricePerHour(250.0);
+                setPricePerDay(1200.0);
+                break;
+            case POPULAR:
+                setPricePerHour(50.0);
+                setPricePerDay(150.0);
+                break;
+            case VIP:
+                setPricePerHour(230.0);
+                setPricePerDay(1000.0);
+                break;
+        }
+
         this.hasFairing = hasFairing;
     }
 
-    public Motorcycle(String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, Double pricePerHour, Double pricePerDay, boolean available, Double rating, boolean hasFairing, Rental rental) {
-        super(name, brand, plate, manufactureYear, status, description, pricePerHour, pricePerDay, available, rating, rental);
+    public Motorcycle(String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, boolean available, Double rating, boolean hasFairing, Rental rental) {
+        super(name, brand, plate, manufactureYear, status, description, available, rating, rental);
+
+        switch(status){
+            case ANTIQUITY:
+                setPricePerHour(250.0);
+                setPricePerDay(1200.0);
+                break;
+            case POPULAR:
+                setPricePerHour(50.0);
+                setPricePerDay(150.0);
+                break;
+            case VIP:
+                setPricePerHour(230.0);
+                setPricePerDay(1000.0);
+                break;
+        }
+
         this.hasFairing = hasFairing;
     }
 
