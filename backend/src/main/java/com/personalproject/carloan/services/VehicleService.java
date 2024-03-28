@@ -100,17 +100,26 @@ public class VehicleService {
 
         // =>  Create a new Rental by a dto and save at database
         Rental rental = new Rental();
-        Deliver deliver = new Deliver(null, rental);
-        Payment payment = new Payment(true, rentalDto.getCheckin(), 500.00, rental, user);
-
         rental.setCheckin(rentalDto.getCheckin());
         rental.setCheckout(rentalDto.getCheckout());
-        rental.setRefundMoment(rentalDto.getRefundMoment());
-        rental.setRunning(rentalDto.isRunning());
-        rental.setDeliver(deliver);
-        rental.setPayment(payment);
+        rental.setRefundMoment(null);
+        rental.setRunning(false);
         rental.setUser(user);
         rental.setRentedVehicle(vehicle);
+
+        Deliver deliver = new Deliver(null, rental);
+        rental.setDeliver(deliver);
+
+        Payment paymentEntity = new Payment();
+        double paymentAmount = paymentEntity.generatePayment(rental);
+
+        paymentEntity.setPayed(false);
+        paymentEntity.setPaymentMoment(null);
+        paymentEntity.setPaymentAmount(paymentAmount);
+        paymentEntity.setRental(rental);
+        paymentEntity.setPayer(user);
+
+        rental.setPayment(paymentEntity);
 
         rental = rentalRepository.save(rental);
         return new RentalDTO(rental);

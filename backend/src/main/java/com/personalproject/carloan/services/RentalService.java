@@ -37,7 +37,7 @@ public class RentalService {
     @Transactional(readOnly = true)
     public List<RentalDTO> findAll(){
         List<Rental> rentals = repository.findAll();
-        return rentals.stream().map(x -> new RentalDTO(x.getCheckin(), x.getCheckout(), x.getRefundMoment(), x.isRunning(), new DeliverDTO(x.getDeliver()), new PaymentDTO(x.getPayment()), new UserDTO(x.getUser()), new VehicleDTO(x.getRentedVehicle()))).collect(Collectors.toList());
+        return rentals.stream().map(x -> new RentalDTO(x.getCheckin(), x.getCheckout(), x.getRefundMoment(), x.isRunning(), new DeliverDTO(x.getDeliver()), new ShowPaymentToRental(x.getPayment()), new UserDTO(x.getUser()), new VehicleDTO(x.getRentedVehicle()))).collect(Collectors.toList());
     }
 
     // Buscando pelo id

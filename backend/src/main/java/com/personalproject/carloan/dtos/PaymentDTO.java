@@ -10,17 +10,17 @@ public class PaymentDTO {
     private boolean payed;
     private Instant paymentMoment;
     private Double paymentAmount;
-    private Long rentalId;
+    private RentalDTO rentalDto;
     private Long payerId;
 
     public PaymentDTO() {}
 
-    public PaymentDTO(Long id, boolean payed, Instant paymentMoment, Double paymentAmount, Long rentalId, Long payerId) {
+    public PaymentDTO(Long id, boolean payed, Instant paymentMoment, Double paymentAmount, RentalDTO rentalDto, Long payerId) {
         this.id = id;
         this.payed = payed;
         this.paymentMoment = paymentMoment;
         this.paymentAmount = paymentAmount;
-        this.rentalId = rentalId;
+        this.rentalDto = rentalDto;
         this.payerId = payerId;
     }
 
@@ -29,7 +29,7 @@ public class PaymentDTO {
         payed = entity.isPayed();
         paymentMoment = entity.getPaymentMoment();
         paymentAmount = entity.getPaymentAmount();
-        rentalId = entity.getRental().getId();
+        rentalDto = new RentalDTO(entity.getRental());
         payerId = entity.getPayer().getId();
     }
 
@@ -65,12 +65,12 @@ public class PaymentDTO {
         this.paymentAmount = paymentAmount;
     }
 
-    public Long getRentalId() {
-        return rentalId;
+    public RentalDTO getRentalDto() {
+        return rentalDto;
     }
 
-    public void setRentalId(Long rentalId) {
-        this.rentalId = rentalId;
+    public void setRentalDto(RentalDTO rentalDto) {
+        this.rentalDto = rentalDto;
     }
 
     public Long getPayerId() {

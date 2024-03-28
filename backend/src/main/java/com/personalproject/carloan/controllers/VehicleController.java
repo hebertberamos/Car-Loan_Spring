@@ -1,6 +1,7 @@
 package com.personalproject.carloan.controllers;
 
 import com.personalproject.carloan.dtos.*;
+import com.personalproject.carloan.services.RentalService;
 import com.personalproject.carloan.services.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,9 @@ public class VehicleController {
 
     @Autowired
     private VehicleService service;
+
+    @Autowired
+    private RentalService rentalService;
 
     @GetMapping
     public ResponseEntity<Page<VehicleDTO>> findAll(Pageable pageable){

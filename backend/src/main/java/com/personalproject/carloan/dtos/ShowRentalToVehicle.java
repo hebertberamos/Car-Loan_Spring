@@ -1,6 +1,5 @@
 package com.personalproject.carloan.dtos;
 
-import com.personalproject.carloan.entities.Payment;
 import com.personalproject.carloan.entities.Rental;
 
 import java.time.Instant;
@@ -10,6 +9,7 @@ public class ShowRentalToVehicle {
     private Instant checkin;
     private Instant checkout;
     private ShowPaymentToRental payment;
+    private boolean running;
 
     public ShowRentalToVehicle() {}
 
@@ -23,6 +23,7 @@ public class ShowRentalToVehicle {
         checkin = entity.getCheckin();
         checkout = entity.getCheckout();
         payment = new ShowPaymentToRental(entity.getPayment());
+        running = entity.isRunning();
     }
 
     public Instant getCheckin() {
@@ -47,5 +48,13 @@ public class ShowRentalToVehicle {
 
     public void setPayment(ShowPaymentToRental payment) {
         this.payment = payment;
+    }
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
     }
 }

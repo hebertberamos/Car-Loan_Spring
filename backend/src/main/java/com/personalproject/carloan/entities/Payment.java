@@ -3,6 +3,7 @@ package com.personalproject.carloan.entities;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
 
@@ -104,5 +105,32 @@ public class Payment implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+
+    public double generatePayment(Rental rental){
+        // =>  Rental time in hours
+        long rentalTimeInHours = CalculateRentalInHours(rental.getCheckin(), rental.getCheckout());
+
+        double paymentAmount = 0.0;
+
+        // =>  Calculate the amount to be paid according to the rental period
+        if(rentalTimeInHours > 12){
+            // Make the amount be calculated by the price per day.
+            paymentAmount = rental.getRentedVehicle().getPricePerDay() * (rentalTimeInHours / 24);
+        }
+        else{
+            // Make the amount be calculated by the price per hour
+            paymentAmount = rental.getRentedVehicle().getPricePerHour() * rentalTimeInHours;
+        }
+
+
+        return paymentAmount;
+    }
+
+
+    private long CalculateRentalInHours(Instant checkin, Instant checkout){
+        Duration durationInHours = Duration.between(checkin, checkout);
+        return durationInHours.toHours();
     }
 }

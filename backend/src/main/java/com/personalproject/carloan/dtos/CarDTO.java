@@ -30,7 +30,7 @@ public class CarDTO {
 
     public CarDTO() {}
 
-    public CarDTO(String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, Double pricePerHour, Double pricePerDay, boolean available, Double rating, ShowRentalToVehicle rental, List<ShowReviewToVehicle> reviews,Integer numberOfDoors, Double trunkSpace, boolean hasStep) {
+    public CarDTO(String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, boolean available, Double rating, ShowRentalToVehicle rental, List<ShowReviewToVehicle> reviews,Integer numberOfDoors, Double trunkSpace, boolean hasStep) {
         this.name = name;
         this.brand = brand;
         this.plate = plate;
