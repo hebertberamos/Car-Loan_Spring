@@ -10,6 +10,7 @@ import java.util.List;
 public class CarDTO {
 
     private Long id;
+    private String img;
     private String name;
     private String brand;
     private String plate;
@@ -30,7 +31,8 @@ public class CarDTO {
 
     public CarDTO() {}
 
-    public CarDTO(String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, boolean available, Double rating, ShowRentalToVehicle rental, List<ShowReviewToVehicle> reviews,Integer numberOfDoors, Double trunkSpace, boolean hasStep) {
+    public CarDTO(String img, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, boolean available, Double rating, ShowRentalToVehicle rental, List<ShowReviewToVehicle> reviews,Integer numberOfDoors, Double trunkSpace, boolean hasStep) {
+        this.img = img;
         this.name = name;
         this.brand = brand;
         this.plate = plate;
@@ -63,6 +65,7 @@ public class CarDTO {
     }
 
     public CarDTO(Car entity){
+        img = entity.getImg();
         name = entity.getName();
         brand = entity.getBrand();
         plate = entity.getPlate();
@@ -109,6 +112,14 @@ public class CarDTO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public String getName() {

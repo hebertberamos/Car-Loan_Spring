@@ -10,6 +10,7 @@ import java.util.List;
 public class VehicleDTO {
 
     private Long id;
+    private String img;
     private String name;
     private String brand;
     private String plate;
@@ -28,6 +29,7 @@ public class VehicleDTO {
     // Constructor to create a new Vehicle by an entity
     public VehicleDTO(Vehicle entity) {
         id = entity.getId();
+        img = entity.getImg();
         name = entity.getName();
         brand = entity.getBrand();
         plate = entity.getPlate();
@@ -52,8 +54,9 @@ public class VehicleDTO {
     }
 
     // =>  Constructor to use in find all method
-    public VehicleDTO(Long id, String name, String brand, StatusVehicle status, boolean available, Double rating) {
+    public VehicleDTO(Long id, String img, String name, String brand, StatusVehicle status, boolean available, Double rating) {
         this.id = id;
+        this.img = img;
         this.name = name;
         this.brand = brand;
         this.status = status;
@@ -67,6 +70,14 @@ public class VehicleDTO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public String getName() {

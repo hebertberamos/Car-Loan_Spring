@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserController {
 
     @Autowired
@@ -49,8 +50,8 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> insert(@Valid @RequestBody UserInsertDTO dto){
-        UserDTO newDto = service.insert(dto);
+    public ResponseEntity<UserDTO> createNewLogin(@Valid @RequestBody UserInsertDTO dto){
+        UserDTO newDto = service.createNewLogin(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newDto.getId()).toUri();
         return ResponseEntity.created(uri).body(newDto);
     }

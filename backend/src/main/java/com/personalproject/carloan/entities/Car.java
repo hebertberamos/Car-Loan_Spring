@@ -14,8 +14,8 @@ public class Car extends Vehicle{
 
     public Car() {}
     
-    public Car (String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, boolean available, Double rating, Integer numberOfDoors, Double trunkSpace, boolean hasStep, Rental rental){
-        super(name, brand, plate, manufactureYear, status, description, available, rating, rental);
+    public Car (String img, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, boolean available, Double rating, Integer numberOfDoors, Double trunkSpace, boolean hasStep, Rental rental){
+        super(img, name, brand, plate, manufactureYear, status, description, available, rating, rental);
         switch(status){
             case ANTIQUITY:
                 this.setPricePerHour(350.0);
@@ -35,8 +35,8 @@ public class Car extends Vehicle{
         this.hasStep = hasStep;
     }
 
-    public Car(Long id, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, boolean available, Double rating, Integer numberOfDoors, Double trunkSpace, boolean hasStep, Rental rental) {
-        super(id, name, brand, plate, manufactureYear, status, description, available, rating, rental);
+    public Car(Long id, String img, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, boolean available, Double rating, Integer numberOfDoors, Double trunkSpace, boolean hasStep, Rental rental) {
+        super(id, img, name, brand, plate, manufactureYear, status, description, available, rating, rental);
 
         switch(status){
             case ANTIQUITY:

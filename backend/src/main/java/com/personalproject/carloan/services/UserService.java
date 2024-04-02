@@ -4,6 +4,7 @@ import com.personalproject.carloan.dtos.UserDTO;
 import com.personalproject.carloan.dtos.UserInsertDTO;
 import com.personalproject.carloan.dtos.UserUpdateDTO;
 import com.personalproject.carloan.entities.User;
+import com.personalproject.carloan.entities.enums.UserRole;
 import com.personalproject.carloan.repositories.UserRepository;
 import com.personalproject.carloan.services.exceptions.ResourcesNotFoundException;
 import jakarta.transaction.Transactional;
@@ -71,7 +72,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO insert(UserInsertDTO dto){
+    public UserDTO createNewLogin(UserInsertDTO dto){
         User user = new User();
         user.setId(dto.getId());
         user.setName(dto.getName());
@@ -79,7 +80,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setCpf(dto.getCpf());
         user.setAge(dto.getAge());
-        user.setRole(dto.getRole());
+        user.setRole(UserRole.USER);
 
         user = repository.save(user);
         return new UserDTO(user);

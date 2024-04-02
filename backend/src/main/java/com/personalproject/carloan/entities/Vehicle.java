@@ -14,6 +14,7 @@ public abstract class Vehicle implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String img;
     private String name;
     private String brand;
     private String plate;
@@ -34,8 +35,9 @@ public abstract class Vehicle implements Serializable {
 
     public Vehicle() {}
 
-    public Vehicle(Long id, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, boolean available, Double rating, Rental rental) {
+    public Vehicle(Long id, String img, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, boolean available, Double rating, Rental rental) {
         this.id = id;
+        this.img = img;
         this.name = name;
         this.brand = brand;
         this.plate = plate;
@@ -47,8 +49,9 @@ public abstract class Vehicle implements Serializable {
         this.rental = rental;
     }
 
-    public Vehicle(String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description,  boolean available, Double rating, Rental rental) {
+    public Vehicle(String img, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description,  boolean available, Double rating, Rental rental) {
         this.name = name;
+        this.img = img;
         this.brand = brand;
         this.plate = plate;
         this.manufactureYear = manufactureYear;
@@ -65,6 +68,14 @@ public abstract class Vehicle implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public String getName() {
