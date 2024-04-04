@@ -34,18 +34,27 @@ INSERT INTO tb_motorcycle (id, has_Fairing) VALUES (6, true);
 --INSERT INTO tb_rental (checkin, checkout, refund_Moment, running, user_Id, vehicle_Id) VALUES (TIMESTAMP WITH TIME ZONE '2023-07-13T10:00:00.12345Z', TIMESTAMP WITH TIME ZONE '2023-07-30T17:30:00.12345Z', null, false, 3, 1);
 --INSERT INTO tb_rental (checkin, checkout, refund_Moment, running, user_Id, vehicle_Id) VALUES (TIMESTAMP WITH TIME ZONE '2023-08-23T10:00:00.12345Z', TIMESTAMP WITH TIME ZONE '2023-08-30T12:00:00.12345Z', null, false, 3, 2);
 INSERT INTO tb_rental (checkin, checkout, refund_Moment, running, user_Id, vehicle_Id) VALUES (TIMESTAMP WITH TIME ZONE '2024-02-23T10:00:00.12345Z', TIMESTAMP WITH TIME ZONE '2024-02-28T10:00:00.12345Z', null, false, 3, 3);
+--INSERT INTO tb_rental (checkin, checkout, refund_Moment, running, user_Id, vehicle_Id) VALUES (TIMESTAMP WITH TIME ZONE '2024-02-29T10:00:00.12345Z', TIMESTAMP WITH TIME ZONE '2024-03-01T10:00:00.12345Z', null, false, 4, 3);
+--INSERT INTO tb_rental (checkin, checkout, refund_Moment, running, user_Id, vehicle_Id) VALUES (TIMESTAMP WITH TIME ZONE '2024-03-02T10:00:00.12345Z', TIMESTAMP WITH TIME ZONE '2024-03-06T10:00:00.12345Z', null, false, 3, 3);
+INSERT INTO tb_rental (checkin, checkout, refund_Moment, running, user_Id, vehicle_Id) VALUES (TIMESTAMP WITH TIME ZONE '2024-03-02T10:00:00.12345Z', TIMESTAMP WITH TIME ZONE '2024-03-06T10:00:00.12345Z', null, false, 3, 4);
 
 
 -- Deliveries
 --INSERT INTO tb_deliver (deliver_Moment, rental_id) VALUES (TIMESTAMP WITH TIME ZONE '2023-07-30T18:40:00.12345Z', 1);
 --INSERT INTO tb_deliver (deliver_Moment, rental_id) VALUES (TIMESTAMP WITH TIME ZONE '2023-08-30T11:58:00.12345Z', 2);
 INSERT INTO tb_deliver (deliver_Moment, rental_id) VALUES (TIMESTAMP WITH TIME ZONE '2024-02-28T12:00:00.12345Z', 1);
+--INSERT INTO tb_deliver (deliver_Moment, rental_id) VALUES (TIMESTAMP WITH TIME ZONE '2024-03-01T10:00:00.12345Z', 2);
+--INSERT INTO tb_deliver (deliver_Moment, rental_id) VALUES (TIMESTAMP WITH TIME ZONE '2024-03-06T10:00:00.12345Z', 3);
+INSERT INTO tb_deliver (deliver_Moment, rental_id) VALUES (TIMESTAMP WITH TIME ZONE '2024-03-06T10:00:00.12345Z', 2);
 
 
 -- Payment
 --INSERT INTO tb_payment (payed, payment_Moment, payment_Amount, rental_Id, payer_Id) VALUES (true, TIMESTAMP WITH TIME ZONE '2023-07-13T10:15:00.12345Z', 200.00, 1, 3);
 --INSERT INTO tb_payment (payed, payment_Moment, payment_Amount, rental_Id, payer_Id) VALUES (true, TIMESTAMP WITH TIME ZONE '2023-08-23T10:10:00.12345Z', 500.00, 2, 3);
-INSERT INTO tb_payment (payed, payment_Moment, payment_Amount, rental_Id, payer_Id) VALUES (true, TIMESTAMP WITH TIME ZONE '2024-02-23T10:30:00.12345Z', 500.00, 1, 1);
+INSERT INTO tb_payment (payed, payment_Moment, payment_Amount, rental_Id, payer_Id) VALUES (true, TIMESTAMP WITH TIME ZONE '2024-02-23T10:30:00.12345Z', 500.00, 1, 3);
+--INSERT INTO tb_payment (payed, payment_Moment, payment_Amount, rental_Id, payer_Id) VALUES (true, TIMESTAMP WITH TIME ZONE '2024-02-29T10:00:00.12345Z', 500.00, 2, 4);
+--INSERT INTO tb_payment (payed, payment_Moment, payment_Amount, rental_Id, payer_Id) VALUES (true, TIMESTAMP WITH TIME ZONE '2024-03-02T10:00:00.12345Z', 500.00, 3, 3);
+INSERT INTO tb_payment (payed, payment_Moment, payment_Amount, rental_Id, payer_Id) VALUES (true, TIMESTAMP WITH TIME ZONE '2024-03-02T10:00:00.12345Z', 500.00, 2, 4);
 
 -- Review
 INSERT INTO tb_review (text, quantity_Stars, moment, author_Id, vehicle_Id) VALUES ('Ache o carro ótimo! Ótimo para viagem e onde eu passava chamava atença, do jeito que eu gosto kkkkkkk', 5, TIMESTAMP WITH TIME ZONE '2023-07-30T19:30:00.12345Z', 3, 3);

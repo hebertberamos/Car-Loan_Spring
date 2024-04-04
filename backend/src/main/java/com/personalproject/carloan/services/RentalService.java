@@ -23,9 +23,6 @@ public class RentalService {
     private RentalRepository repository;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private VehicleRepository vehicleRepository;
 
     @Autowired

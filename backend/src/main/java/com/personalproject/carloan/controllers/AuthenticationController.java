@@ -3,6 +3,7 @@ package com.personalproject.carloan.controllers;
 import com.personalproject.carloan.dtos.LoginUserDTO;
 import com.personalproject.carloan.dtos.RegisterUserDTO;
 import com.personalproject.carloan.entities.User;
+import com.personalproject.carloan.entities.enums.UserRole;
 import com.personalproject.carloan.repositories.UserRepository;
 import com.personalproject.carloan.services.TokenService;
 import jakarta.validation.Valid;
@@ -40,12 +41,12 @@ public class AuthenticationController {
     }
 
     @PostMapping(value = "/register")
-    public ResponseEntity login(@RequestBody @Valid RegisterUserDTO dto){
+    public ResponseEntity register(@RequestBody @Valid RegisterUserDTO dto){
         if(repository.findByEmail(dto.email()) != null) return ResponseEntity.badRequest().build();
 
         String encriptedPassword = new BCryptPasswordEncoder().encode(dto.password());
 
-        User user = new User(dto.name(), dto.email(), encriptedPassword, dto.cpf(), dto.age(), dto.role());
+        User user = new User(dto.name(), dto.email(), encriptedPassword, dto.cpf(), dto.age(), UserRole.USER);
 
         repository.save(user);
         return ResponseEntity.ok().build();

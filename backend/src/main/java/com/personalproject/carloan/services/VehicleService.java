@@ -5,6 +5,7 @@ import com.personalproject.carloan.entities.*;
 import com.personalproject.carloan.repositories.RentalRepository;
 import com.personalproject.carloan.repositories.VehicleRepository;
 import com.personalproject.carloan.services.exceptions.DatabaseException;
+import com.personalproject.carloan.services.exceptions.ForbiddenException;
 import com.personalproject.carloan.services.exceptions.ResourcesNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -14,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,6 +30,9 @@ public class VehicleService {
 
     @Autowired
     private AuthenticationService authenticationService;
+
+    @Autowired
+    private ReviewService reviewService;
 
     @Transactional(readOnly = true)
     public Page<VehicleDTO> findAll(Pageable pageable){
@@ -123,5 +129,31 @@ public class VehicleService {
 
         rental = rentalRepository.save(rental);
         return new RentalDTO(rental);
+    }
+
+    @Transactional
+    public ReviewDTO newReviewToVehicle(Long id, ReviewDTO reviewDto){
+        User user = authenticationService.authenticated();
+
+        Optional<Vehicle> optional = repository.findById(id);
+        Vehicle vehicle = optional.orElseThrow(() -> new ResourcesNotFoundException("Vehicle not found"));
+
+        List<Rental> allRentals = rentalRepository.findAll();
+        List<Rental> vehicleRentals = new ArrayList<>();
+
+        // =>  Get all rentals with the vehicle
+        for(Rental rental : allRentals){
+            if(rental.getRentedVehicle().getId() == id){
+                vehicleRentals.add(rental);
+            }
+        }
+
+        // =>  Verify if user has rented this vehicle
+        for(Rental rental : vehicleRentals){
+            if(rental.getUser().getId() == user.getId()){
+                return reviewService.insert(reviewDto, user, vehicle);
+            }
+        }
+        throw new ForbiddenException("Action blocked, you cannot leave a comment as you have never rented this vehicle");
     }
 }

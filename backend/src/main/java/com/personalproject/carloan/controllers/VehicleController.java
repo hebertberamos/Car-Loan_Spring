@@ -3,11 +3,13 @@ package com.personalproject.carloan.controllers;
 import com.personalproject.carloan.dtos.*;
 import com.personalproject.carloan.services.RentalService;
 import com.personalproject.carloan.services.VehicleService;
+import com.personalproject.carloan.services.exceptions.ForbiddenException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestController
 @RequestMapping("/vehicles")
@@ -61,5 +63,17 @@ public class VehicleController {
     public ResponseEntity<RentalDTO> createRentalByVehicle(@PathVariable Long id, @RequestBody RentalDTO rentalDto){
         rentalDto = service.createRentalByVehicle(id, rentalDto);
         return ResponseEntity.ok().body(rentalDto);
+    }
+
+    @PostMapping(value = "/create/review/{id}")
+    public ResponseEntity<ReviewDTO> addReview(@PathVariable Long id, @RequestBody ReviewDTO reviewDto){
+        reviewDto = service.newReviewToVehicle(id, reviewDto);
+
+//        if(reviewDto == null){
+//            return ResponseEntity.badRequest().build();
+//        }
+
+        return ResponseEntity.ok().body(reviewDto);
+
     }
 }
