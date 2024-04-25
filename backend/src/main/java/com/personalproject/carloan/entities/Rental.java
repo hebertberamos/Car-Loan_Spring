@@ -20,12 +20,6 @@ public class Rental {
     private Instant refundMoment;
     private boolean running;
 
-    @OneToOne(mappedBy = "rental", cascade = CascadeType.ALL)
-    private Deliver deliver;
-
-    @OneToOne(mappedBy = "rental", cascade = CascadeType.ALL)
-    private Payment payment;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -36,7 +30,7 @@ public class Rental {
 
     public Rental(){}
 
-    public Rental(Long id, Instant checkin, Instant checkout, Instant refundMoment, boolean running, User user, Deliver deliver, Payment payment, Vehicle rentedVehicle) {
+    public Rental(Long id, Instant checkin, Instant checkout, Instant refundMoment, boolean running, User user, Vehicle rentedVehicle) {
         this.id = id;
         this.checkin = checkin;
         this.checkout = checkout;
@@ -50,12 +44,10 @@ public class Rental {
         }
 
         this.user = user;
-        this.deliver = deliver;
-        this.payment = payment;
         this.rentedVehicle = rentedVehicle;
     }
 
-    public Rental(Instant checkin, Instant checkout, Instant refundMoment, boolean running, User user, Deliver deliver, Payment payment, Vehicle rentedVehicle) {
+    public Rental(Instant checkin, Instant checkout, Instant refundMoment, boolean running, User user, Vehicle rentedVehicle) {
         this.checkin = checkin;
         this.checkout = checkout;
         this.refundMoment = refundMoment;
@@ -69,8 +61,6 @@ public class Rental {
         }
 
         this.user = user;
-        this.deliver = deliver;
-        this.payment = payment;
         this.rentedVehicle = rentedVehicle;
     }
 
@@ -120,22 +110,6 @@ public class Rental {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public Deliver getDeliver() {
-        return deliver;
-    }
-
-    public void setDeliver(Deliver deliver) {
-        this.deliver = deliver;
-    }
-
-    public Payment getPayment() {
-        return payment;
-    }
-
-    public void setPayment(Payment payment) {
-        this.payment = payment;
     }
 
     public Vehicle getRentedVehicle() {

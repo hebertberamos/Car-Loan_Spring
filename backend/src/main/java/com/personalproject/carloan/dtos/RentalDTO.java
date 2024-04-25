@@ -18,21 +18,17 @@ public class RentalDTO implements Serializable {
     private Instant checkout;
     private Instant refundMoment;
     private boolean running;
-    private DeliverDTO deliver;
-    private ShowPaymentToRental payment;
     private UserDTO user;
     private VehicleDTO vehicle;
 
     public RentalDTO(){}
 
     // =>  Create a Rental informing the values of the attributes.
-    public RentalDTO(Instant checkin, Instant checkout, Instant refundMoment, boolean running, DeliverDTO deliver, ShowPaymentToRental payment, UserDTO user, VehicleDTO vehicle) {
+    public RentalDTO(Instant checkin, Instant checkout, Instant refundMoment, boolean running, UserDTO user, VehicleDTO vehicle) {
         this.checkin = checkin;
         this.checkout = checkout;
         this.refundMoment = refundMoment;
         this.running = running;
-        this.deliver = deliver;
-        this.payment = payment;
         this.user = user;
         this.vehicle = vehicle;
     }
@@ -42,8 +38,6 @@ public class RentalDTO implements Serializable {
         checkout = entity.getCheckout();
         refundMoment = entity.getRefundMoment();
         running = entity.isRunning();
-        deliver = new DeliverDTO(entity.getDeliver());
-        payment = new ShowPaymentToRental(entity.getPayment());
         user = new UserDTO(entity.getUser());
         vehicle = new VehicleDTO(entity.getRentedVehicle());
     }
@@ -86,22 +80,6 @@ public class RentalDTO implements Serializable {
 
     public void setRunning(boolean running) {
         this.running = running;
-    }
-
-    public DeliverDTO getDeliver() {
-        return deliver;
-    }
-
-    public void setDeliver(DeliverDTO deliver) {
-        this.deliver = deliver;
-    }
-
-    public ShowPaymentToRental getPayment() {
-        return payment;
-    }
-
-    public void setPayment(ShowPaymentToRental payment) {
-        this.payment = payment;
     }
 
     public UserDTO getUser() {

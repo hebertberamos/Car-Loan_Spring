@@ -113,20 +113,6 @@ public class VehicleService {
         rental.setUser(user);
         rental.setRentedVehicle(vehicle);
 
-        Deliver deliver = new Deliver(null, rental);
-        rental.setDeliver(deliver);
-
-        Payment paymentEntity = new Payment();
-        double paymentAmount = paymentEntity.generatePayment(rental);
-
-        paymentEntity.setPayed(false);
-        paymentEntity.setPaymentMoment(null);
-        paymentEntity.setPaymentAmount(paymentAmount);
-        paymentEntity.setRental(rental);
-        paymentEntity.setPayer(user);
-
-        rental.setPayment(paymentEntity);
-
         rental = rentalRepository.save(rental);
         return new RentalDTO(rental);
     }

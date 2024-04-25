@@ -29,12 +29,6 @@ public class UserService {
     private AuthenticationService authenticationService;
 
     @Transactional
-    public List<UserDTO> findAll(){
-        List<User> users = repository.findAll();
-        return users.stream().map(x -> new UserDTO(x.getName(), x.getEmail(), x.getRole(), x.getAge())).collect(Collectors.toList());
-    }
-
-    @Transactional
     public UserDTO findById(Long id){
         authenticationService.validateSelfOrAdmin(id); //  Verify if user is searching for your id or is a ADMIN
 
@@ -52,36 +46,6 @@ public class UserService {
         user.setAge(dto.getAge());
 
         repository.save(user);
-        return new UserDTO(user);
-    }
-
-    @Transactional
-    public UserDTO delete(Long id){
-        try {
-            User user = repository.findById(id).orElseThrow(() -> new ResourcesNotFoundException("id " + id + " not found"));
-            repository.delete(user);
-
-            return new UserDTO(user);
-        }
-        catch (EmptyResultDataAccessException e){
-            System.out.println("Element not found");
-        }
-
-        return null;
-    }
-
-    @Transactional
-    public UserDTO createNewLogin(UserInsertDTO dto){
-        User user = new User();
-        user.setId(dto.getId());
-        user.setName(dto.getName());
-        user.setEmail(dto.getEmail());
-        user.setPassword(passwordEncoder.encode(dto.getPassword()));
-        user.setCpf(dto.getCpf());
-        user.setAge(dto.getAge());
-        user.setRole(dto.getRole());
-
-        user = repository.save(user);
         return new UserDTO(user);
     }
 }

@@ -16,12 +16,6 @@ public class RentalController {
     private RentalService service;
 
 
-    @GetMapping
-    public ResponseEntity<List<RentalDTO>> findAll(){
-        List<RentalDTO> dtos = service.findAll();
-        return  ResponseEntity.ok().body(dtos);
-    }
-
     @GetMapping(value = "/{id}")
     public ResponseEntity<RentalDTO> findById(@PathVariable Long id){
         RentalDTO dto = service.findById(id);

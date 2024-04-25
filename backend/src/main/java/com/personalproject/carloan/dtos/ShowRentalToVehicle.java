@@ -8,21 +8,18 @@ public class ShowRentalToVehicle {
 
     private Instant checkin;
     private Instant checkout;
-    private ShowPaymentToRental payment;
     private boolean running;
 
     public ShowRentalToVehicle() {}
 
-    public ShowRentalToVehicle(Instant checkin, Instant checkout, ShowPaymentToRental payment) {
+    public ShowRentalToVehicle(Instant checkin, Instant checkout) {
         this.checkin = checkin;
         this.checkout = checkout;
-        this.payment = payment;
     }
 
     public ShowRentalToVehicle(Rental entity){
         checkin = entity.getCheckin();
         checkout = entity.getCheckout();
-        payment = new ShowPaymentToRental(entity.getPayment());
         running = entity.isRunning();
     }
 
@@ -40,14 +37,6 @@ public class ShowRentalToVehicle {
 
     public void setCheckout(Instant checkout) {
         this.checkout = checkout;
-    }
-
-    public ShowPaymentToRental getPayment() {
-        return payment;
-    }
-
-    public void setPayment(ShowPaymentToRental payment) {
-        this.payment = payment;
     }
 
     public boolean isRunning() {

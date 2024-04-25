@@ -35,9 +35,6 @@ public class User implements UserDetails, Serializable {
     @OneToMany(mappedBy = "user")
     private List<Rental> rentals = new ArrayList<>();
 
-    @OneToMany(mappedBy = "payer")
-    private List<Payment> payments = new ArrayList<>();
-
     @OneToMany(mappedBy = "author")
     private List<Review> reviews = new ArrayList<>();
 
@@ -126,10 +123,6 @@ public class User implements UserDetails, Serializable {
 
     public List<Rental> getRentals() {
         return rentals;
-    }
-
-    public List<Payment> getPayments() {
-        return payments;
     }
 
     public List<Review> getReviews() {
