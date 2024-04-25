@@ -35,8 +35,8 @@ public class VehicleService {
     private ReviewService reviewService;
 
     @Transactional(readOnly = true)
-    public Page<VehicleDTO> findAll(Pageable pageable){
-        Page<Vehicle> page = repository.findAll(pageable);
+    public Page<VehicleDTO> findAll(boolean isAvailable, String brand, String name, Pageable pageable){
+        Page<Vehicle> page = repository.findVehicles(isAvailable, brand, name, pageable);
         return page.map(x -> new VehicleDTO(x.getId(), x.getImg(), x.getName(), x.getBrand(), x.getStatus(), x.isAvailable(), x.getRating()));
     }
 
