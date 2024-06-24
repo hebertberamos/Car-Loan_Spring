@@ -22,11 +22,11 @@ public class VehicleController {
 
     @GetMapping
     public ResponseEntity<Page<VehicleDTO>> findAll(
-            @RequestParam(value = "isAvailable", defaultValue = "false") Boolean isAvailable,
+            @RequestParam(value = "availableOnly", defaultValue = "false") Boolean availableOnly,
             @RequestParam(value = "brand", defaultValue = "") String brand,
             @RequestParam(value = "name", defaultValue = "") String name,
             Pageable pageable){
-        Page<VehicleDTO> PageVehicles = service.findAll(isAvailable, brand, name, pageable);
+        Page<VehicleDTO> PageVehicles = service.findAll(availableOnly, brand, name, pageable);
         return ResponseEntity.ok().body(PageVehicles);
     }
 

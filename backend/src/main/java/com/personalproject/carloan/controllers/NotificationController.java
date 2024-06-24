@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -18,8 +19,8 @@ public class NotificationController {
     private NotificationService service;
 
     @GetMapping
-    public ResponseEntity<List<NotificationDTO>> findByUser(){
-        List<NotificationDTO> dtos = service.findByUser();
+    public ResponseEntity<List<NotificationDTO>> findAll(@RequestParam(value = "unreadOnly", defaultValue = "false") Boolean unreadOnly){
+        List<NotificationDTO> dtos = service.findAll(unreadOnly);
         return ResponseEntity.ok().body(dtos);
     }
 }

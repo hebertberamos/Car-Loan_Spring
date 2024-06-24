@@ -7,6 +7,9 @@ INSERT INTO tb_user (name, email, password, cpf, age, role) VALUES ('Mayane', 'm
 
 --Notification
 INSERT INTO tb_notification (text, moment, read, user_Id ) VALUES ('Faz tempo que você não aparece, tudo bem?', TIMESTAMP WITH TIME ZONE '2023-07-13T13:00:00.12345Z', true, 3);
+INSERT INTO tb_notification (text, moment, read, user_Id ) VALUES ('Temos uma nova oferta para você', TIMESTAMP WITH TIME ZONE '2023-07-14T15:23:00.12345Z', true, 3);
+INSERT INTO tb_notification (text, moment, read, user_Id ) VALUES ('(Algém) fez um comentário em um veículo que você já alugou, confira:', TIMESTAMP WITH TIME ZONE '2023-07-14T16:30:00.12345Z', false, 3);
+INSERT INTO tb_notification (text, moment, read, user_Id ) VALUES ('Que tal dar uma conferida no que temos de novo?', TIMESTAMP WITH TIME ZONE '2023-07-15T10:23:00.12345Z', true, 3);
 INSERT INTO tb_notification (text, moment, read, user_Id ) VALUES ('Que tal um novo aluguel? Etamos com ofertas incríveis que com certeza irá lhe agradar, venha conerir.', TIMESTAMP WITH TIME ZONE '2023-04-23T17:20:52.12345Z', false, 2);
 
 -- Vehicle / cars
@@ -39,10 +42,9 @@ INSERT INTO tb_rental (checkin, checkout, refund_Moment, running, user_Id, vehic
 INSERT INTO tb_rental (checkin, checkout, refund_Moment, running, user_Id, vehicle_Id) VALUES (TIMESTAMP WITH TIME ZONE '2024-03-02T10:00:00.12345Z', TIMESTAMP WITH TIME ZONE '2024-03-06T10:00:00.12345Z', null, false, 3, 4);
 
 
--- Deliveries
-
-
--- Payment
-
 -- Review
 INSERT INTO tb_review (text, quantity_Stars, moment, author_Id, vehicle_Id) VALUES ('Ache o carro ótimo! Ótimo para viagem e onde eu passava chamava atença, do jeito que eu gosto kkkkkkk', 5, TIMESTAMP WITH TIME ZONE '2023-07-30T19:30:00.12345Z', 3, 3);
+
+-- Deliveries
+-- Payment
+

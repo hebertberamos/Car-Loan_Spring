@@ -21,10 +21,10 @@ public class NotificationService {
     private AuthenticationService authenticationService;
 
     @Transactional(readOnly = true)
-    public List<NotificationDTO> findByUser(){
+    public List<NotificationDTO> findAll(boolean unreadOnly){
         User user = authenticationService.authenticated();
 
-        List<Notification> notifications = repository.findByUser(user);
+        List<Notification> notifications = repository.findNotifications(user, unreadOnly);
         return notifications.stream().map(x -> new NotificationDTO(x)).collect(Collectors.toList());
     }
 
