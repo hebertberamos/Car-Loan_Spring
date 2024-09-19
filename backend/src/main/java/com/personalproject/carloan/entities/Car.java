@@ -1,7 +1,6 @@
 package com.personalproject.carloan.entities;
 
 import com.personalproject.carloan.entities.enums.StatusVehicle;
-import com.personalproject.carloan.entities.enums.VehicleType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
@@ -15,8 +14,8 @@ public class Car extends Vehicle{
 
     public Car() {}
     
-    public Car (String img, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, boolean available, Double rating, /*VehicleType vehicleType,*/ Integer numberOfDoors, Double trunkSpace, boolean hasStep, Rental rental){
-        super(img, name, brand, plate, manufactureYear, status, description, available, rating, /*vehicleType,*/ rental);
+    public Car (String img, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, boolean available, Double rating, Integer numberOfDoors, Double trunkSpace, boolean hasStep, Rental rental){
+        super(img, name, brand, plate, manufactureYear, status, description, available, rating, rental);
 
         if(status.equals(StatusVehicle.VIP)){
             this.setPricePerHour(300.0);
@@ -34,8 +33,8 @@ public class Car extends Vehicle{
         this.hasStep = hasStep;
     }
 
-    public Car(Long id, String img, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, boolean available, Double rating, /*VehicleType vehicleType,*/ Integer numberOfDoors, Double trunkSpace, boolean hasStep, Rental rental) {
-        super(id, img, name, brand, plate, manufactureYear, status, description, available, rating, /*vehicleType,*/ rental);
+    public Car(Long id, String img, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, boolean available, Double rating, Integer numberOfDoors, Double trunkSpace, boolean hasStep, Rental rental) {
+        super(id, img, name, brand, plate, manufactureYear, status, description, available, rating, rental);
 
         if(status.equals(StatusVehicle.VIP)){
             this.setPricePerHour(300.0);

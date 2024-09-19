@@ -27,8 +27,6 @@ public abstract class Vehicle implements Serializable {
     private boolean available;
     private Double rating;
 
-//    private VehicleType vehicleType;
-
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Review> reviews = new ArrayList<>();
 
@@ -37,7 +35,7 @@ public abstract class Vehicle implements Serializable {
 
     public Vehicle() {}
 
-    public Vehicle(Long vehicleId, String img, String vehicleName, String brand, String plate, Integer manufactureYear, StatusVehicle vehicleStatus, String vehicleDescription, boolean available, Double rating, /*VehicleType vehicleType,*/ Rental rental) {
+    public Vehicle(Long vehicleId, String img, String vehicleName, String brand, String plate, Integer manufactureYear, StatusVehicle vehicleStatus, String vehicleDescription, boolean available, Double rating, Rental rental) {
         this.vehicleId = vehicleId;
         this.img = img;
         this.vehicleName = vehicleName;
@@ -48,11 +46,10 @@ public abstract class Vehicle implements Serializable {
         this.vehicleDescription = vehicleDescription;
         this.available = available;
         this.rating = rating;
-//        this.vehicleType = vehicleType;
         this.rental = rental;
     }
 
-    public Vehicle(String img, String vehicleName, String brand, String plate, Integer manufactureYear, StatusVehicle vehicleStatus, String vehicleDescription,  boolean available, Double rating, /*VehicleType vehicleType,*/ Rental rental) {
+    public Vehicle(String img, String vehicleName, String brand, String plate, Integer manufactureYear, StatusVehicle vehicleStatus, String vehicleDescription,  boolean available, Double rating, Rental rental) {
         this.vehicleName = vehicleName;
         this.img = img;
         this.brand = brand;
@@ -62,7 +59,6 @@ public abstract class Vehicle implements Serializable {
         this.vehicleDescription = vehicleDescription;
         this.available = available;
         this.rating = rating;
-//        this.vehicleType = vehicleType;
         this.rental = rental;
     }
 
@@ -161,14 +157,6 @@ public abstract class Vehicle implements Serializable {
     public void setRating(Double rating) {
         this.rating = rating;
     }
-
-//    public VehicleType getVehicleType() {
-//        return vehicleType;
-//    }
-//
-//    public void setVehicleType(VehicleType vehicleType) {
-//        this.vehicleType = vehicleType;
-//    }
 
     public Rental getRental() {
         return rental;

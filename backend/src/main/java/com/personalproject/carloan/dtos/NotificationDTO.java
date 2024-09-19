@@ -14,12 +14,11 @@ public class NotificationDTO {
 
     public NotificationDTO() {}
 
-    public NotificationDTO(Long id, String notificationText, Instant moment, boolean readed/*, Long userId*/) {
+    public NotificationDTO(Long id, String notificationText, Instant moment, boolean readed) {
         this.id = id;
         this.notificationText = notificationText;
         this.moment = moment;
         this.readed = readed;
-//        this.userId = userId;
     }
 
     public NotificationDTO(Notification entity){
@@ -60,12 +59,4 @@ public class NotificationDTO {
     public void setRead(boolean readed) {
         this.readed = readed;
     }
-
-//    public Long getUserId() {
-//        return userId;
-//    }
-//
-//    public void setUserId(Long userId) {
-//        this.userId = userId;
-//    }
 }

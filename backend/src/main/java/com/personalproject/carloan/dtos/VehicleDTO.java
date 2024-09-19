@@ -23,7 +23,6 @@ public class VehicleDTO {
     private Double pricePerDay;
     private boolean available;
     private Double rating;
-//    private VehicleType vehicleType;
     private ShowRentalToVehicle rental;
     private List<ShowReviewToVehicle> reviews = new ArrayList<>();
 
@@ -196,14 +195,6 @@ public class VehicleDTO {
     public void setRating(Double rating) {
         this.rating = rating;
     }
-
-//    public VehicleType getVehicleType() {
-//        return vehicleType;
-//    }
-//
-//    public void setVehicleType(VehicleType vehicleType) {
-//        this.vehicleType = vehicleType;
-//    }
 
     public ShowRentalToVehicle getRental() {
         return rental;

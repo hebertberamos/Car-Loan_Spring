@@ -3,7 +3,6 @@ package com.personalproject.carloan.dtos;
 import com.personalproject.carloan.entities.Motorcycle;
 import com.personalproject.carloan.entities.Review;
 import com.personalproject.carloan.entities.enums.StatusVehicle;
-import com.personalproject.carloan.entities.enums.VehicleType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +21,6 @@ public class MotorcycleDTO {
     private Double pricePerDay;
     private boolean available;
     private Double rating;
-//    private VehicleType vehicleType;
     private ShowRentalToVehicle rental;
     private List<ShowReviewToVehicle> reviews = new ArrayList<>();
 
@@ -78,24 +76,8 @@ public class MotorcycleDTO {
             this.setPricePerDay(900.0);
         }
 
-//        switch(entity.getStatus()){
-//            case ANTIQUITY:
-//                this.pricePerHour = 250.0;
-//                this.pricePerDay = 1100.0;
-//                break;
-//            case POPULAR:
-//                this.pricePerHour = 50.0;
-//                this.pricePerDay = 150.00;
-//                break;
-//            case VIP:
-//                this.pricePerHour = 230.0;
-//                this.pricePerDay = 900.00;
-//                break;
-//        }
-
         available = entity.isAvailable();
         rating = entity.getRating();
-//        vehicleType = VehicleType.MOTORCYCLE;
         hasFairing = entity.isHasFairing();
 
         if(entity.getReviews() != null) {
@@ -205,10 +187,6 @@ public class MotorcycleDTO {
     public void setRating(Double rating) {
         this.rating = rating;
     }
-
-//    public VehicleType getVehicleType() {
-//        return vehicleType;
-//    }
 
     public ShowRentalToVehicle getRental() {
         return rental;

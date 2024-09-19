@@ -21,7 +21,6 @@ public class CarDTO {
     private Double pricePerDay;
     private boolean available;
     private Double rating;
-//    private final VehicleType vehicleType = VehicleType.CAR;
     private ShowRentalToVehicle rental;
     private List<ShowReviewToVehicle> reviews = new ArrayList<>();
 
@@ -52,21 +51,6 @@ public class CarDTO {
             this.setPricePerDay(1500.0);
         }
 
-//        switch(vehicleStatus){
-//            case ANTIQUITY:
-//                this.pricePerHour = 350.0;
-//                this.pricePerDay = 1500.0;
-//                break;
-//            case POPULAR:
-//                this.pricePerHour = 80.0;
-//                this.pricePerDay = 200.00;
-//                break;
-//            case VIP:
-//                this.pricePerHour = 300.0;
-//                this.pricePerDay = 1200.00;
-//                break;
-//        }
-
         this.available = available;
         this.rating = rating;
         this.rental = rental;
@@ -95,21 +79,6 @@ public class CarDTO {
             this.setPricePerHour(350.0);
             this.setPricePerDay(1500.0);
         }
-
-//        switch(vehicleStatus){
-//            case ANTIQUITY:
-//                this.pricePerHour = 350.0;
-//                this.pricePerDay = 1500.0;
-//                break;
-//            case POPULAR:
-//                this.pricePerHour = 80.0;
-//                this.pricePerDay = 200.00;
-//                break;
-//            case VIP:
-//                this.pricePerHour = 300.0;
-//                this.pricePerDay = 1200.00;
-//                break;
-//        }
 
         available = entity.isAvailable();
         rating = entity.getRating();
@@ -224,10 +193,6 @@ public class CarDTO {
     public void setRating(Double rating) {
         this.rating = rating;
     }
-
-//    public VehicleType getVehicleType() {
-//        return vehicleType;
-//    }
 
     public ShowRentalToVehicle getRental() {
         return rental;

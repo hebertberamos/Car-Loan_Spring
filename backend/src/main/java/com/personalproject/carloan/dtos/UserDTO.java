@@ -52,11 +52,11 @@ public class UserDTO implements Serializable {
             }
         }
 
-//        for(Rental r : user.getRentals()){
-//            if(r.isRunning() == true){
-//                this.rentals.add(new ShowRentalToUser(r));
-//            }
-//        }
+        for(Rental r : user.getRentals()){
+            if(r.isRunning() == true){
+                this.rentals.add(new ShowRentalToUser(r));
+            }
+        }
     }
 
     public Long getId() {
