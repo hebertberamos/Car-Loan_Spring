@@ -13,10 +13,10 @@ public class Notification implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String text;
+    private String notificationText;
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant moment;
-    private boolean read;
+    private boolean readed;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -24,11 +24,11 @@ public class Notification implements Serializable {
 
     public Notification(){}
 
-    public Notification(Long id, String text, Instant moment, boolean read, User user) {
+    public Notification(Long id, String notificationText, Instant moment, boolean readed, User user) {
         this.id = id;
-        this.text = text;
+        this.notificationText = notificationText;
         this.moment = moment;
-        this.read = read;
+        this.readed = readed;
         this.user = user;
     }
 
@@ -41,11 +41,11 @@ public class Notification implements Serializable {
     }
 
     public String getText() {
-        return text;
+        return notificationText;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setText(String notificationText) {
+        this.notificationText = notificationText;
     }
 
     public Instant getMoment() {
@@ -57,11 +57,11 @@ public class Notification implements Serializable {
     }
 
     public boolean isRead() {
-        return read;
+        return readed;
     }
 
-    public void setRead(boolean read) {
-        this.read = read;
+    public void setRead(boolean readed) {
+        this.readed = readed;
     }
 
     public User getUser() {

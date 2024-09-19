@@ -21,7 +21,8 @@ public class UserDTO implements Serializable {
     @Min(value = 18, message = "O usuário deve ter pelo menos 18 anos")
     private Integer age;
     private UserRole role;
-    private List<ShowNotificationToUserDTO> notifications = new ArrayList<>();
+
+    private List<NotificationDTO> notifications = new ArrayList<>();
     private List<ShowRentalToUser> rentals = new ArrayList<>();
     private List<Long> paymentsId = new ArrayList<>();
     private List<Long> reviewsId = new ArrayList<>();
@@ -38,6 +39,7 @@ public class UserDTO implements Serializable {
     }
 
     public UserDTO(User user){
+        id = user.getId();
         name = user.getName();
         email = user.getEmail();
         cpf = user.getCpf();
@@ -46,15 +48,15 @@ public class UserDTO implements Serializable {
 
         if(user.getNotifications() != null){
             for(Notification n : user.getNotifications()) {
-                notifications.add(new ShowNotificationToUserDTO(n));
+                notifications.add(new NotificationDTO(n));
             }
         }
 
-        for(Rental r : user.getRentals()){
-            if(r.isRunning() == true){
-                this.rentals.add(new ShowRentalToUser(r));
-            }
-        }
+//        for(Rental r : user.getRentals()){
+//            if(r.isRunning() == true){
+//                this.rentals.add(new ShowRentalToUser(r));
+//            }
+//        }
     }
 
     public Long getId() {
@@ -105,7 +107,7 @@ public class UserDTO implements Serializable {
         this.cpf = cpf;
     }
 
-    public List<ShowNotificationToUserDTO> getNotifications() {
+    public List<NotificationDTO> getNotifications() {
         return notifications;
     }
 

@@ -24,7 +24,8 @@ public class NotificationService {
     public List<NotificationDTO> findAll(boolean unreadOnly){
         User user = authenticationService.authenticated();
 
-        List<Notification> notifications = repository.findNotifications(user, unreadOnly);
+        String userEmail = user.getEmail();
+        List<Notification> notifications = repository.findNotifications(userEmail, unreadOnly);
         return notifications.stream().map(x -> new NotificationDTO(x)).collect(Collectors.toList());
     }
 

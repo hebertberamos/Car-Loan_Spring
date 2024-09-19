@@ -13,61 +13,65 @@ public abstract class Vehicle implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long vehicleId;
     private String img;
-    private String name;
+    private String vehicleName;
     private String brand;
     private String plate;
     private Integer manufactureYear;
-    private StatusVehicle status;
+    private StatusVehicle vehicleStatus;
     @Column(columnDefinition = "TEXT")
-    private String description;
+    private String vehicleDescription;
     private Double pricePerHour;
     private Double pricePerDay;
     private boolean available;
     private Double rating;
 
-    @OneToMany(mappedBy = "vehicle", fetch = FetchType.EAGER)
+//    private VehicleType vehicleType;
+
+    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Review> reviews = new ArrayList<>();
 
-    @OneToOne(mappedBy = "rentedVehicle", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "rentedVehicle", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Rental rental;
 
     public Vehicle() {}
 
-    public Vehicle(Long id, String img, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, boolean available, Double rating, Rental rental) {
-        this.id = id;
+    public Vehicle(Long vehicleId, String img, String vehicleName, String brand, String plate, Integer manufactureYear, StatusVehicle vehicleStatus, String vehicleDescription, boolean available, Double rating, /*VehicleType vehicleType,*/ Rental rental) {
+        this.vehicleId = vehicleId;
         this.img = img;
-        this.name = name;
+        this.vehicleName = vehicleName;
         this.brand = brand;
         this.plate = plate;
         this.manufactureYear = manufactureYear;
-        this.status = status;
-        this.description = description;
+        this.vehicleStatus = vehicleStatus;
+        this.vehicleDescription = vehicleDescription;
         this.available = available;
         this.rating = rating;
+//        this.vehicleType = vehicleType;
         this.rental = rental;
     }
 
-    public Vehicle(String img, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description,  boolean available, Double rating, Rental rental) {
-        this.name = name;
+    public Vehicle(String img, String vehicleName, String brand, String plate, Integer manufactureYear, StatusVehicle vehicleStatus, String vehicleDescription,  boolean available, Double rating, /*VehicleType vehicleType,*/ Rental rental) {
+        this.vehicleName = vehicleName;
         this.img = img;
         this.brand = brand;
         this.plate = plate;
         this.manufactureYear = manufactureYear;
-        this.status = status;
-        this.description = description;
+        this.vehicleStatus = vehicleStatus;
+        this.vehicleDescription = vehicleDescription;
         this.available = available;
         this.rating = rating;
+//        this.vehicleType = vehicleType;
         this.rental = rental;
     }
 
     public Long getId() {
-        return id;
+        return vehicleId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(Long vehicleId) {
+        this.vehicleId = vehicleId;
     }
 
     public String getImg() {
@@ -79,11 +83,11 @@ public abstract class Vehicle implements Serializable {
     }
 
     public String getName() {
-        return name;
+        return vehicleName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String vehicleName) {
+        this.vehicleName = vehicleName;
     }
 
     public String getBrand() {
@@ -111,19 +115,19 @@ public abstract class Vehicle implements Serializable {
     }
 
     public StatusVehicle getStatus() {
-        return status;
+        return vehicleStatus;
     }
 
-    public void setStatus(StatusVehicle status) {
-        this.status = status;
+    public void setStatus(StatusVehicle vehicleStatus) {
+        this.vehicleStatus = vehicleStatus;
     }
 
     public String getDescription() {
-        return description;
+        return vehicleDescription;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDescription(String vehicleDescription) {
+        this.vehicleDescription = vehicleDescription;
     }
 
     public Double getPricePerHour() {
@@ -158,6 +162,14 @@ public abstract class Vehicle implements Serializable {
         this.rating = rating;
     }
 
+//    public VehicleType getVehicleType() {
+//        return vehicleType;
+//    }
+//
+//    public void setVehicleType(VehicleType vehicleType) {
+//        this.vehicleType = vehicleType;
+//    }
+
     public Rental getRental() {
         return rental;
     }
@@ -175,11 +187,11 @@ public abstract class Vehicle implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Vehicle vehicle = (Vehicle) o;
-        return Objects.equals(id, vehicle.id);
+        return Objects.equals(vehicleId, vehicle.vehicleId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(vehicleId);
     }
 }

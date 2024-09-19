@@ -11,16 +11,17 @@ public class CarDTO {
 
     private Long id;
     private String img;
-    private String name;
+    private String vehicleName;
     private String brand;
     private String plate;
     private Integer manufactureYear;
-    private StatusVehicle status;
-    private String description;
+    private StatusVehicle vehicleStatus;
+    private String vehicleDescription;
     private Double pricePerHour;
     private Double pricePerDay;
     private boolean available;
     private Double rating;
+//    private final VehicleType vehicleType = VehicleType.CAR;
     private ShowRentalToVehicle rental;
     private List<ShowReviewToVehicle> reviews = new ArrayList<>();
 
@@ -31,29 +32,40 @@ public class CarDTO {
 
     public CarDTO() {}
 
-    public CarDTO(String img, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, boolean available, Double rating, ShowRentalToVehicle rental, List<ShowReviewToVehicle> reviews,Integer numberOfDoors, Double trunkSpace, boolean hasStep) {
+    public CarDTO(String img, String vehicleName, String brand, String plate, Integer manufactureYear, StatusVehicle vehicleStatus, String vehicleDescription, boolean available, Double rating, ShowRentalToVehicle rental, List<ShowReviewToVehicle> reviews,Integer numberOfDoors, Double trunkSpace, boolean hasStep) {
         this.img = img;
-        this.name = name;
+        this.vehicleName = vehicleName;
         this.brand = brand;
         this.plate = plate;
         this.manufactureYear = manufactureYear;
-        this.status = status;
-        this.description = description;
+        this.vehicleStatus = vehicleStatus;
+        this.vehicleDescription = vehicleDescription;
 
-        switch(status){
-            case ANTIQUITY:
-                this.pricePerHour = 350.0;
-                this.pricePerDay = 1500.0;
-                break;
-            case POPULAR:
-                this.pricePerHour = 80.0;
-                this.pricePerDay = 200.00;
-                break;
-            case VIP:
-                this.pricePerHour = 300.0;
-                this.pricePerDay = 1200.00;
-                break;
+        if(vehicleStatus.equals(StatusVehicle.VIP)){
+            this.setPricePerHour(300.0);
+            this.setPricePerDay(1200.0);
+        } else if(vehicleStatus.equals(StatusVehicle.POPULAR)){
+            this.setPricePerHour(80.0);
+            this.setPricePerDay(200.0);
+        } else if(vehicleStatus.equals(StatusVehicle.ANTIQUITY)){
+            this.setPricePerHour(350.0);
+            this.setPricePerDay(1500.0);
         }
+
+//        switch(vehicleStatus){
+//            case ANTIQUITY:
+//                this.pricePerHour = 350.0;
+//                this.pricePerDay = 1500.0;
+//                break;
+//            case POPULAR:
+//                this.pricePerHour = 80.0;
+//                this.pricePerDay = 200.00;
+//                break;
+//            case VIP:
+//                this.pricePerHour = 300.0;
+//                this.pricePerDay = 1200.00;
+//                break;
+//        }
 
         this.available = available;
         this.rating = rating;
@@ -66,27 +78,38 @@ public class CarDTO {
 
     public CarDTO(Car entity){
         img = entity.getImg();
-        name = entity.getName();
+        vehicleName = entity.getName();
         brand = entity.getBrand();
         plate = entity.getPlate();
         manufactureYear = entity.getManufactureYear();
-        status = entity.getStatus();
-        description = entity.getDescription();
+        vehicleStatus = entity.getStatus();
+        vehicleDescription = entity.getDescription();
 
-        switch(status){
-            case ANTIQUITY:
-                this.pricePerHour = 350.0;
-                this.pricePerDay = 1500.0;
-                break;
-            case POPULAR:
-                this.pricePerHour = 80.0;
-                this.pricePerDay = 200.00;
-                break;
-            case VIP:
-                this.pricePerHour = 300.0;
-                this.pricePerDay = 1200.00;
-                break;
+        if(vehicleStatus.equals(StatusVehicle.VIP)){
+            this.setPricePerHour(300.0);
+            this.setPricePerDay(1200.0);
+        } else if(vehicleStatus.equals(StatusVehicle.POPULAR)){
+            this.setPricePerHour(80.0);
+            this.setPricePerDay(200.0);
+        } else if(vehicleStatus.equals(StatusVehicle.ANTIQUITY)){
+            this.setPricePerHour(350.0);
+            this.setPricePerDay(1500.0);
         }
+
+//        switch(vehicleStatus){
+//            case ANTIQUITY:
+//                this.pricePerHour = 350.0;
+//                this.pricePerDay = 1500.0;
+//                break;
+//            case POPULAR:
+//                this.pricePerHour = 80.0;
+//                this.pricePerDay = 200.00;
+//                break;
+//            case VIP:
+//                this.pricePerHour = 300.0;
+//                this.pricePerDay = 1200.00;
+//                break;
+//        }
 
         available = entity.isAvailable();
         rating = entity.getRating();
@@ -123,11 +146,11 @@ public class CarDTO {
     }
 
     public String getName() {
-        return name;
+        return vehicleName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String vehicleName) {
+        this.vehicleName = vehicleName;
     }
 
     public String getBrand() {
@@ -155,19 +178,19 @@ public class CarDTO {
     }
 
     public StatusVehicle getStatus() {
-        return status;
+        return vehicleStatus;
     }
 
-    public void setStatus(StatusVehicle status) {
-        this.status = status;
+    public void setStatus(StatusVehicle vehicleStatus) {
+        this.vehicleStatus = vehicleStatus;
     }
 
     public String getDescription() {
-        return description;
+        return vehicleDescription;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDescription(String vehicleDescription) {
+        this.vehicleDescription = vehicleDescription;
     }
 
     public Double getPricePerHour() {
@@ -201,6 +224,10 @@ public class CarDTO {
     public void setRating(Double rating) {
         this.rating = rating;
     }
+
+//    public VehicleType getVehicleType() {
+//        return vehicleType;
+//    }
 
     public ShowRentalToVehicle getRental() {
         return rental;

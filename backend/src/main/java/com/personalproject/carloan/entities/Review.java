@@ -13,7 +13,7 @@ public class Review implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String text;
+    private String reviewText;
     private Integer quantityStars;
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant moment;
@@ -28,9 +28,9 @@ public class Review implements Serializable {
 
     public Review() {}
 
-    public Review(Long id, String text, Integer quantityStars, Instant moment, User author, Vehicle vehicle) {
+    public Review(Long id, String reviewText, Integer quantityStars, Instant moment, User author, Vehicle vehicle) {
         this.id = id;
-        this.text = text;
+        this.reviewText = reviewText;
         this.quantityStars = quantityStars;
         this.moment = moment;
         this.author = author;
@@ -46,11 +46,11 @@ public class Review implements Serializable {
     }
 
     public String getText() {
-        return text;
+        return reviewText;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setText(String reviewText) {
+        this.reviewText = reviewText;
     }
 
     public Integer getQuantityStars() {

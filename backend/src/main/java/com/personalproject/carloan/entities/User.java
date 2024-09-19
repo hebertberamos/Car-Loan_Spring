@@ -20,53 +20,53 @@ public class User implements UserDetails, Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, unique = true)
     private Long id;
-    private String name;
+    private String userName;
     @Column(unique = true)
     private String email;
-    private String password;
+    private String userPassword;
     @Column(unique = true)
     private String cpf;
     private Integer age;
-    private UserRole role;
+    private UserRole userRole;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch=FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Notification> notifications = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Rental> rentals = new ArrayList<>();
 
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
 
 
     public User(){
     }
 
-    public User(Long id, String name, String email, String password, String cpf, Integer age, UserRole role){
+    public User(Long id, String userName, String email, String userPassword, String cpf, Integer age, UserRole userRole){
         this.id = id;
-        this.name = name;
+        this.userName = userName;
         this.email = email;
-        this.password = password;
+        this.userPassword = userPassword;
         this.cpf = cpf;
         this.age = age;
-        this.role = role;
+        this.userRole = userRole;
     }
 
-    public User (String name, String email, String password, String cpf, Integer age, UserRole role){
-        this.name = name;
+    public User (String userName, String email, String userPassword, String cpf, Integer age, UserRole userRole){
+        this.userName = userName;
         this.email = email;
-        this.password = password;
+        this.userPassword = userPassword;
         this.cpf = cpf;
         this.age = age;
-        this.role = role;
+        this.userRole = userRole;
     }
 
     public String getName() {
-        return name;
+        return userName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String userName) {
+        this.userName = userName;
     }
 
     public String getEmail() {
@@ -78,11 +78,11 @@ public class User implements UserDetails, Serializable {
     }
 
     public String getPassword() {
-        return password;
+        return userPassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPassword(String userPassword) {
+        this.userPassword = userPassword;
     }
 
     public String getCpf() {
@@ -110,11 +110,11 @@ public class User implements UserDetails, Serializable {
     }
 
     public UserRole getRole() {
-        return role;
+        return userRole;
     }
 
-    public void setRole(UserRole role) {
-        this.role = role;
+    public void setRole(UserRole userRole) {
+        this.userRole = userRole;
     }
 
     public List<Notification> getNotifications() {
@@ -144,7 +144,7 @@ public class User implements UserDetails, Serializable {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        switch(this.role) {
+        switch(this.userRole) {
             case ADMIN:
                 return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_EMPLOYEE"), new SimpleGrantedAuthority("ROLE_USER"));
             case MEMBER:
@@ -182,7 +182,7 @@ public class User implements UserDetails, Serializable {
     }
 
     public boolean hasRoleAdmin(){
-        if(this.role.equals(UserRole.ADMIN)){
+        if(this.userRole.equals(UserRole.ADMIN)){
             return true;
         }
         return false;

@@ -1,50 +1,50 @@
--- Users
-INSERT INTO tb_user (name, email, password, cpf, age, role) VALUES ('Hebert', 'hebert@gmail.com', '$2a$10$9wPtp4E2PeIHpmSjI3Xk/u2WhHLLSDsCJJfSdFucm9xQ2do1q18Km', '91002028000', 21, 0); --Senha = hebert1234 ADMIN
-INSERT INTO tb_user (name, email, password, cpf, age, role) VALUES ('Solene', 'solene@gmail.com', '$2a$10$ts5Mu4naEvmZJy16q.d9oevxXk/f6JTIvwAV0SyxKL6QXnN03Hpqu', '09767399097', 41, 1); --Senha = isadora123 MEMBER
-INSERT INTO tb_user (name, email, password, cpf, age, role) VALUES ('Osny', 'osny@gmail.com', '$2a$10$iZJfArq9JeROAMWF7t8Ww.LuN1PQyyMZyykjXuvwHppxmjxPLD1S6', '15353082060', 41, 2); --Senha = osny1212 USER
-INSERT INTO tb_user (name, email, password, cpf, age, role) VALUES ('Mayane', 'mayane@gmail.com', '$2a$10$aLvCEIVBa.CI0GvO5pDAV.D88wplztsxr9tItRCxCVOXvD2465cvS', '91002028080', 41, 2); --Senha = 123456 USER
-
-
---Notification
-INSERT INTO tb_notification (text, moment, read, user_Id ) VALUES ('Faz tempo que você não aparece, tudo bem?', TIMESTAMP WITH TIME ZONE '2023-07-13T13:00:00.12345Z', true, 3);
-INSERT INTO tb_notification (text, moment, read, user_Id ) VALUES ('Temos uma nova oferta para você', TIMESTAMP WITH TIME ZONE '2023-07-14T15:23:00.12345Z', true, 3);
-INSERT INTO tb_notification (text, moment, read, user_Id ) VALUES ('(Algém) fez um comentário em um veículo que você já alugou, confira:', TIMESTAMP WITH TIME ZONE '2023-07-14T16:30:00.12345Z', false, 3);
-INSERT INTO tb_notification (text, moment, read, user_Id ) VALUES ('Que tal dar uma conferida no que temos de novo?', TIMESTAMP WITH TIME ZONE '2023-07-15T10:23:00.12345Z', true, 3);
-INSERT INTO tb_notification (text, moment, read, user_Id ) VALUES ('Que tal um novo aluguel? Etamos com ofertas incríveis que com certeza irá lhe agradar, venha conerir.', TIMESTAMP WITH TIME ZONE '2023-04-23T17:20:52.12345Z', false, 2);
-
--- Vehicle / cars
-INSERT INTO tb_vehicle (img, name, brand, plate, manufacture_Year, status, description, price_Per_Hour, price_Per_Day, available, rating) VALUES ('https://www2.mercedes-benz.com.br/content/dam/hq/passengercars/cars/eqs/eqs-v297-pi/modeloverview/10-2022/images/mercedes-amg-eq-eqs-v297-modeloverview-3302x1858-10-2022.png', 'Mercedes-Benz AMG EQS', 'Mercedes', 'A1AAA11', 2023, 0, 'Descubra o futuro da AMG Driving Performance. O Mercedes-AMG EQS 53 4MATIC+ abre as portas para o empolgante futuro da AMG Driving Performance. E temos excelentes novidades, porque criamos um veículo totalmente elétrico que também é um autêntico AMG. Como sempre, praticidade no dia a dia e fascinação estão incluídas. Venha para a linha de largada. Podem ter ocorrido alterações no produto após a produção dos conteúdos.', 300.0, 1200.0, true, 5.0);
-INSERT INTO tb_car (id, number_Of_Doors, Trunk_Space, has_Step) VALUES (1, 4, 2.6, false);
-
-INSERT INTO tb_vehicle (img, name, brand, plate, manufacture_Year, status, description, price_Per_Hour, price_Per_Day, available, rating) VALUES ('https://s3.agsistema.net/5801/vehicles/1718656/photos/3ceb40fc6abe6d5a5ec722819812f4b3.jpg?partner=dealersites', 'Fiat Mobi Like 1.0', 'Fiat', 'B1BBB11', 2021, 1, 'Descubra o futuro da AMG Driving Performance. E temos excelentes novidades, porque criamos um veículo totalmente elétrico que também é um autêntico AMG.', 80.0, 200.0, false, 4.5);
-INSERT INTO tb_car (id, number_Of_Doors, Trunk_Space, has_Step) VALUES (2, 4, 1.2, true);
-
-INSERT INTO tb_vehicle (img, name, brand, plate, manufacture_Year, status, description, price_Per_Hour, price_Per_Day, available, rating) VALUES ('https://i.ebayimg.com/images/g/yZ0AAOxyOM5RZHef/s-l400.jpg', 'Mercedes-Benz W113', 'Mercedes', 'C1CCC11', 1969, 2, 'Descubra o futuro da AMG Driving Performance. E temos excelentes novidades, porque criamos um veículo totalmente elétrico que também é um autêntico AMG. Como sempre, praticidade no dia a dia e fascinação estão incluídas. Venha para a linha de largada.', 350.0, 1500.0, true, 5.0);
-INSERT INTO tb_car (id, number_Of_Doors, Trunk_Space, has_Step) VALUES (3, 2, 2.3, false);
-
--- Vehicle / motorcycle
-INSERT INTO tb_vehicle (img, name, brand, plate, manufacture_Year, status, description, price_Per_Hour, price_Per_Day, available, rating) VALUES ('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLILY7LmA0l2Q6ex81bkKCHzwo8ks8BpmA4g&usqp=CAU', 'BMW K100', 'BMW', 'B1B11', 2022, 0, 'Descubra o futuro da AMG Driving Performance. E temos excelentes novidades, porque criamos um veículo totalmente elétrico que também é um autêntico AMG. Como sempre, praticidade no dia a dia e fascinação estão incluídas. Venha para a linha de largada.', 230.0, 900.0, true, 4.7);
-INSERT INTO tb_motorcycle (id, has_Fairing) VALUES (4, true);
-
-INSERT INTO tb_vehicle (img, name, brand, plate, manufacture_Year, status, description, price_Per_Hour, price_Per_Day, available, rating) VALUES ('https://www.honda.com.br/motos/sites/hda/files/2023-08/moto-honda-cg-160-titan-azul-perolizado_3.webp', 'Honda CG 160', 'Honda', 'A1A11', 2022, 1, 'Descubra o futuro da AMG Driving Performance. E temos excelentes novidades, porque criamos um veículo totalmente elétrico que também é um autêntico AMG. Como sempre, praticidade no dia a dia e fascinação estão incluídas. Venha para a linha de largada.', 50.0, 150.0, false, 3.4);
-INSERT INTO tb_motorcycle (id, has_Fairing) VALUES (5, true);
-
-INSERT INTO tb_vehicle (img, name, brand, plate, manufacture_Year, status, description, price_Per_Hour, price_Per_Day, available, rating) VALUES ('https://www.motonline.com.br/noticia/wp-content/uploads/2021/11/1974-Ducati-750-800x534.jpg', 'Ducati 750/900SS', 'Ducati', 'C1C11', 1991, 2, 'Descubra o futuro da AMG Driving Performance. E temos excelentes novidades, porque criamos um veículo totalmente elétrico que também é um autêntico AMG. Como sempre, praticidade no dia a dia e fascinação estão incluídas. Venha para a linha de largada.', 250.0, 1100.0, true, 5.0);
-INSERT INTO tb_motorcycle (id, has_Fairing) VALUES (6, true);
-
-
---Rental
---INSERT INTO tb_rental (checkin, checkout, refund_Moment, running, user_Id, vehicle_Id) VALUES (TIMESTAMP WITH TIME ZONE '2023-07-13T10:00:00.12345Z', TIMESTAMP WITH TIME ZONE '2023-07-30T17:30:00.12345Z', null, false, 3, 1);
---INSERT INTO tb_rental (checkin, checkout, refund_Moment, running, user_Id, vehicle_Id) VALUES (TIMESTAMP WITH TIME ZONE '2023-08-23T10:00:00.12345Z', TIMESTAMP WITH TIME ZONE '2023-08-30T12:00:00.12345Z', null, false, 3, 2);
-INSERT INTO tb_rental (checkin, checkout, refund_Moment, running, user_Id, vehicle_Id) VALUES (TIMESTAMP WITH TIME ZONE '2024-02-23T10:00:00.12345Z', TIMESTAMP WITH TIME ZONE '2024-02-28T10:00:00.12345Z', null, false, 3, 3);
---INSERT INTO tb_rental (checkin, checkout, refund_Moment, running, user_Id, vehicle_Id) VALUES (TIMESTAMP WITH TIME ZONE '2024-02-29T10:00:00.12345Z', TIMESTAMP WITH TIME ZONE '2024-03-01T10:00:00.12345Z', null, false, 4, 3);
---INSERT INTO tb_rental (checkin, checkout, refund_Moment, running, user_Id, vehicle_Id) VALUES (TIMESTAMP WITH TIME ZONE '2024-03-02T10:00:00.12345Z', TIMESTAMP WITH TIME ZONE '2024-03-06T10:00:00.12345Z', null, false, 3, 3);
-INSERT INTO tb_rental (checkin, checkout, refund_Moment, running, user_Id, vehicle_Id) VALUES (TIMESTAMP WITH TIME ZONE '2024-03-02T10:00:00.12345Z', TIMESTAMP WITH TIME ZONE '2024-03-06T10:00:00.12345Z', null, false, 3, 4);
-
-
--- Review
-INSERT INTO tb_review (text, quantity_Stars, moment, author_Id, vehicle_Id) VALUES ('Ache o carro ótimo! Ótimo para viagem e onde eu passava chamava atença, do jeito que eu gosto kkkkkkk', 5, TIMESTAMP WITH TIME ZONE '2023-07-30T19:30:00.12345Z', 3, 3);
-
--- Deliveries
--- Payment
+---- Users
+--INSERT INTO tb_user (user_Name, email, user_Password, cpf, age, user_Role) VALUES ('Hebert', 'hebert@gmail.com', '$2a$10$9wPtp4E2PeIHpmSjI3Xk/u2WhHLLSDsCJJfSdFucm9xQ2do1q18Km', '91002028000', 21, 0); --Senha = hebert1234 ADMIN
+--INSERT INTO tb_user (user_Name, email, user_Password, cpf, age, user_Role) VALUES ('Solene', 'solene@gmail.com', '$2a$10$ts5Mu4naEvmZJy16q.d9oevxXk/f6JTIvwAV0SyxKL6QXnN03Hpqu', '09767399097', 41, 1); --Senha = isadora123 MEMBER
+--INSERT INTO tb_user (user_Name, email, user_Password, cpf, age, user_Role) VALUES ('Osny', 'osny@gmail.com', '$2a$10$iZJfArq9JeROAMWF7t8Ww.LuN1PQyyMZyykjXuvwHppxmjxPLD1S6', '15353082060', 41, 2); --Senha = osny1212 USER
+--INSERT INTO tb_user (user_Name, email, user_Password, cpf, age, user_Role) VALUES ('Mayane', 'mayane@gmail.com', '$2a$10$aLvCEIVBa.CI0GvO5pDAV.D88wplztsxr9tItRCxCVOXvD2465cvS', '91002028080', 41, 2); --Senha = 123456 USER
+--
+--
+----Notification
+--INSERT INTO tb_notification (text, moment, read, user_Id ) VALUES ('Faz tempo que você não aparece, tudo bem?', TIMESTAMP WITH TIME ZONE '2023-07-13T13:00:00.12345Z', true, 3);
+--INSERT INTO tb_notification (text, moment, read, user_Id ) VALUES ('Temos uma nova oferta para você', TIMESTAMP WITH TIME ZONE '2023-07-14T15:23:00.12345Z', true, 3);
+--INSERT INTO tb_notification (text, moment, read, user_Id ) VALUES ('(Algém) fez um comentário em um veículo que você já alugou, confira:', TIMESTAMP WITH TIME ZONE '2023-07-14T16:30:00.12345Z', false, 3);
+--INSERT INTO tb_notification (text, moment, read, user_Id ) VALUES ('Que tal dar uma conferida no que temos de novo?', TIMESTAMP WITH TIME ZONE '2023-07-15T10:23:00.12345Z', true, 3);
+--INSERT INTO tb_notification (text, moment, read, user_Id ) VALUES ('Que tal um novo aluguel? Etamos com ofertas incríveis que com certeza irá lhe agradar, venha conerir.', TIMESTAMP WITH TIME ZONE '2023-04-23T17:20:52.12345Z', false, 2);
+--
+---- Vehicle / cars
+--INSERT INTO tb_vehicle (img, vehicle_Name, brand, plate, manufacture_Year, vehicle_Status, vehicle_Description, price_Per_Hour, price_Per_Day, available, rating) VALUES ('https://www2.mercedes-benz.com.br/content/dam/hq/passengercars/cars/eqs/eqs-v297-pi/modeloverview/10-2022/images/mercedes-amg-eq-eqs-v297-modeloverview-3302x1858-10-2022.png', 'Mercedes-Benz AMG EQS', 'Mercedes', 'A1AAA11', 2023, 0, 'Descubra o futuro da AMG Driving Performance. O Mercedes-AMG EQS 53 4MATIC+ abre as portas para o empolgante futuro da AMG Driving Performance. E temos excelentes novidades, porque criamos um veículo totalmente elétrico que também é um autêntico AMG. Como sempre, praticidade no dia a dia e fascinação estão incluídas. Venha para a linha de largada. Podem ter ocorrido alterações no produto após a produção dos conteúdos.', 300.0, 1200.0, true, 5.0);
+--INSERT INTO tb_car (id, number_Of_Doors, Trunk_Space, has_Step) VALUES (1, 4, 2.6, false);
+--
+--INSERT INTO tb_vehicle (img, vehicle_Name, brand, plate, manufacture_Year, vehicle_Status, vehicle_Description, price_Per_Hour, price_Per_Day, available, rating) VALUES ('https://s3.agsistema.net/5801/vehicles/1718656/photos/3ceb40fc6abe6d5a5ec722819812f4b3.jpg?partner=dealersites', 'Fiat Mobi Like 1.0', 'Fiat', 'B1BBB11', 2021, 1, 'Descubra o futuro da AMG Driving Performance. E temos excelentes novidades, porque criamos um veículo totalmente elétrico que também é um autêntico AMG.', 80.0, 200.0, false, 4.5);
+--INSERT INTO tb_car (id, number_Of_Doors, Trunk_Space, has_Step) VALUES (2, 4, 1.2, true);
+--
+--INSERT INTO tb_vehicle (img, vehicle_Name, brand, plate, manufacture_Year, vehicle_Status, vehicle_Description, price_Per_Hour, price_Per_Day, available, rating) VALUES ('https://i.ebayimg.com/images/g/yZ0AAOxyOM5RZHef/s-l400.jpg', 'Mercedes-Benz W113', 'Mercedes', 'C1CCC11', 1969, 2, 'Descubra o futuro da AMG Driving Performance. E temos excelentes novidades, porque criamos um veículo totalmente elétrico que também é um autêntico AMG. Como sempre, praticidade no dia a dia e fascinação estão incluídas. Venha para a linha de largada.', 350.0, 1500.0, true, 5.0);
+--INSERT INTO tb_car (id, number_Of_Doors, Trunk_Space, has_Step) VALUES (3, 2, 2.3, false);
+--
+---- Vehicle / motorcycle
+--INSERT INTO tb_vehicle (img, vehicle_Name, brand, plate, manufacture_Year, vehicle_Status, vehicle_Description, price_Per_Hour, price_Per_Day, available, rating) VALUES ('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLILY7LmA0l2Q6ex81bkKCHzwo8ks8BpmA4g&usqp=CAU', 'BMW K100', 'BMW', 'B1B11', 2022, 0, 'Descubra o futuro da AMG Driving Performance. E temos excelentes novidades, porque criamos um veículo totalmente elétrico que também é um autêntico AMG. Como sempre, praticidade no dia a dia e fascinação estão incluídas. Venha para a linha de largada.', 230.0, 900.0, true, 4.7);
+--INSERT INTO tb_motorcycle (id, has_Fairing) VALUES (4, true);
+--
+--INSERT INTO tb_vehicle (img, vehicle_Name, brand, plate, manufacture_Year, vehicle_Status, vehicle_Description, price_Per_Hour, price_Per_Day, available, rating) VALUES ('https://www.honda.com.br/motos/sites/hda/files/2023-08/moto-honda-cg-160-titan-azul-perolizado_3.webp', 'Honda CG 160', 'Honda', 'A1A11', 2022, 1, 'Descubra o futuro da AMG Driving Performance. E temos excelentes novidades, porque criamos um veículo totalmente elétrico que também é um autêntico AMG. Como sempre, praticidade no dia a dia e fascinação estão incluídas. Venha para a linha de largada.', 50.0, 150.0, false, 3.4);
+--INSERT INTO tb_motorcycle (id, has_Fairing) VALUES (5, true);
+--
+--INSERT INTO tb_vehicle (img, vehicle_Name, brand, plate, manufacture_Year, vehicle_Status, vehicle_Description, price_Per_Hour, price_Per_Day, available, rating) VALUES ('https://www.motonline.com.br/noticia/wp-content/uploads/2021/11/1974-Ducati-750-800x534.jpg', 'Ducati 750/900SS', 'Ducati', 'C1C11', 1991, 2, 'Descubra o futuro da AMG Driving Performance. E temos excelentes novidades, porque criamos um veículo totalmente elétrico que também é um autêntico AMG. Como sempre, praticidade no dia a dia e fascinação estão incluídas. Venha para a linha de largada.', 250.0, 1100.0, true, 5.0);
+--INSERT INTO tb_motorcycle (id, has_Fairing) VALUES (6, true);
+--
+--
+----Rental
+----INSERT INTO tb_rental (checkin, checkout, refund_Moment, running, user_Id, vehicle_Id) VALUES (TIMESTAMP WITH TIME ZONE '2023-07-13T10:00:00.12345Z', TIMESTAMP WITH TIME ZONE '2023-07-30T17:30:00.12345Z', null, false, 3, 1);
+----INSERT INTO tb_rental (checkin, checkout, refund_Moment, running, user_Id, vehicle_Id) VALUES (TIMESTAMP WITH TIME ZONE '2023-08-23T10:00:00.12345Z', TIMESTAMP WITH TIME ZONE '2023-08-30T12:00:00.12345Z', null, false, 3, 2);
+--INSERT INTO tb_rental (checkin, checkout, refund_Moment, running, user_Id, vehicle_Id) VALUES (TIMESTAMP WITH TIME ZONE '2024-02-23T10:00:00.12345Z', TIMESTAMP WITH TIME ZONE '2024-02-28T10:00:00.12345Z', null, false, 3, 3);
+----INSERT INTO tb_rental (checkin, checkout, refund_Moment, running, user_Id, vehicle_Id) VALUES (TIMESTAMP WITH TIME ZONE '2024-02-29T10:00:00.12345Z', TIMESTAMP WITH TIME ZONE '2024-03-01T10:00:00.12345Z', null, false, 4, 3);
+----INSERT INTO tb_rental (checkin, checkout, refund_Moment, running, user_Id, vehicle_Id) VALUES (TIMESTAMP WITH TIME ZONE '2024-03-02T10:00:00.12345Z', TIMESTAMP WITH TIME ZONE '2024-03-06T10:00:00.12345Z', null, false, 3, 3);
+--INSERT INTO tb_rental (checkin, checkout, refund_Moment, running, user_Id, vehicle_Id) VALUES (TIMESTAMP WITH TIME ZONE '2024-03-02T10:00:00.12345Z', TIMESTAMP WITH TIME ZONE '2024-03-06T10:00:00.12345Z', null, false, 3, 4);
+--
+--
+---- Review
+--INSERT INTO tb_review (text, quantity_Stars, moment, author_Id, vehicle_Id) VALUES ('Ache o carro ótimo! Ótimo para viagem e onde eu passava chamava atença, do jeito que eu gosto kkkkkkk', 5, TIMESTAMP WITH TIME ZONE '2023-07-30T19:30:00.12345Z', 3, 3);
+--
+---- Deliveries
+---- Payment
 

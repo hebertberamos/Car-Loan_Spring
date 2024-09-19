@@ -1,6 +1,7 @@
 package com.personalproject.carloan.entities;
 
 import com.personalproject.carloan.entities.enums.StatusVehicle;
+import com.personalproject.carloan.entities.enums.VehicleType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
@@ -14,43 +15,37 @@ public class Car extends Vehicle{
 
     public Car() {}
     
-    public Car (String img, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, boolean available, Double rating, Integer numberOfDoors, Double trunkSpace, boolean hasStep, Rental rental){
-        super(img, name, brand, plate, manufactureYear, status, description, available, rating, rental);
-        switch(status){
-            case ANTIQUITY:
-                this.setPricePerHour(350.0);
-                this.setPricePerDay(1500.0);
-                break;
-            case POPULAR:
-                this.setPricePerHour(80.0);
-                this.setPricePerDay(200.0);
-                break;
-            case VIP:
-                this.setPricePerHour(300.0);
-                this.setPricePerDay(1200.0);
-                break;
+    public Car (String img, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, boolean available, Double rating, /*VehicleType vehicleType,*/ Integer numberOfDoors, Double trunkSpace, boolean hasStep, Rental rental){
+        super(img, name, brand, plate, manufactureYear, status, description, available, rating, /*vehicleType,*/ rental);
+
+        if(status.equals(StatusVehicle.VIP)){
+            this.setPricePerHour(300.0);
+            this.setPricePerDay(1200.0);
+        } else if(status.equals(StatusVehicle.POPULAR)){
+            this.setPricePerHour(80.0);
+            this.setPricePerDay(200.0);
+        } else if(status.equals(StatusVehicle.ANTIQUITY)){
+            this.setPricePerHour(350.0);
+            this.setPricePerDay(1500.0);
         }
+
         this.numberOfDoors = numberOfDoors;
         this.trunkSpace = trunkSpace;
         this.hasStep = hasStep;
     }
 
-    public Car(Long id, String img, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, boolean available, Double rating, Integer numberOfDoors, Double trunkSpace, boolean hasStep, Rental rental) {
-        super(id, img, name, brand, plate, manufactureYear, status, description, available, rating, rental);
+    public Car(Long id, String img, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, boolean available, Double rating, /*VehicleType vehicleType,*/ Integer numberOfDoors, Double trunkSpace, boolean hasStep, Rental rental) {
+        super(id, img, name, brand, plate, manufactureYear, status, description, available, rating, /*vehicleType,*/ rental);
 
-        switch(status){
-            case ANTIQUITY:
-                setPricePerHour(350.0);
-                setPricePerDay(1500.0);
-                break;
-            case POPULAR:
-                setPricePerHour(80.0);
-                setPricePerDay(200.0);
-                break;
-            case VIP:
-                setPricePerHour(300.0);
-                setPricePerDay(1200.0);
-                break;
+        if(status.equals(StatusVehicle.VIP)){
+            this.setPricePerHour(300.0);
+            this.setPricePerDay(1200.0);
+        } else if(status.equals(StatusVehicle.POPULAR)){
+            this.setPricePerHour(80.0);
+            this.setPricePerDay(200.0);
+        } else if(status.equals(StatusVehicle.ANTIQUITY)){
+            this.setPricePerHour(350.0);
+            this.setPricePerDay(1500.0);
         }
 
         this.numberOfDoors = numberOfDoors;

@@ -35,8 +35,9 @@ public class VehicleService {
     private ReviewService reviewService;
 
     @Transactional(readOnly = true)
-    public Page<VehicleDTO> findAll(boolean availableOnly, String brand, String name, Pageable pageable){
-        Page<Vehicle> page = repository.findVehicles(availableOnly, brand, name, pageable);
+    public Page<VehicleDTO> findAll(boolean availableOnly, String brand, String vehicleName, Pageable pageable){
+
+        Page<Vehicle> page = repository.findVehicles(availableOnly, brand, vehicleName, pageable);
         return page.map(x -> new VehicleDTO(x.getId(), x.getImg(), x.getName(), x.getBrand(), x.getStatus(), x.isAvailable(), x.getRating()));
     }
 
@@ -47,36 +48,19 @@ public class VehicleService {
         return new VehicleDTO(entity);
     }
 
-    @Transactional
-    public VehicleDTO update(Long id, VehicleDTO dto){
-        Optional<Vehicle> optional = repository.findById(id);
-        Vehicle entity = optional.orElseThrow(() -> new ResourcesNotFoundException("Id not found"));
-
-        entity.setName(dto.getName());
-        entity.setBrand(dto.getBrand());
-        entity.setPlate(dto.getPlate());
-        entity.setManufactureYear(dto.getManufactureYear());
-        entity.setDescription(dto.getDescription());
-        entity.setPricePerHour(dto.getPricePerHour());
-        entity.setPricePerDay(dto.getPricePerDay());
-        entity.setAvailable(dto.isAvailable());
-
-        return new VehicleDTO(entity);
-    }
-
 
     // =>  Methos to create a new Motorcycle
     @Transactional
     public MotorcycleDTO createMotorcycle(MotorcycleDTO dto){
 
-        Motorcycle entity = repository.save(new Motorcycle(dto.getImg(), dto.getName(), dto.getBrand(), dto.getPlate(), dto.getManufactureYear(), dto.getStatus(), dto.getDescription(), dto.isAvailable(), dto.getRating(), true, null));
+        Motorcycle entity = repository.save(new Motorcycle(dto.getImg(), dto.getName(), dto.getBrand(), dto.getPlate(), dto.getManufactureYear(), dto.getStatus(), dto.getDescription(), dto.isAvailable(), dto.getRating(), /*dto.getVehicleType(),*/ true, null));
         return new MotorcycleDTO(entity);
     }
 
     // =>  Method to create a new Car
     @Transactional
     public CarDTO createCar(CarDTO dto) {
-        Car entity = repository.save(new Car(dto.getImg(), dto.getName(), dto.getBrand(), dto.getPlate(), dto.getManufactureYear(), dto.getStatus(), dto.getDescription(), dto.isAvailable(), dto.getRating(), dto.getNumberOfDoors(), dto.getTrunkSpace(), dto.isHasStep(), null));
+        Car entity = repository.save(new Car(dto.getImg(), dto.getName(), dto.getBrand(), dto.getPlate(), dto.getManufactureYear(), dto.getStatus(), dto.getDescription(), dto.isAvailable(), dto.getRating(), /*dto.getVehicleType(),*/ dto.getNumberOfDoors(), dto.getTrunkSpace(), dto.isHasStep(), null));
         return new CarDTO(entity);
     }
 

@@ -7,27 +7,26 @@ import java.time.Instant;
 public class NotificationDTO {
 
     private Long id;
-    private String text;
+    private String notificationText;
     private Instant moment;
-    private boolean read;
-    private Long userId;
+    private boolean readed;
+//    private Long userId;
 
     public NotificationDTO() {}
 
-    public NotificationDTO(Long id, String text, Instant moment, boolean read, Long userId) {
+    public NotificationDTO(Long id, String notificationText, Instant moment, boolean readed/*, Long userId*/) {
         this.id = id;
-        this.text = text;
+        this.notificationText = notificationText;
         this.moment = moment;
-        this.read = read;
-        this.userId = userId;
+        this.readed = readed;
+//        this.userId = userId;
     }
 
     public NotificationDTO(Notification entity){
         id = entity.getId();
-        text = entity.getText();
+        notificationText = entity.getText();
         moment = entity.getMoment();
-        read = entity.isRead();
-        userId = entity.getUser().getId();
+        readed = entity.isRead();
     }
 
     public Long getId() {
@@ -39,11 +38,11 @@ public class NotificationDTO {
     }
 
     public String getText() {
-        return text;
+        return notificationText;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setText(String notificationText) {
+        this.notificationText = notificationText;
     }
 
     public Instant getMoment() {
@@ -55,18 +54,18 @@ public class NotificationDTO {
     }
 
     public boolean isRead() {
-        return read;
+        return readed;
     }
 
-    public void setRead(boolean read) {
-        this.read = read;
+    public void setRead(boolean readed) {
+        this.readed = readed;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
+//    public Long getUserId() {
+//        return userId;
+//    }
+//
+//    public void setUserId(Long userId) {
+//        this.userId = userId;
+//    }
 }

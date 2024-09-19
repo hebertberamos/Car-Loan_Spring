@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/vehicles")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -26,21 +28,17 @@ public class VehicleController {
             @RequestParam(value = "brand", defaultValue = "") String brand,
             @RequestParam(value = "name", defaultValue = "") String name,
             Pageable pageable){
-        Page<VehicleDTO> PageVehicles = service.findAll(availableOnly, brand, name, pageable);
-        return ResponseEntity.ok().body(PageVehicles);
+        Page<VehicleDTO> pageVehicles = service.findAll(availableOnly, brand, name, pageable);
+        return ResponseEntity.ok().body(pageVehicles);
+
+//        List<VehicleDTO> vehicles = service.findAll();
+//        return ResponseEntity.ok().body(vehicles);
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<VehicleDTO> findById(@PathVariable Long id){
         VehicleDTO dto = service.findById(id);
         return ResponseEntity.ok().body(dto);
-    }
-
-
-    @PutMapping(value = "/update/{id}")
-    public ResponseEntity<VehicleDTO> update(@PathVariable Long id, @RequestBody VehicleDTO dto){
-        dto = service.update(id, dto);
-        return ResponseEntity.ok().build();
     }
 
     @PostMapping(value = "/insert/motorcycle")

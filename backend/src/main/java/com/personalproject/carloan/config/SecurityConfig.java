@@ -24,10 +24,10 @@ public class SecurityConfig {
     private SecurityFilter securityFilter;
 
 
-    @Bean
-    public WebSecurityCustomizer customizer(){
-        return (web) -> web.ignoring().requestMatchers((new AntPathRequestMatcher("/h2-console/**")));
-    }
+//    @Bean
+//    public WebSecurityCustomizer customizer(){
+//        return (web) -> web.ignoring().requestMatchers((new AntPathRequestMatcher("/h2-console/**")));
+//    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -35,11 +35,11 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/vehicles").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/vehicles/update/{id}").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/vehicles/delete/{id}").hasRole("ADMIN")
+//                        .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+//                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+//                        .requestMatchers(HttpMethod.POST, "/vehicles").hasRole("ADMIN")
+//                        .requestMatchers(HttpMethod.PUT, "/vehicles/update/{id}").hasRole("ADMIN")
+//                        .requestMatchers(HttpMethod.DELETE, "/vehicles/delete/{id}").hasRole("ADMIN")
                         .anyRequest().permitAll())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

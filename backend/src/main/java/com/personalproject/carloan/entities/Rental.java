@@ -20,11 +20,11 @@ public class Rental {
     private Instant refundMoment;
     private boolean running;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "vehicle_id")
     private Vehicle rentedVehicle;
 

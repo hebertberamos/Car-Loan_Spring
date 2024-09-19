@@ -6,12 +6,13 @@ import com.personalproject.carloan.dtos.UserUpdateDTO;
 import com.personalproject.carloan.entities.User;
 import com.personalproject.carloan.repositories.UserRepository;
 import com.personalproject.carloan.services.exceptions.ResourcesNotFoundException;
+import com.personalproject.carloan.services.exceptions.UnauthorizedException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,9 +29,19 @@ public class UserService {
     @Autowired
     private AuthenticationService authenticationService;
 
+    public List<UserDTO>loadAllUsers(){
+        List<User> users = repository.findAll();
+        return users.stream().map(x -> new UserDTO(x)).collect(Collectors.toList());
+    }
+
     @Transactional
     public UserDTO findById(Long id){
-        authenticationService.validateSelfOrAdmin(id); //  Verify if user is searching for your id or is a ADMIN
+        try {
+            authenticationService.validateSelfOrAdmin(id); //  Verify if user is searching for your id or is a ADMIN
+        }
+        catch(NullPointerException e){
+            throw new UnauthorizedException("Error!! You trying to do something you are note able!\nJust ADM can see this\n" + e.getMessage());
+        }
 
         Optional<User> optional = repository.findById(id);
         User user = optional.orElseThrow(() -> new ResourcesNotFoundException("Id not found"));
@@ -47,5 +58,17 @@ public class UserService {
 
         repository.save(user);
         return new UserDTO(user);
+    }
+
+    public UserInsertDTO createNewUser(UserInsertDTO dto){
+        if(repository.findByEmail(dto.getEmail()) != null) return null;
+
+        String encriptedPassword = new BCryptPasswordEncoder().encode(dto.getPassword());
+        User user = new User(dto.getName(), dto.getEmail(), encriptedPassword, dto.getCpf(), dto.getAge(), dto.getRole());
+
+        repository.save(user);
+
+        UserInsertDTO userInsertEntity = new UserInsertDTO(user);
+        return userInsertEntity;
     }
 }

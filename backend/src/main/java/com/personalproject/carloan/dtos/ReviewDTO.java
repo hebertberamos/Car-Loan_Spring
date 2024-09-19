@@ -8,7 +8,7 @@ import java.time.Instant;
 public class ReviewDTO implements Serializable {
 
     private Long id;
-    private String text;
+    private String reviewText;
     private Integer quantityStars;
     private Instant moment;
     private Long authorId;
@@ -16,9 +16,9 @@ public class ReviewDTO implements Serializable {
 
     public ReviewDTO() {}
 
-    public ReviewDTO(Long id, String text, Integer quantityStars, Instant moment, Long authorId, Long vehicleId) {
+    public ReviewDTO(Long id, String reviewText, Integer quantityStars, Instant moment, Long authorId, Long vehicleId) {
         this.id = id;
-        this.text = text;
+        this.reviewText = reviewText;
         this.quantityStars = quantityStars;
         this.moment = moment;
         this.authorId = authorId;
@@ -27,7 +27,7 @@ public class ReviewDTO implements Serializable {
 
     public ReviewDTO (Review entity) {
         id = entity.getId();
-        text = entity.getText();
+        reviewText = entity.getText();
         quantityStars = entity.getQuantityStars();
         moment = entity.getMoment();
         authorId  = entity.getAuthor().getId();
@@ -43,11 +43,11 @@ public class ReviewDTO implements Serializable {
     }
 
     public String getText() {
-        return text;
+        return reviewText;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setText(String reviewText) {
+        this.reviewText = reviewText;
     }
 
     public Integer getQuantityStars() {
