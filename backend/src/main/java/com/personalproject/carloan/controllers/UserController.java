@@ -32,10 +32,16 @@ public class UserController {
         return ResponseEntity.ok().body(dto);
     }
 
-   @PutMapping(value = "/{id}")
-   public ResponseEntity<UserDTO> update(@PathVariable Long id, @Valid @RequestBody UserUpdateDTO dto){
-        UserDTO newDto = service.update(id, dto);
+   @PutMapping(value = "/update/user/{id}")
+   public ResponseEntity<UserDTO> updateAdmin(@PathVariable Long id, @Valid @RequestBody UserUpdateDTO dto){
+        UserDTO newDto = service.updateAdmin(id, dto);
         return ResponseEntity.ok().body(newDto);
+   }
+
+   @PutMapping(value = "/update-informations")
+   public ResponseEntity<UserDTO> personalUpdate(@Valid @RequestBody UserUpdateDTO body){
+        UserDTO dto = service.personalUpdate(body);
+        return ResponseEntity.ok().body(dto);
    }
 
    @PostMapping(value = "/new/user")

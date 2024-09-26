@@ -22,7 +22,7 @@ public class TokenService {
             return JWT.create()
                     .withIssuer("auth-api")
                     .withSubject(user.getEmail())
-                    .withExpiresAt(Instant.now().plusSeconds(3600)) // Valid token per 1 hour.
+//                    .withExpiresAt(Instant.now().plusSeconds(3600)) // Valid token per 1 hour.
                     .sign(algorithm);
 
         } catch(JWTCreationException e){

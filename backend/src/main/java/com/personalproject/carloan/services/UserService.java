@@ -5,6 +5,7 @@ import com.personalproject.carloan.dtos.UserInsertDTO;
 import com.personalproject.carloan.dtos.UserUpdateDTO;
 import com.personalproject.carloan.entities.User;
 import com.personalproject.carloan.repositories.UserRepository;
+import com.personalproject.carloan.services.exceptions.ForbiddenException;
 import com.personalproject.carloan.services.exceptions.ResourcesNotFoundException;
 import com.personalproject.carloan.services.exceptions.UnauthorizedException;
 import jakarta.transaction.Transactional;
@@ -48,7 +49,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO update(Long id, UserUpdateDTO dto){
+    public UserDTO updateAdmin(Long id, UserUpdateDTO dto){
         User user = repository.findById(id).orElseThrow(() -> new ResourcesNotFoundException("Id not found"));
 
         user.setName(dto.getName());
@@ -57,6 +58,25 @@ public class UserService {
 
         repository.save(user);
         return new UserDTO(user);
+    }
+
+    @Transactional
+    public UserDTO personalUpdate (UserUpdateDTO body){
+        try{
+            User user = authenticationService.authenticated();
+            authenticationService.validateSelf(user.getId());
+
+            user.setName(body.getName());
+            user.setEmail(body.getEmail());
+
+            repository.save(user);
+
+            return new UserDTO(user);
+        } catch (ForbiddenException e){
+            System.out.println("Error!\nTrying to verify the user. " + e.getMessage());
+        }
+
+        return null;
     }
 
     public UserInsertDTO createNewUser(UserInsertDTO dto){
