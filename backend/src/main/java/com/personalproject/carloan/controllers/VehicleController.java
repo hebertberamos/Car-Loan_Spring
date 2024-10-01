@@ -9,8 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/vehicles")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -49,8 +47,8 @@ public class VehicleController {
 
     @PostMapping(value = "/insert/car")
     public ResponseEntity<CarDTO> insertCar(@RequestBody CarDTO dto){
-        dto = service.createCar(dto);
-        return ResponseEntity.ok().build();
+        CarDTO carDto = service.createCar(dto);
+        return ResponseEntity.ok().body(carDto);
     }
 
     @DeleteMapping(value = "/delete/{id}")

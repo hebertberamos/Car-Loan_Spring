@@ -14,16 +14,16 @@ public class Car extends Vehicle{
 
     public Car() {}
     
-    public Car (String img, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, boolean available, Double rating, Integer numberOfDoors, Double trunkSpace, boolean hasStep, Rental rental){
-        super(img, name, brand, plate, manufactureYear, status, description, available, rating, rental);
+    public Car (String img, String name, String brand, String plate, Integer manufactureYear, StatusVehicle vehicleStatus, String description, boolean available, Double rating, Integer numberOfDoors, Double trunkSpace, boolean hasStep, Rental rental){
+        super(img, name, brand, plate, manufactureYear, vehicleStatus, description, available, rating, rental);
 
-        if(status.equals(StatusVehicle.VIP)){
+        if(vehicleStatus.equals(StatusVehicle.VIP)){
             this.setPricePerHour(300.0);
             this.setPricePerDay(1200.0);
-        } else if(status.equals(StatusVehicle.POPULAR)){
+        } else if(vehicleStatus.equals(StatusVehicle.POPULAR)){
             this.setPricePerHour(80.0);
             this.setPricePerDay(200.0);
-        } else if(status.equals(StatusVehicle.ANTIQUITY)){
+        } else if(vehicleStatus.equals(StatusVehicle.ANTIQUITY)){
             this.setPricePerHour(350.0);
             this.setPricePerDay(1500.0);
         }
@@ -33,16 +33,16 @@ public class Car extends Vehicle{
         this.hasStep = hasStep;
     }
 
-    public Car(Long id, String img, String name, String brand, String plate, Integer manufactureYear, StatusVehicle status, String description, boolean available, Double rating, Integer numberOfDoors, Double trunkSpace, boolean hasStep, Rental rental) {
-        super(id, img, name, brand, plate, manufactureYear, status, description, available, rating, rental);
+    public Car(Long id, String img, String name, String brand, String plate, Integer manufactureYear, StatusVehicle vehicleStatus, String description, boolean available, Double rating, Integer numberOfDoors, Double trunkSpace, boolean hasStep, Rental rental) {
+        super(id, img, name, brand, plate, manufactureYear, vehicleStatus, description, available, rating, rental);
 
-        if(status.equals(StatusVehicle.VIP)){
+        if(vehicleStatus.equals(StatusVehicle.VIP)){
             this.setPricePerHour(300.0);
             this.setPricePerDay(1200.0);
-        } else if(status.equals(StatusVehicle.POPULAR)){
+        } else if(vehicleStatus.equals(StatusVehicle.POPULAR)){
             this.setPricePerHour(80.0);
             this.setPricePerDay(200.0);
-        } else if(status.equals(StatusVehicle.ANTIQUITY)){
+        } else if(vehicleStatus.equals(StatusVehicle.ANTIQUITY)){
             this.setPricePerHour(350.0);
             this.setPricePerDay(1500.0);
         }

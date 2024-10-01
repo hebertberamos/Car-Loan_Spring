@@ -114,11 +114,11 @@ public class CarDTO {
         this.img = img;
     }
 
-    public String getName() {
+    public String getVehicleName() {
         return vehicleName;
     }
 
-    public void setName(String vehicleName) {
+    public void setVehicleName(String vehicleName) {
         this.vehicleName = vehicleName;
     }
 
@@ -146,19 +146,19 @@ public class CarDTO {
         this.manufactureYear = manufactureYear;
     }
 
-    public StatusVehicle getStatus() {
+    public StatusVehicle getVehicleStatus() {
         return vehicleStatus;
     }
 
-    public void setStatus(StatusVehicle vehicleStatus) {
+    public void setVehicleStatus(StatusVehicle vehicleStatus) {
         this.vehicleStatus = vehicleStatus;
     }
 
-    public String getDescription() {
+    public String getVehicleDescription() {
         return vehicleDescription;
     }
 
-    public void setDescription(String vehicleDescription) {
+    public void setVehicleDescription(String vehicleDescription) {
         this.vehicleDescription = vehicleDescription;
     }
 

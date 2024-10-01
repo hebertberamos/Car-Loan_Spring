@@ -60,8 +60,11 @@ public class VehicleService {
     // =>  Method to create a new Car
     @Transactional
     public CarDTO createCar(CarDTO dto) {
-        Car entity = repository.save(new Car(dto.getImg(), dto.getName(), dto.getBrand(), dto.getPlate(), dto.getManufactureYear(), dto.getStatus(), dto.getDescription(), dto.isAvailable(), dto.getRating(), /*dto.getVehicleType(),*/ dto.getNumberOfDoors(), dto.getTrunkSpace(), dto.isHasStep(), null));
-        return new CarDTO(entity);
+        Car carEntity = new Car(dto.getImg(), dto.getVehicleName(), dto.getBrand(), dto.getPlate(), dto.getManufactureYear(), dto.getVehicleStatus(), dto.getVehicleDescription(), dto.isAvailable(), dto.getRating(), dto.getNumberOfDoors(), dto.getTrunkSpace(), dto.isHasStep(), null);
+        repository.save(carEntity);
+
+        CarDTO carDto = new CarDTO(carEntity);
+        return carDto;
     }
 
     @Transactional
