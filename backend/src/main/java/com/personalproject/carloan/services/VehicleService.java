@@ -52,8 +52,9 @@ public class VehicleService {
     // =>  Methos to create a new Motorcycle
     @Transactional
     public MotorcycleDTO createMotorcycle(MotorcycleDTO dto){
+        Motorcycle entity = repository.save(new Motorcycle(dto.getImg(), dto.getVehicleName(), dto.getBrand(), dto.getPlate(), dto.getManufactureYear(), dto.getVehicleStatus(), dto.getVehicleDescription(), dto.isAvailable(), dto.getRating(), /*dto.getVehicleType(),*/ true, null));
+        repository. save(entity);
 
-        Motorcycle entity = repository.save(new Motorcycle(dto.getImg(), dto.getName(), dto.getBrand(), dto.getPlate(), dto.getManufactureYear(), dto.getStatus(), dto.getDescription(), dto.isAvailable(), dto.getRating(), /*dto.getVehicleType(),*/ true, null));
         return new MotorcycleDTO(entity);
     }
 

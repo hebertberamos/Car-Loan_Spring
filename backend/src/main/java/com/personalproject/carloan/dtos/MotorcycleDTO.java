@@ -28,14 +28,14 @@ public class MotorcycleDTO {
 
     public MotorcycleDTO(){}
 
-    public MotorcycleDTO(String img, String vehicleName, String brand, String plate, Integer manufactureYear, StatusVehicle vehicleStatus, String vehiclevehicleDescription, boolean available, Double rating, ShowRentalToVehicle rental, List<ShowReviewToVehicle> reviews, boolean hasFairing) {
+    public MotorcycleDTO(String img, String vehicleName, String brand, String plate, Integer manufactureYear, StatusVehicle vehicleStatus, String vehicleDescription, boolean available, Double rating, ShowRentalToVehicle rental, List<ShowReviewToVehicle> reviews, boolean hasFairing) {
         this.img = img;
         this.vehicleName = vehicleName;
         this.brand = brand;
         this.plate = plate;
         this.manufactureYear = manufactureYear;
         this.vehicleStatus = vehicleStatus;
-        this.vehicleDescription = vehiclevehicleDescription;
+        this.vehicleDescription = vehicleDescription;
 
         if(vehicleStatus.equals(StatusVehicle.ANTIQUITY)){
             this.setPricePerHour(250.0);
@@ -108,11 +108,11 @@ public class MotorcycleDTO {
         this.img = img;
     }
 
-    public String getName() {
+    public String getVehicleName() {
         return vehicleName;
     }
 
-    public void setName(String vehicleName) {
+    public void setVehicleName(String vehicleName) {
         this.vehicleName = vehicleName;
     }
 
@@ -140,19 +140,19 @@ public class MotorcycleDTO {
         this.manufactureYear = manufactureYear;
     }
 
-    public StatusVehicle getStatus() {
+    public StatusVehicle getVehicleStatus() {
         return vehicleStatus;
     }
 
-    public void setStatus(StatusVehicle vehicleStatus) {
+    public void setVehicleStatus(StatusVehicle vehicleStatus) {
         this.vehicleStatus = vehicleStatus;
     }
 
-    public String getDescription() {
+    public String getVehicleDescription() {
         return vehicleDescription;
     }
 
-    public void setDescription(String vehicleDescription) {
+    public void setVehicleDescription(String vehicleDescription) {
         this.vehicleDescription = vehicleDescription;
     }
 
