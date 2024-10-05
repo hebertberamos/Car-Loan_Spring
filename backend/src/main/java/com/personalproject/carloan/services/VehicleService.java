@@ -2,6 +2,8 @@ package com.personalproject.carloan.services;
 
 import com.personalproject.carloan.dtos.*;
 import com.personalproject.carloan.entities.*;
+import com.personalproject.carloan.repositories.CarRepository;
+import com.personalproject.carloan.repositories.MotorcycleRepository;
 import com.personalproject.carloan.repositories.RentalRepository;
 import com.personalproject.carloan.repositories.VehicleRepository;
 import com.personalproject.carloan.services.exceptions.DatabaseException;
@@ -24,6 +26,12 @@ public class VehicleService {
 
     @Autowired
     private VehicleRepository repository;
+
+    @Autowired
+    private CarRepository carRepository;
+
+    @Autowired
+    private MotorcycleRepository motorcycleRepository;
 
     @Autowired
     private RentalRepository rentalRepository;
@@ -81,6 +89,42 @@ public class VehicleService {
         }
     }
 
+    @Transactional
+    public CarDTO updateCar(Long id, CarDTO dto){
+        Optional<Car> optional = carRepository.findById(id);
+        Car entity = optional.orElseThrow(() -> new ResourcesNotFoundException("Id not found"));
+
+        //fazer as alterações na entidade a partir das informações que vieram do DTO
+        entity.setPricePerDay(dto.getPricePerDay());
+        entity.setPricePerHour(dto.getPricePerHour());
+        entity.setImg(dto.getImg());
+        entity.setStatus(dto.getVehicleStatus());
+        entity.setDescription(dto.getVehicleDescription());
+        entity.setHasStep(dto.isHasStep());
+
+        carRepository.save(entity);
+
+        dto = new CarDTO(entity);
+        return dto;
+    }
+
+    public MotorcycleDTO updateMotorcycle(Long id, MotorcycleDTO dto){
+        Optional<Motorcycle> optional = motorcycleRepository.findById(id);
+        Motorcycle entity = optional.orElseThrow(() -> new ResourcesNotFoundException("Id not found"));
+
+        //fazer as alterações na entidade a partir das informações que vieram do DTO
+        entity.setPricePerDay(dto.getPricePerDay());
+        entity.setPricePerHour(dto.getPricePerHour());
+        entity.setImg(dto.getImg());
+        entity.setStatus(dto.getVehicleStatus());
+        entity.setDescription(dto.getVehicleDescription());
+        entity.setHasFairing(dto.isHasFairing());
+
+        motorcycleRepository.save(entity);
+
+        dto = new MotorcycleDTO(entity);
+        return dto;
+    }
 
     @Transactional
     public RentalDTO createRentalByVehicle(Long id, RentalDTO rentalDto){
@@ -97,7 +141,7 @@ public class VehicleService {
         rental.setCheckin(rentalDto.getCheckin());
         rental.setCheckout(rentalDto.getCheckout());
         rental.setRefundMoment(null);
-        rental.setRunning(false);
+        rental.setRunning(true);
         rental.setUser(user);
         rental.setRentedVehicle(vehicle);
 

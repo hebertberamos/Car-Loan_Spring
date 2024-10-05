@@ -92,7 +92,7 @@ public class CarDTO {
             }
         }
         if(entity.getRental() != null) {
-            if (entity.isAvailable() == false || entity.getRental().isRunning() == true) {
+            if (!entity.isAvailable() && entity.getRental().isRunning()) {
                 rental = new ShowRentalToVehicle(entity.getRental());
             }
         }
