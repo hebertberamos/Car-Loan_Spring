@@ -27,8 +27,9 @@ public class VehicleController {
             @RequestParam(value = "availableOnly", defaultValue = "false") Boolean availableOnly,
             @RequestParam(value = "brand", defaultValue = "") String brand,
             @RequestParam(value = "name", defaultValue = "") String name,
+            @RequestParam(value = "vehicleType", defaultValue = "0") Integer vehicleType,
             Pageable pageable){
-        Page<VehicleDTO> pageVehicles = service.findAll(availableOnly, brand, name, pageable);
+        Page<VehicleDTO> pageVehicles = service.findAll(availableOnly, brand, name, vehicleType, pageable);
         return ResponseEntity.ok().body(pageVehicles);
 
 //        List<VehicleDTO> vehicles = service.findAll();

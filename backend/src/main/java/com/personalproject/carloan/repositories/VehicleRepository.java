@@ -13,10 +13,17 @@ import java.util.List;
 @Repository
 public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 
+//    @Query("SELECT v FROM Vehicle v WHERE " +
+//            "(:availableOnly = false OR v.available = true) AND " +
+//            "(LOWER(v.brand) LIKE LOWER(CONCAT ('%',:brand,'%')) OR v.brand = '') AND " +
+//            "(LOWER(v.vehicleName) LIKE LOWER(CONCAT ('%',:vehicleName,'%')) OR v.vehicleName = '') " +
+//            "ORDER BY v.vehicleId")
+
     @Query("SELECT v FROM Vehicle v WHERE " +
             "(:availableOnly = false OR v.available = true) AND " +
-            "(LOWER(v.brand) LIKE LOWER(CONCAT ('%',:brand,'%')) OR v.brand = '') AND " +
-            "(LOWER(v.vehicleName) LIKE LOWER(CONCAT ('%',:vehicleName,'%')) OR v.vehicleName = '') " +
+            "(LOWER(v.brand) LIKE LOWER(CONCAT('%', :brand, '%')) OR v.brand = '') AND " +
+            "(LOWER(v.vehicleName) LIKE LOWER(CONCAT('%', :vehicleName, '%')) OR v.vehicleName = '') AND " +
+            "(:vehicleType = 0 OR (:vehicleType = 1 AND TYPE(v) = Car) OR (:vehicleType = 2 AND TYPE(v) = Motorcycle)) " +
             "ORDER BY v.vehicleId")
-    Page<Vehicle> findVehicles(boolean availableOnly, String brand, String vehicleName, Pageable pageable);
+    Page<Vehicle> findVehicles(boolean availableOnly, String brand, String vehicleName, Integer vehicleType, Pageable pageable);
 }

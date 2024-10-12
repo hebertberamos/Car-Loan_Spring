@@ -99,7 +99,7 @@ public class VehicleDTO {
     }
 
     // =>  Constructor to use in find all method
-    public VehicleDTO(Long vehicleId, String img, String vehicleName, String brand, StatusVehicle vehicleStatus, boolean available, Double rating) {
+    public VehicleDTO(Long vehicleId, String img, String vehicleName, String brand, StatusVehicle vehicleStatus, boolean available, Double rating, Double pricePerHour, Double pricePerDay) {
         this.vehicleId = vehicleId;
         this.img = img;
         this.vehicleName = vehicleName;
@@ -107,6 +107,8 @@ public class VehicleDTO {
         this.vehicleStatus = vehicleStatus;
         this.available = available;
         this.rating = rating;
+        this.pricePerHour = pricePerHour;
+        this.pricePerDay = pricePerDay;
     }
 
     public VehicleDTO(String img, String vehicleName, String brand, String plate, Integer manufactureYear, String vehicleDescription, boolean available, Double rating, ShowRentalToVehicle rental, List<ShowReviewToVehicle> reviews) {
