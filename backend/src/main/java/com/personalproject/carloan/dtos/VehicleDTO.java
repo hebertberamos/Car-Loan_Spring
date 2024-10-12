@@ -28,19 +28,6 @@ public class VehicleDTO {
 
     public VehicleDTO() {}
 
-    public VehicleDTO(String vehicleName, String brand, String plate, Integer manufactureYear, StatusVehicle vehicleStatus, String vehicleDescription, Double pricePerHour, Double pricePerDay, boolean available, Double rating) {
-        this.vehicleName = vehicleName;
-        this.brand = brand;
-        this.plate = plate;
-        this.manufactureYear = manufactureYear;
-        this.vehicleStatus = vehicleStatus;
-        this.vehicleDescription = vehicleDescription;
-        this.pricePerHour = pricePerHour;
-        this.pricePerDay = pricePerDay;
-        this.available = available;
-        this.rating = rating;
-    }
-
     // Constructor to create a new Vehicle by an entity
     public VehicleDTO(Vehicle entity) {
         vehicleId = entity.getId();
@@ -63,7 +50,7 @@ public class VehicleDTO {
             }
         }
         if(entity.getRental() != null) {
-            if (entity.isAvailable() == false || entity.getRental().isRunning() == true) {
+            if (!entity.isAvailable() && entity.getRental().isRunning()) {
                 rental = new ShowRentalToVehicle(entity.getRental());
             }
         }
@@ -77,6 +64,17 @@ public class VehicleDTO {
         this.vehicleStatus = entity.getStatus();
         this.available = entity.isAvailable();
         this.rating = entity.getRating();
+
+        if(entity.getReviews() != null) {
+            for(Review r : entity.getReviews()){
+                reviews.add(new ShowReviewToVehicle(r));
+            }
+        }
+        if(entity.getRental() != null) {
+            if (!entity.isAvailable() &&  entity.getRental().isRunning()) {
+                rental = new ShowRentalToVehicle(entity.getRental());
+            }
+        }
     }
 
     public VehicleDTO(Motorcycle entity){
@@ -87,6 +85,17 @@ public class VehicleDTO {
         this.vehicleStatus = entity.getStatus();
         this.available = entity.isAvailable();
         this.rating = entity.getRating();
+
+        if(entity.getReviews() != null) {
+            for(Review r : entity.getReviews()){
+                reviews.add(new ShowReviewToVehicle(r));
+            }
+        }
+        if(entity.getRental() != null) {
+            if (!entity.isAvailable() &&  entity.getRental().isRunning()) {
+                rental = new ShowRentalToVehicle(entity.getRental());
+            }
+        }
     }
 
     // =>  Constructor to use in find all method
@@ -98,6 +107,22 @@ public class VehicleDTO {
         this.vehicleStatus = vehicleStatus;
         this.available = available;
         this.rating = rating;
+    }
+
+    public VehicleDTO(String img, String vehicleName, String brand, String plate, Integer manufactureYear, String vehicleDescription, boolean available, Double rating, ShowRentalToVehicle rental, List<ShowReviewToVehicle> reviews) {
+        this.img = img;
+        this.vehicleName = vehicleName;
+        this.brand = brand;
+        this.plate = plate;
+        this.manufactureYear = manufactureYear;
+        this.vehicleDescription = vehicleDescription;
+        this.available = available;
+        this.rating = rating;
+        this.rental = rental;
+
+        for(ShowReviewToVehicle rev : reviews){
+            reviews.add(rev);
+        }
     }
 
     public Long getId() {
@@ -116,11 +141,11 @@ public class VehicleDTO {
         this.img = img;
     }
 
-    public String getName() {
+    public String getVehicleName() {
         return vehicleName;
     }
 
-    public void setName(String vehicleName) {
+    public void setVehicleName(String vehicleName) {
         this.vehicleName = vehicleName;
     }
 
@@ -148,19 +173,19 @@ public class VehicleDTO {
         this.manufactureYear = manufactureYear;
     }
 
-    public StatusVehicle getStatus() {
+    public StatusVehicle getVehicleStatus() {
         return vehicleStatus;
     }
 
-    public void setStatus(StatusVehicle vehicleStatus) {
+    public void setVehicleStatus(StatusVehicle vehicleStatus) {
         this.vehicleStatus = vehicleStatus;
     }
 
-    public String getDescription() {
+    public String getVehicleDescription() {
         return vehicleDescription;
     }
 
-    public void setDescription(String vehicleDescription) {
+    public void setVehicleDescription(String vehicleDescription) {
         this.vehicleDescription = vehicleDescription;
     }
 

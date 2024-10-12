@@ -53,6 +53,14 @@ public class VehicleService {
     public VehicleDTO findById(Long id){
         Optional<Vehicle> optional = repository.findById(id);
         Vehicle entity = optional.orElseThrow(() -> new ResourcesNotFoundException("Id not found"));
+
+        if(entity instanceof Car carEntity) {
+            return new CarDTO(carEntity);
+        }
+        else if(entity instanceof Motorcycle motorcycleEntity){
+            return new MotorcycleDTO(motorcycleEntity);
+        }
+
         return new VehicleDTO(entity);
     }
 
