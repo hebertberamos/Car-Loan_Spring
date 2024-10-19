@@ -9,6 +9,7 @@ public class ShowRentalToVehicle {
     private Instant checkin;
     private Instant checkout;
     private boolean running;
+    private Double rentalValue;
     private Long vehicle_id;
 
     public ShowRentalToVehicle() {}
@@ -22,6 +23,7 @@ public class ShowRentalToVehicle {
         checkin = entity.getCheckin();
         checkout = entity.getCheckout();
         running = entity.isRunning();
+        rentalValue = entity.getRentalValue();
         vehicle_id = entity.getRentedVehicle().getId();
     }
 
@@ -47,6 +49,14 @@ public class ShowRentalToVehicle {
 
     public void setRunning(boolean running) {
         this.running = running;
+    }
+
+    public Double getRentalValue() {
+        return rentalValue;
+    }
+
+    public void setRentalValue(Double rentalValue) {
+        this.rentalValue = rentalValue;
     }
 
     public Long getVehicle_id() {

@@ -9,19 +9,22 @@ public class ShowRentalToUser {
 
     private Instant checkin;
     private Instant checkout;
+    private Double rentalValue;
     private ShowVehicleToRental vehicle;
 
     public ShowRentalToUser() {}
 
-    public ShowRentalToUser(Instant checkin, Instant checkout, Vehicle vehicle) {
+    public ShowRentalToUser(Instant checkin, Instant checkout, Double rentalValue, Vehicle vehicle) {
         this.checkin = checkin;
         this.checkout = checkout;
+        this.rentalValue = rentalValue;
         this.vehicle = new ShowVehicleToRental(vehicle);
     }
 
     public ShowRentalToUser(Rental entity){
         checkin = entity.getCheckin();
         checkout = entity.getCheckout();
+        rentalValue = entity.getRentalValue();
         vehicle = new ShowVehicleToRental(entity.getRentedVehicle());
     }
 
@@ -39,6 +42,14 @@ public class ShowRentalToUser {
 
     public void setCheckout(Instant checkout) {
         this.checkout = checkout;
+    }
+
+    public Double getRentalValue() {
+        return rentalValue;
+    }
+
+    public void setRentalValue(Double rentalValue) {
+        this.rentalValue = rentalValue;
     }
 
     public ShowVehicleToRental getVehicle() {

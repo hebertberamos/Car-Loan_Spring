@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -41,6 +42,9 @@ public class VehicleService {
 
     @Autowired
     private ReviewService reviewService;
+
+    @Autowired
+    private RentalService rentalService;
 
     @Transactional(readOnly = true)
     public Page<VehicleDTO> findAll(boolean availableOnly, String brand, String vehicleName, Integer vehicleType, Pageable pageable){
@@ -144,16 +148,14 @@ public class VehicleService {
         Optional<Vehicle> optional = repository.findById(id);
         Vehicle vehicle = optional.orElseThrow(() -> new ResourcesNotFoundException("Vehicle not found"));
 
+
         // =>  Create a new Rental by a dto and save at database
-        Rental rental = new Rental();
-        rental.setCheckin(rentalDto.getCheckin());
-        rental.setCheckout(rentalDto.getCheckout());
-        rental.setRefundMoment(null);
-        rental.setRunning(true);
-        rental.setUser(user);
-        rental.setRentedVehicle(vehicle);
+        Rental rental = rentalService.createRental(rentalDto, vehicle, user);
+
+        vehicle.setAvailable(false);
 
         rental = rentalRepository.save(rental);
+        repository.save(vehicle);
         return new RentalDTO(rental);
     }
 
@@ -181,5 +183,11 @@ public class VehicleService {
             }
         }
         throw new ForbiddenException("Action blocked, you cannot leave a comment as you have never rented this vehicle");
+    }
+
+    private boolean isValidHour(Instant checkin, Instant checkout){
+
+
+        return false;
     }
 }

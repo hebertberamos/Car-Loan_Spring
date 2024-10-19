@@ -1,7 +1,6 @@
 package com.personalproject.carloan.controllers;
 
 import com.personalproject.carloan.dtos.*;
-import com.personalproject.carloan.entities.Car;
 import com.personalproject.carloan.services.RentalService;
 import com.personalproject.carloan.services.VehicleService;
 import jakarta.validation.Valid;
@@ -31,9 +30,6 @@ public class VehicleController {
             Pageable pageable){
         Page<VehicleDTO> pageVehicles = service.findAll(availableOnly, brand, name, vehicleType, pageable);
         return ResponseEntity.ok().body(pageVehicles);
-
-//        List<VehicleDTO> vehicles = service.findAll();
-//        return ResponseEntity.ok().body(vehicles);
     }
 
     @GetMapping(value = "/{id}")

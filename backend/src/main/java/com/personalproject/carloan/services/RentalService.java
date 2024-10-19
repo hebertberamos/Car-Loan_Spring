@@ -1,7 +1,10 @@
 package com.personalproject.carloan.services;
 
+import com.personalproject.carloan.calculators.RentalCalculator;
 import com.personalproject.carloan.dtos.*;
 import com.personalproject.carloan.entities.Rental;
+import com.personalproject.carloan.entities.User;
+import com.personalproject.carloan.entities.Vehicle;
 import com.personalproject.carloan.repositories.RentalRepository;
 import com.personalproject.carloan.repositories.VehicleRepository;
 import com.personalproject.carloan.services.exceptions.ResourcesNotFoundException;
@@ -23,6 +26,24 @@ public class RentalService {
 
     @Autowired
     private AuthenticationService authenticationService;
+
+    @Autowired
+    private RentalCalculator rentalCalculator;
+
+    public Rental createRental(RentalDTO rentalDto, Vehicle vehicle, User user){
+        double rentalAmount = rentalCalculator.calculateRentalValue(rentalDto.getCheckin(), rentalDto.getCheckout(), vehicle.getPricePerHour(), vehicle.getPricePerDay());
+
+        Rental rental = new Rental();
+        rental.setCheckin(rentalDto.getCheckin());
+        rental.setCheckout(rentalDto.getCheckout());
+        rental.setRefundMoment(null);
+        rental.setRunning(true);
+        rental.setUser(user);
+        rental.setRentedVehicle(vehicle);
+        rental.setRentalValue(rentalAmount);
+
+        return rental;
+    }
 
     // Buscando pelo id
     @Transactional(readOnly = true)

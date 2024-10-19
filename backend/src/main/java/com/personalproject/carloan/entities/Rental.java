@@ -19,6 +19,7 @@ public class Rental {
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant refundMoment;
     private boolean running;
+    private Double rentalValue;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
@@ -30,7 +31,7 @@ public class Rental {
 
     public Rental(){}
 
-    public Rental(Long id, Instant checkin, Instant checkout, Instant refundMoment, boolean running, User user, Vehicle rentedVehicle) {
+    public Rental(Long id, Instant checkin, Instant checkout, Instant refundMoment, boolean running, Double rentalValue, User user, Vehicle rentedVehicle) {
         this.id = id;
         this.checkin = checkin;
         this.checkout = checkout;
@@ -43,11 +44,12 @@ public class Rental {
             running = false;
         }
 
+        this.rentalValue = rentalValue;
         this.user = user;
         this.rentedVehicle = rentedVehicle;
     }
 
-    public Rental(Instant checkin, Instant checkout, Instant refundMoment, boolean running, User user, Vehicle rentedVehicle) {
+    public Rental(Instant checkin, Instant checkout, Instant refundMoment, boolean running, Double rentalValue, User user, Vehicle rentedVehicle) {
         this.checkin = checkin;
         this.checkout = checkout;
         this.refundMoment = refundMoment;
@@ -60,6 +62,7 @@ public class Rental {
             running = false;
         }
 
+        this.rentalValue = rentalValue;
         this.user = user;
         this.rentedVehicle = rentedVehicle;
     }
@@ -102,6 +105,15 @@ public class Rental {
 
     public void setRunning(boolean running) {
         this.running = running;
+    }
+
+
+    public Double getRentalValue() {
+        return rentalValue;
+    }
+
+    public void setRentalValue(Double rentalValue) {
+        this.rentalValue = rentalValue;
     }
 
     public User getUser() {
