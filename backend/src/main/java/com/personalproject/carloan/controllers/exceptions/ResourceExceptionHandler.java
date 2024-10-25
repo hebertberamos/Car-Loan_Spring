@@ -2,10 +2,9 @@ package com.personalproject.carloan.controllers.exceptions;
 
 import com.personalproject.carloan.services.exceptions.DatabaseException;
 import com.personalproject.carloan.services.exceptions.ForbiddenException;
+import com.personalproject.carloan.services.exceptions.OutOfWorkingHoursException;
 import com.personalproject.carloan.services.exceptions.ResourcesNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.Validation;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +12,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.time.Instant;
 
@@ -58,7 +56,6 @@ public class ResourceExceptionHandler {
         return ResponseEntity.status(status).body(err);
     }
 
-    // Quando um valor que o usuário está tentando adicionar já consta no banco de dados.
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<StandardError> atributValueConflict(DataIntegrityViolationException e, HttpServletRequest request){
         HttpStatus status = HttpStatus.CONFLICT;
@@ -78,5 +75,16 @@ public class ResourceExceptionHandler {
         err.setError("Database exception");
         err.setPath(request.getRequestURI());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<StandardError> outOfWorkingHour(OutOfWorkingHoursException exception, HttpServletRequest request){
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        StandardError err = new StandardError();
+        err.setTimestamp(Instant.now());
+        err.setStatus(status.value());
+        err.setError("The date chosen for the rental is not compatible with the system");
+        err.setPath(request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
     }
 }

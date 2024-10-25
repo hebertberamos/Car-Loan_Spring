@@ -17,7 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -69,7 +68,6 @@ public class VehicleService {
     }
 
 
-    // =>  Methos to create a new Motorcycle
     @Transactional
     public MotorcycleDTO createMotorcycle(MotorcycleDTO dto){
         Motorcycle entity = repository.save(new Motorcycle(dto.getImg(), dto.getVehicleName(), dto.getBrand(), dto.getPlate(), dto.getManufactureYear(), dto.getVehicleStatus(), dto.getVehicleDescription(), dto.isAvailable(), dto.getRating(), /*dto.getVehicleType(),*/ true, null));
@@ -78,7 +76,6 @@ public class VehicleService {
         return new MotorcycleDTO(entity);
     }
 
-    // =>  Method to create a new Car
     @Transactional
     public CarDTO createCar(CarDTO dto) {
         Car carEntity = new Car(dto.getImg(), dto.getVehicleName(), dto.getBrand(), dto.getPlate(), dto.getManufactureYear(), dto.getVehicleStatus(), dto.getVehicleDescription(), dto.isAvailable(), dto.getRating(), dto.getNumberOfDoors(), dto.getTrunkSpace(), dto.isHasStep(), null);
@@ -106,7 +103,6 @@ public class VehicleService {
         Optional<Car> optional = carRepository.findById(id);
         Car entity = optional.orElseThrow(() -> new ResourcesNotFoundException("Id not found"));
 
-        //fazer as alterações na entidade a partir das informações que vieram do DTO
         entity.setPricePerDay(dto.getPricePerDay());
         entity.setPricePerHour(dto.getPricePerHour());
         entity.setImg(dto.getImg());
@@ -124,7 +120,6 @@ public class VehicleService {
         Optional<Motorcycle> optional = motorcycleRepository.findById(id);
         Motorcycle entity = optional.orElseThrow(() -> new ResourcesNotFoundException("Id not found"));
 
-        //fazer as alterações na entidade a partir das informações que vieram do DTO
         entity.setPricePerDay(dto.getPricePerDay());
         entity.setPricePerHour(dto.getPricePerHour());
         entity.setImg(dto.getImg());
@@ -139,17 +134,14 @@ public class VehicleService {
     }
 
     @Transactional
-    public RentalDTO createRentalByVehicle(Long id, RentalDTO rentalDto){
+    public RentalDTO createRentalByVehicle(Long id, RentalDTO rentalDto) throws Exception {
 
         // =>  Identify the user making the request
         User user = authenticationService.authenticated();
 
-        // =>  Identify the vehicle the user are renting
         Optional<Vehicle> optional = repository.findById(id);
         Vehicle vehicle = optional.orElseThrow(() -> new ResourcesNotFoundException("Vehicle not found"));
 
-
-        // =>  Create a new Rental by a dto and save at database
         Rental rental = rentalService.createRental(rentalDto, vehicle, user);
 
         vehicle.setAvailable(false);
@@ -183,11 +175,5 @@ public class VehicleService {
             }
         }
         throw new ForbiddenException("Action blocked, you cannot leave a comment as you have never rented this vehicle");
-    }
-
-    private boolean isValidHour(Instant checkin, Instant checkout){
-
-
-        return false;
     }
 }

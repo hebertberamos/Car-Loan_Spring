@@ -3,6 +3,7 @@ package com.personalproject.carloan.controllers;
 import com.personalproject.carloan.dtos.*;
 import com.personalproject.carloan.services.RentalService;
 import com.personalproject.carloan.services.VehicleService;
+import com.personalproject.carloan.services.exceptions.OutOfWorkingHoursException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -69,8 +70,14 @@ public class VehicleController {
     }
 
     @PostMapping(value = "/{id}/create/rental")
-    public ResponseEntity<RentalDTO> createRentalByVehicle(@PathVariable Long id, @RequestBody RentalDTO rentalDto){
-        rentalDto = service.createRentalByVehicle(id, rentalDto);
+    public ResponseEntity<RentalDTO> createRentalByVehicle(@PathVariable Long id, @RequestBody RentalDTO rentalDto) throws Exception {
+        try {
+            rentalDto = service.createRentalByVehicle(id, rentalDto);
+        }
+        catch(Exception e){
+            throw new OutOfWorkingHoursException(e.getMessage());
+        }
+
         return ResponseEntity.ok().body(rentalDto);
     }
 
