@@ -151,7 +151,7 @@ public class VehicleService {
     }
 
     @Transactional
-    public RentalDTO createRentalByVehicle(Long id, RentalDTO rentalDto) throws Exception {
+    public ShowRentalToUser createRentalByVehicle(Long id, RentalDTO rentalDto) throws Exception {
 
         // =>  Identify the user making the request
         User user = authenticationService.authenticated();
@@ -162,10 +162,12 @@ public class VehicleService {
         Rental rental = rentalService.createRental(rentalDto, vehicle, user);
 
         vehicle.setAvailable(false);
+        repository.save(vehicle);
 
         rental = rentalRepository.save(rental);
-        repository.save(vehicle);
-        return rentalMapper.toRentalDto(rental);
+
+        ShowRentalToUser rentalResponse = new ShowRentalToUser(rental);
+        return rentalResponse;
     }
 
     @Transactional

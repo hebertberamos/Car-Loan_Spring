@@ -1,7 +1,10 @@
 package com.personalproject.carloan.dtos;
 
 import com.personalproject.carloan.entities.Rental;
+import com.personalproject.carloan.entities.User;
 import com.personalproject.carloan.entities.Vehicle;
+import com.personalproject.carloan.mappers.UserMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Instant;
 
@@ -10,14 +13,22 @@ public class ShowRentalToUser {
     private Instant checkin;
     private Instant checkout;
     private Double rentalValue;
+    private ShowUserToRental user;
     private ShowVehicleToRental vehicle;
+
+    private UserMapper mapper;
+
+    public ShowRentalToUser(UserMapper mapper) {
+        this.mapper = mapper;
+    }
 
     public ShowRentalToUser() {}
 
-    public ShowRentalToUser(Instant checkin, Instant checkout, Double rentalValue, Vehicle vehicle) {
+    public ShowRentalToUser(Instant checkin, Instant checkout, Double rentalValue, ShowUserToRental user, Vehicle vehicle) {
         this.checkin = checkin;
         this.checkout = checkout;
         this.rentalValue = rentalValue;
+        this.user = user;
         this.vehicle = new ShowVehicleToRental(vehicle);
     }
 
@@ -25,6 +36,7 @@ public class ShowRentalToUser {
         checkin = entity.getCheckin();
         checkout = entity.getCheckout();
         rentalValue = entity.getRentalValue();
+        user = new ShowUserToRental(entity.getUser());
         vehicle = new ShowVehicleToRental(entity.getRentedVehicle());
     }
 
@@ -50,6 +62,14 @@ public class ShowRentalToUser {
 
     public void setRentalValue(Double rentalValue) {
         this.rentalValue = rentalValue;
+    }
+
+    public ShowUserToRental getUser() {
+        return user;
+    }
+
+    public void setUser(ShowUserToRental user) {
+        this.user = user;
     }
 
     public ShowVehicleToRental getVehicle() {
