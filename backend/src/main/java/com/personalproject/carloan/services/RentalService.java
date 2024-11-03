@@ -5,6 +5,8 @@ import com.personalproject.carloan.dtos.*;
 import com.personalproject.carloan.entities.Rental;
 import com.personalproject.carloan.entities.User;
 import com.personalproject.carloan.entities.Vehicle;
+import com.personalproject.carloan.mappers.RentalMapper;
+import com.personalproject.carloan.mappers.UserMapper;
 import com.personalproject.carloan.repositories.RentalRepository;
 import com.personalproject.carloan.repositories.VehicleRepository;
 import com.personalproject.carloan.services.exceptions.ResourcesNotFoundException;
@@ -34,6 +36,12 @@ public class RentalService {
     @Autowired
     private RentalCalculator rentalCalculator;
 
+    private final RentalMapper rentalMapper;
+
+    public RentalService(RentalMapper rentalMapper) {
+        this.rentalMapper = rentalMapper;
+    }
+
     public Rental createRental(RentalDTO rentalDto, Vehicle vehicle, User user) throws Exception {
         double rentalAmount = rentalCalculator.calculateRentalValue(rentalDto.getCheckin(), rentalDto.getCheckout(), vehicle.getPricePerHour(), vehicle.getPricePerDay());
 
@@ -61,7 +69,7 @@ public class RentalService {
     public RentalDTO findById(Long id){
         Optional<Rental> optional = repository.findById(id);
         Rental rental = optional.orElseThrow(() -> new ResourcesNotFoundException("Id not found"));
-        return new RentalDTO(rental);
+        return rentalMapper.toRentalDto(rental);
     }
 
     @Transactional
@@ -73,7 +81,7 @@ public class RentalService {
             rental.setCheckout(dto.getCheckout());
 
         repository.save(rental);
-        return dto = new RentalDTO(rental);
+        return rentalMapper.toRentalDto(rental);
     }
 
     @Transactional
@@ -82,7 +90,7 @@ public class RentalService {
             Rental rental = repository.findById(id).orElseThrow(() -> new ResourcesNotFoundException("id " + id + " not found"));
             repository.delete(rental);
 
-            return new RentalDTO(rental);
+            return rentalMapper.toRentalDto(rental);
         }
         catch (EmptyResultDataAccessException e){
             System.out.println("Element not found");

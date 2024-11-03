@@ -2,6 +2,8 @@ package com.personalproject.carloan.services;
 
 import com.personalproject.carloan.dtos.*;
 import com.personalproject.carloan.entities.*;
+import com.personalproject.carloan.mappers.RentalMapper;
+import com.personalproject.carloan.mappers.VehicleMapper;
 import com.personalproject.carloan.repositories.CarRepository;
 import com.personalproject.carloan.repositories.MotorcycleRepository;
 import com.personalproject.carloan.repositories.RentalRepository;
@@ -45,11 +47,18 @@ public class VehicleService {
     @Autowired
     private RentalService rentalService;
 
+    private final VehicleMapper vehicleMapper;
+    private final RentalMapper rentalMapper;
+
+    public VehicleService(VehicleMapper vehicleMapper, RentalMapper rentalMapper) {
+        this.vehicleMapper = vehicleMapper;
+        this.rentalMapper = rentalMapper;
+    }
     @Transactional(readOnly = true)
     public Page<VehicleDTO> findAll(boolean availableOnly, String brand, String vehicleName, Integer vehicleType, Pageable pageable){
 
         Page<Vehicle> page = repository.findVehicles(availableOnly, brand, vehicleName, vehicleType, pageable);
-        return page.map(x -> new VehicleDTO(x.getId(), x.getImg(), x.getName(), x.getBrand(), x.getStatus(), x.isAvailable(), x.getRating(), x.getPricePerHour(), x.getPricePerDay()));
+        return page.map(x -> vehicleMapper.toVehicleDto(x));
     }
 
     @Transactional(readOnly = true)
@@ -58,13 +67,13 @@ public class VehicleService {
         Vehicle entity = optional.orElseThrow(() -> new ResourcesNotFoundException("Id not found"));
 
         if(entity instanceof Car carEntity) {
-            return new CarDTO(carEntity);
+            return vehicleMapper.toCarDto(carEntity);
         }
         else if(entity instanceof Motorcycle motorcycleEntity){
-            return new MotorcycleDTO(motorcycleEntity);
+            return vehicleMapper.toMotorcycleDto(motorcycleEntity);
         }
 
-        return new VehicleDTO(entity);
+        return vehicleMapper.toVehicleDto(entity);
     }
 
 
@@ -73,16 +82,14 @@ public class VehicleService {
         Motorcycle entity = repository.save(new Motorcycle(dto.getImg(), dto.getVehicleName(), dto.getBrand(), dto.getPlate(), dto.getManufactureYear(), dto.getVehicleStatus(), dto.getVehicleDescription(), dto.isAvailable(), dto.getRating(), /*dto.getVehicleType(),*/ true, null));
         repository. save(entity);
 
-        return new MotorcycleDTO(entity);
+        return vehicleMapper.toMotorcycleDto(entity);
     }
 
     @Transactional
     public CarDTO createCar(CarDTO dto) {
         Car carEntity = new Car(dto.getImg(), dto.getVehicleName(), dto.getBrand(), dto.getPlate(), dto.getManufactureYear(), dto.getVehicleStatus(), dto.getVehicleDescription(), dto.isAvailable(), dto.getRating(), dto.getNumberOfDoors(), dto.getTrunkSpace(), dto.isHasStep(), null);
         repository.save(carEntity);
-
-        CarDTO carDto = new CarDTO(carEntity);
-        return carDto;
+        return vehicleMapper.toCarDto(carEntity);
     }
 
     @Transactional
@@ -103,8 +110,14 @@ public class VehicleService {
         Optional<Car> optional = carRepository.findById(id);
         Car entity = optional.orElseThrow(() -> new ResourcesNotFoundException("Id not found"));
 
-        entity.setPricePerDay(dto.getPricePerDay());
-        entity.setPricePerHour(dto.getPricePerHour());
+        if(dto.getPricePerDay() != null){
+            entity.setPricePerDay(dto.getPricePerDay());
+        }
+
+        if(dto.getPricePerHour() != null || dto.getPricePerHour() != 0.0){
+            entity.setPricePerHour(dto.getPricePerHour());
+        }
+
         entity.setImg(dto.getImg());
         entity.setStatus(dto.getVehicleStatus());
         entity.setDescription(dto.getVehicleDescription());
@@ -112,16 +125,21 @@ public class VehicleService {
 
         carRepository.save(entity);
 
-        dto = new CarDTO(entity);
-        return dto;
+        return vehicleMapper.toCarDto(entity);
     }
 
     public MotorcycleDTO updateMotorcycle(Long id, MotorcycleDTO dto){
         Optional<Motorcycle> optional = motorcycleRepository.findById(id);
         Motorcycle entity = optional.orElseThrow(() -> new ResourcesNotFoundException("Id not found"));
 
-        entity.setPricePerDay(dto.getPricePerDay());
-        entity.setPricePerHour(dto.getPricePerHour());
+        if(dto.getPricePerDay() != null){
+            entity.setPricePerDay(dto.getPricePerDay());
+        }
+
+        if(dto.getPricePerHour() != null || dto.getPricePerHour() != 0.0){
+            entity.setPricePerHour(dto.getPricePerHour());
+        }
+
         entity.setImg(dto.getImg());
         entity.setStatus(dto.getVehicleStatus());
         entity.setDescription(dto.getVehicleDescription());
@@ -129,8 +147,7 @@ public class VehicleService {
 
         motorcycleRepository.save(entity);
 
-        dto = new MotorcycleDTO(entity);
-        return dto;
+        return vehicleMapper.toMotorcycleDto(entity);
     }
 
     @Transactional
@@ -148,7 +165,7 @@ public class VehicleService {
 
         rental = rentalRepository.save(rental);
         repository.save(vehicle);
-        return new RentalDTO(rental);
+        return rentalMapper.toRentalDto(rental);
     }
 
     @Transactional
@@ -161,7 +178,7 @@ public class VehicleService {
         List<Rental> allRentals = rentalRepository.findAll();
         List<Rental> vehicleRentals = new ArrayList<>();
 
-        // =>  Get all rentals with the vehicle
+        // =>  Get all vehicle's rentals
         for(Rental rental : allRentals){
             if(rental.getRentedVehicle().getId() == id){
                 vehicleRentals.add(rental);

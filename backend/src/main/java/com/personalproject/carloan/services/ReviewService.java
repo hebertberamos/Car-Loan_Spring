@@ -4,6 +4,7 @@ import com.personalproject.carloan.dtos.ReviewDTO;
 import com.personalproject.carloan.entities.Review;
 import com.personalproject.carloan.entities.User;
 import com.personalproject.carloan.entities.Vehicle;
+import com.personalproject.carloan.mappers.ReviewMapper;
 import com.personalproject.carloan.repositories.ReviewRepository;
 import com.personalproject.carloan.repositories.VehicleRepository;
 import com.personalproject.carloan.services.exceptions.DatabaseException;
@@ -30,10 +31,16 @@ public class ReviewService {
     @Autowired
     private AuthenticationService authenticationService;
 
+    private final ReviewMapper reviewMapper;
+
+    public ReviewService(ReviewMapper reviewMapper){
+        this.reviewMapper = reviewMapper;
+    }
+
     @Transactional(readOnly = true)
     public List<ReviewDTO> findAll(){
         List<Review> reviews = repository.findAll();
-        return reviews.stream().map(x -> new ReviewDTO(x)).collect(Collectors.toList());
+        return reviews.stream().map(reviewMapper::toReviewDto).collect(Collectors.toList());
     }
 
     @Transactional
@@ -46,7 +53,7 @@ public class ReviewService {
 
                 List<ReviewDTO> reviewsDto = new ArrayList<>();
                 for (Review r : reviews) {
-                    ReviewDTO reviewDTO = new ReviewDTO(r);
+                    ReviewDTO reviewDTO = reviewMapper.toReviewDto(r);
                     reviewsDto.add(reviewDTO);
                 }
 
@@ -70,7 +77,7 @@ public class ReviewService {
 
         repository.save(entity);
 
-        return new ReviewDTO(entity);
+        return reviewMapper.toReviewDto(entity);
     }
 
 }

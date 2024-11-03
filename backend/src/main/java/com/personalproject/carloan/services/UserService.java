@@ -4,6 +4,7 @@ import com.personalproject.carloan.dtos.UserDTO;
 import com.personalproject.carloan.dtos.UserInsertDTO;
 import com.personalproject.carloan.dtos.UserUpdateDTO;
 import com.personalproject.carloan.entities.User;
+import com.personalproject.carloan.mappers.UserMapper;
 import com.personalproject.carloan.repositories.UserRepository;
 import com.personalproject.carloan.services.exceptions.ForbiddenException;
 import com.personalproject.carloan.services.exceptions.ResourcesNotFoundException;
@@ -22,16 +23,20 @@ public class UserService {
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
-
     @Autowired
     private UserRepository repository;
-
     @Autowired
     private AuthenticationService authenticationService;
 
+    private final UserMapper userMapper;
+
+    public UserService(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
+
     public List<UserDTO>loadAllUsers(){
         List<User> users = repository.findAll();
-        return users.stream().map(x -> new UserDTO(x)).collect(Collectors.toList());
+        return users.stream().map(userMapper::toUserDto).collect(Collectors.toList());
     }
 
     @Transactional
@@ -45,7 +50,7 @@ public class UserService {
 
         Optional<User> optional = repository.findById(id);
         User user = optional.orElseThrow(() -> new ResourcesNotFoundException("Id not found"));
-        return new UserDTO(user);
+        return userMapper.toUserDto(user);
     }
 
     @Transactional
@@ -57,7 +62,7 @@ public class UserService {
         user.setAge(dto.getAge());
 
         repository.save(user);
-        return new UserDTO(user);
+        return userMapper.toUserDto(user);
     }
 
     @Transactional
@@ -71,7 +76,7 @@ public class UserService {
 
             repository.save(user);
 
-            return new UserDTO(user);
+            return userMapper.toUserDto(user);
         } catch (ForbiddenException e){
             System.out.println("Error!\nTrying to verify the user. " + e.getMessage());
         }
@@ -87,7 +92,6 @@ public class UserService {
 
         repository.save(user);
 
-        UserInsertDTO userInsertEntity = new UserInsertDTO(user);
-        return userInsertEntity;
+        return userMapper.toUserInsertDto(user);
     }
 }
