@@ -10,20 +10,26 @@ import com.personalproject.carloan.mappers.UserMapper;
 import com.personalproject.carloan.repositories.RentalRepository;
 import com.personalproject.carloan.repositories.UserRepository;
 import com.personalproject.carloan.repositories.VehicleRepository;
+import com.personalproject.carloan.services.exceptions.NotAvailableVehicleException;
 import com.personalproject.carloan.services.exceptions.OutOfWorkingHoursException;
 import com.personalproject.carloan.services.exceptions.ResourcesNotFoundException;
 import com.personalproject.carloan.services.exceptions.UnauthorizedException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.springframework.boot.autoconfigure.web.format.DateTimeFormatters;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -57,17 +63,24 @@ public class RentalService {
         checkMoment(rentalDto.getCheckout());
 
         if(rentalDto.getCheckin().isBefore(rentalDto.getCheckout())){
-            Rental rental = new Rental();
-            rental.setCheckin(rentalDto.getCheckin());
-            rental.setCheckout(rentalDto.getCheckout());
-            rental.setRefundMoment(null);
-            rental.setRunning(true);
-            rental.setUser(user);
-            rental.setRentedVehicle(vehicle);
-            rental.setRentalValue(rentalAmount);
+            if(vehicle.isAvailable()) {
+                Rental rental = new Rental();
+                rental.setCheckin(rentalDto.getCheckin());
+                rental.setCheckout(rentalDto.getCheckout());
+                rental.setRefundMoment(null);
+                rental.setRunning(true);
+                rental.setUser(user);
+                rental.setRentedVehicle(vehicle);
+                rental.setRentalValue(rentalAmount);
 
-            return repository.save(rental);
+                return repository.save(rental);
+            }
+            else {
+                DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yy - HH:mm").withZone(ZoneId.systemDefault());
+                String formatDate = dateTimeFormatter.format(vehicle.getRental().getCheckout());
 
+                throw new NotAvailableVehicleException("The vehicle is not available... This vehicle is available just (" + formatDate + ") Fell free to choice another one available vehicle!");
+            }
         }
 
         throw new OutOfWorkingHoursException("Checkin never can be after checkout");

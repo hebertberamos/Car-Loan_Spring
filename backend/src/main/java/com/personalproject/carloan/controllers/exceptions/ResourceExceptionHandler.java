@@ -1,9 +1,6 @@
 package com.personalproject.carloan.controllers.exceptions;
 
-import com.personalproject.carloan.services.exceptions.DatabaseException;
-import com.personalproject.carloan.services.exceptions.ForbiddenException;
-import com.personalproject.carloan.services.exceptions.OutOfWorkingHoursException;
-import com.personalproject.carloan.services.exceptions.ResourcesNotFoundException;
+import com.personalproject.carloan.services.exceptions.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -84,6 +81,17 @@ public class ResourceExceptionHandler {
         err.setTimestamp(Instant.now());
         err.setStatus(status.value());
         err.setError("The date chosen for the rental is not compatible with the system");
+        err.setPath(request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<StandardError> notAvailableVehicle(NotAvailableVehicleException exception, HttpServletRequest request){
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        StandardError err = new StandardError();
+        err.setTimestamp(Instant.now());
+        err.setStatus(status.value());
+        err.setError("ERROR! " + exception.getMessage());
         err.setPath(request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }

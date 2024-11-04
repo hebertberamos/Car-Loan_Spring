@@ -71,14 +71,10 @@ public class VehicleController {
     }
 
     @PostMapping(value = "/{id}/create/rental")
-    public ResponseEntity<ShowRentalToUser> createRentalByVehicle(@PathVariable Long id, @RequestBody RentalDTO rentalDto) throws Exception {
+    public ResponseEntity<ShowRentalToUser> createRentalByVehicle(@PathVariable Long id, @RequestBody RentalDTO rentalDto){
         ShowRentalToUser rentalResponse = new ShowRentalToUser();
-        try {
-            rentalResponse = service.createRentalByVehicle(id, rentalDto);
-        }
-        catch(Exception e){
-            throw new OutOfWorkingHoursException(e.getMessage());
-        }
+
+        rentalResponse = service.createRentalByVehicle(id, rentalDto);
 
         return ResponseEntity.ok().body(rentalResponse);
 
