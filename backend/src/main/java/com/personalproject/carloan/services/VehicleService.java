@@ -164,8 +164,6 @@ public class VehicleService {
         vehicle.setAvailable(false);
         repository.save(vehicle);
 
-        rental = rentalRepository.save(rental);
-
         ShowRentalToUser rentalResponse = new ShowRentalToUser(rental);
         return rentalResponse;
     }

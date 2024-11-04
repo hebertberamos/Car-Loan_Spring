@@ -20,6 +20,13 @@ public class ShowVehicleToRental {
         rating = entity.getRating();
     }
 
+    public ShowVehicleToRental(VehicleDTO dto) {
+        name = dto.getVehicleName();
+        brand = dto.getBrand();
+        plate = dto.getPlate();
+        rating = dto.getRating();
+    }
+
     public String getName() {
         return name;
     }

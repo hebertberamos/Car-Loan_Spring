@@ -8,8 +8,13 @@ import com.personalproject.carloan.entities.Vehicle;
 import com.personalproject.carloan.mappers.RentalMapper;
 import com.personalproject.carloan.mappers.UserMapper;
 import com.personalproject.carloan.repositories.RentalRepository;
+import com.personalproject.carloan.repositories.UserRepository;
 import com.personalproject.carloan.repositories.VehicleRepository;
+import com.personalproject.carloan.services.exceptions.OutOfWorkingHoursException;
 import com.personalproject.carloan.services.exceptions.ResourcesNotFoundException;
+import com.personalproject.carloan.services.exceptions.UnauthorizedException;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -31,6 +36,9 @@ public class RentalService {
     private VehicleRepository vehicleRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private AuthenticationService authenticationService;
 
     @Autowired
@@ -42,7 +50,7 @@ public class RentalService {
         this.rentalMapper = rentalMapper;
     }
 
-    public Rental createRental(RentalDTO rentalDto, Vehicle vehicle, User user) throws Exception {
+    public Rental createRental(RentalDTO rentalDto, Vehicle vehicle, User user) throws OutOfWorkingHoursException {
         double rentalAmount = rentalCalculator.calculateRentalValue(rentalDto.getCheckin(), rentalDto.getCheckout(), vehicle.getPricePerHour(), vehicle.getPricePerDay());
 
         checkMoment(rentalDto.getCheckin());
@@ -58,13 +66,36 @@ public class RentalService {
             rental.setRentedVehicle(vehicle);
             rental.setRentalValue(rentalAmount);
 
-            return rental;
+            return repository.save(rental);
+
         }
 
-        throw new Exception("Checkin never can be after checkout");
+        throw new OutOfWorkingHoursException("Checkin never can be after checkout");
     }
 
-    // Buscando pelo id
+
+    @Transactional
+    public RentalDTO createNewRentalToOtherUser(Long vehicleId, Long userId, RentalDTO rentalDto) {
+        try{
+            authenticationService.validateAdminRole(userId);
+
+            User user = userRepository.findById(userId).orElseThrow(() -> new ResourcesNotFoundException("User not found"));
+            Optional<Vehicle> optional = vehicleRepository.findById(vehicleId);
+            Vehicle vehicle = optional.orElseThrow(() -> new ResourcesNotFoundException("Vehicle not found"));
+
+            Rental rental = this.createRental(rentalDto, vehicle, user);
+
+            return new RentalDTO(rental);
+        }
+        catch(NullPointerException e){
+            throw new UnauthorizedException("Error!! You trying to do something you are note able!\nJust ADM can see this\n" + e.getMessage());
+        }
+        catch (OutOfWorkingHoursException e) {
+            throw new OutOfWorkingHoursException("Erro!! \n" + e.getMessage());
+        }
+    }
+
+
     @Transactional(readOnly = true)
     public RentalDTO findById(Long id){
         Optional<Rental> optional = repository.findById(id);
@@ -99,7 +130,7 @@ public class RentalService {
         return null;
     }
 
-    private static boolean checkMoment(Instant moment) throws Exception {
+    private static boolean checkMoment(Instant moment) throws OutOfWorkingHoursException {
         LocalTime start = LocalTime.of(8,0);
         LocalTime end = LocalTime.of(18, 0);
 
@@ -112,17 +143,17 @@ public class RentalService {
         // Verify if the rental date is after now
         if(momentDate.isAfter(actualDate)){
             if(time.isBefore(start) || time.isAfter(end)){
-                throw new Exception("This time can not be resolved");
+                throw new OutOfWorkingHoursException("This time can not be resolved");
             }
             return true;
         // Verify if the rental is today, so need to verify if the hour is after the current hour.
         } else if(momentDate.isEqual(actualDate)){
             if(time.isBefore(start) || time.isAfter(end) || time.isBefore(timeNow)){
-                throw new Exception("This time can not be resolved");
+                throw new OutOfWorkingHoursException("This time can not be resolved");
             }
             return true;
         } else {
-            throw new Exception("This time can not be resolved");
+            throw new OutOfWorkingHoursException("This time can not be resolved");
         }
     }
 }

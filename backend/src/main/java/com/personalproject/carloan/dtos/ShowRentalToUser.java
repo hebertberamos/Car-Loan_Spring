@@ -40,6 +40,14 @@ public class ShowRentalToUser {
         vehicle = new ShowVehicleToRental(entity.getRentedVehicle());
     }
 
+    public ShowRentalToUser (RentalDTO dto){
+        checkin = dto.getCheckin();
+        checkout = dto.getCheckout();
+        rentalValue = dto.getRentalValue();
+        user = new ShowUserToRental(dto.getUser());
+        vehicle = new ShowVehicleToRental(dto.getVehicle());
+    }
+
     public Instant getCheckin() {
         return checkin;
     }

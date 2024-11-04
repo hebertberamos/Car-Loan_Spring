@@ -45,6 +45,14 @@ public class AuthenticationService implements UserDetailsService {
         }
     }
 
+    public void validateAdminRole(Long id){
+        User user = authenticated();
+
+        if(!user.hasRoleAdmin() == true){
+            throw new ForbiddenException("Access danied");
+        }
+    }
+
     // =>  Method to identify if User are self id or ADMIN
     public void validateSelfOrAdmin(Long id){
         User user = authenticated();

@@ -16,6 +16,12 @@ public class ShowUserToRental {
         this.cpf = user.getCpf();
     }
 
+    public ShowUserToRental(UserDTO dto){
+        this.name = dto.getName();
+        this.email = dto.getEmail();
+        this.cpf = dto.getCpf();
+    }
+
 
     public String getName() {
         return name;
