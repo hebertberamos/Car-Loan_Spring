@@ -56,8 +56,8 @@ public class RentalService {
     public Rental createRental(RentalDTO rentalDto, Vehicle vehicle, User user) throws OutOfWorkingHoursException {
         double rentalAmount = rentalCalculator.calculateRentalValue(rentalDto.getCheckin(), rentalDto.getCheckout(), vehicle.getPricePerHour(), vehicle.getPricePerDay());
 
-//        checkMoment(rentalDto.getCheckin());
-//        checkMoment(rentalDto.getCheckout());
+        checkMoment(rentalDto.getCheckin());
+        checkMoment(rentalDto.getCheckout());
 
         if(rentalDto.getCheckin().isBefore(rentalDto.getCheckout())){
             if(vehicle.isAvailable()) {
@@ -140,40 +140,32 @@ public class RentalService {
         return null;
     }
 
-//    private static void checkMoment(Instant moment) throws OutOfWorkingHoursException {
-//        LocalTime start = LocalTime.of(8,0);
-//        LocalTime end = LocalTime.of(18, 0);
-//
-//        LocalDateTime momentDateTime = moment.atZone(ZoneId.systemDefault()).toLocalDateTime();
-//
-////        LocalDate momentDate = moment.atZone(ZoneId.systemDefault()).toLocalDate();
-//        LocalDate actualDate = LocalDate.now();
-//
-////        LocalDateTime time = moment.atZone(ZoneId.systemDefault()).toLocalDateTime();
-//        LocalTime timeNow = LocalTime.now();
-//
-//        // Verify if the rental date is after now
-//        if(momentDateTime.toLocalDate().isAfter(actualDate)){
-//            if(momentDateTime.toLocalTime().isBefore(start) || momentDateTime.toLocalTime().isAfter(end)){
-//                throw new OutOfWorkingHoursException("This time can not be resolved");
-//            }
-////            return momentDateTime;
-//        // Verify if the rental is today, so need to verify if the hour is after the current hour.
-//        } else if(momentDateTime.toLocalDate().isEqual(actualDate)){
-//            if(momentDateTime.toLocalTime().isBefore(start) || momentDateTime.toLocalTime().isAfter(end) || momentDateTime.toLocalTime().isBefore(timeNow)){
-//                throw new OutOfWorkingHoursException("This time can not be resolved");
-//            }
-////            return momentDateTime;
-//        } else {
-//            throw new OutOfWorkingHoursException("This time can not be resolved");
-//        }
-//    }
+    private static void checkMoment(Instant moment) throws OutOfWorkingHoursException {
+        LocalTime start = LocalTime.of(8,0);
+        LocalTime end = LocalTime.of(18, 0);
 
+        LocalDateTime momentDateTime = moment.atZone(ZoneId.systemDefault()).toLocalDateTime();
 
-//    Verify if doesn't already exist a rental to the vehicle with some date between checkin and checkout that was chosen
-    private boolean checkRentals(Vehicle vehicle, Instant checkin, Instant checkout){
+//        LocalDate momentDate = moment.atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate actualDate = LocalDate.now();
 
+//        LocalDateTime time = moment.atZone(ZoneId.systemDefault()).toLocalDateTime();
+        LocalTime timeNow = LocalTime.now();
 
-        return false;
+        // Verify if the rental date is after now
+        if(momentDateTime.toLocalDate().isAfter(actualDate)){
+            if(momentDateTime.toLocalTime().isBefore(start) || momentDateTime.toLocalTime().isAfter(end)){
+                throw new OutOfWorkingHoursException("This time can not be resolved");
+            }
+//            return momentDateTime;
+        // Verify if the rental is today, so need to verify if the hour is after the current hour.
+        } else if(momentDateTime.toLocalDate().isEqual(actualDate)){
+            if(momentDateTime.toLocalTime().isBefore(start) || momentDateTime.toLocalTime().isAfter(end) || momentDateTime.toLocalTime().isBefore(timeNow)){
+                throw new OutOfWorkingHoursException("This time can not be resolved");
+            }
+//            return momentDateTime;
+        } else {
+            throw new OutOfWorkingHoursException("This time can not be resolved");
+        }
     }
 }
