@@ -161,9 +161,6 @@ public class VehicleService {
 
         Rental rental = rentalService.createRental(rentalDto, vehicle, user);
 
-        vehicle.setAvailable(false);
-        repository.save(vehicle);
-
         return new ShowRentalToUser(rental);
     }
 

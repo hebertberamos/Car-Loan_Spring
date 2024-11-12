@@ -40,7 +40,7 @@ public class VehicleController {
         return ResponseEntity.ok().body(dto);
     }
 
-    @PostMapping(value = "/insert/motorcycle")
+    @PostMapping(value = "/leinsert/motorcyc")
     public ResponseEntity<MotorcycleDTO> insertMotorcycle(@RequestBody MotorcycleDTO dto){
         dto = service.createMotorcycle(dto);
         return ResponseEntity.ok().body(dto);
