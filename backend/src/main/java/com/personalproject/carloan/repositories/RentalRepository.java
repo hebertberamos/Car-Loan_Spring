@@ -21,6 +21,7 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
             @Param("minus") Instant minus);
 
 
-    @Query("SELECT r FROM Rental r WHERE FUNCTION('DATE', r.checkout) = CURRENT_DATE")
+    // only the rentals that is running, the checkout date is today or the checkout date has passed and was not returned.
+    @Query("SELECT r FROM Rental r WHERE ((FUNCTION('DATE', r.checkout) = CURRENT_DATE) OR (r.checkout < CURRENT_DATE)) AND r.running = true AND r.refundMoment IS NULL")
     Page<Rental> findAllFinishToday(Pageable pageable);
 }

@@ -15,7 +15,6 @@ import com.personalproject.carloan.services.exceptions.ResourcesNotFoundExceptio
 import com.personalproject.carloan.services.exceptions.UnauthorizedException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -23,8 +22,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -54,8 +51,8 @@ public class RentalService {
     public Rental createRental(RentalDTO rentalDto, Vehicle vehicle, User user) throws OutOfWorkingHoursException {
         double rentalAmount = rentalCalculator.calculateRentalValue(rentalDto.getCheckin(), rentalDto.getCheckout(), vehicle.getPricePerHour(), vehicle.getPricePerDay());
 
-        checkMoment(rentalDto.getCheckin());
-        checkMoment(rentalDto.getCheckout());
+//        checkMoment(rentalDto.getCheckin());
+//        checkMoment(rentalDto.getCheckout());
 
         if(rentalDto.getCheckin().isBefore(rentalDto.getCheckout())){
             if(vehicle.isAvailable()) {
@@ -168,32 +165,32 @@ public class RentalService {
     }
 
 
-    private static void checkMoment(Instant moment) throws OutOfWorkingHoursException {
-        LocalTime start = LocalTime.of(8,0);
-        LocalTime end = LocalTime.of(18, 0);
-
-        LocalDateTime momentDateTime = moment.atZone(ZoneId.systemDefault()).toLocalDateTime();
-
-//        LocalDate momentDate = moment.atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate actualDate = LocalDate.now();
-
-//        LocalDateTime time = moment.atZone(ZoneId.systemDefault()).toLocalDateTime();
-        LocalTime timeNow = LocalTime.now();
-
-        // Verify if the rental date is after now
-        if(momentDateTime.toLocalDate().isAfter(actualDate)){
-            if(momentDateTime.toLocalTime().isBefore(start) || momentDateTime.toLocalTime().isAfter(end)){
-                throw new OutOfWorkingHoursException("This time can not be resolved");
-            }
-//            return momentDateTime;
-        // Verify if the rental is today, so need to verify if the hour is after the current hour.
-        } else if(momentDateTime.toLocalDate().isEqual(actualDate)){
-            if(momentDateTime.toLocalTime().isBefore(start) || momentDateTime.toLocalTime().isAfter(end) || momentDateTime.toLocalTime().isBefore(timeNow)){
-                throw new OutOfWorkingHoursException("This time can not be resolved");
-            }
-//            return momentDateTime;
-        } else {
-            throw new OutOfWorkingHoursException("This time can not be resolved");
-        }
-    }
+//    private static void checkMoment(Instant moment) throws OutOfWorkingHoursException {
+//        LocalTime start = LocalTime.of(8,0);
+//        LocalTime end = LocalTime.of(18, 0);
+//
+//        LocalDateTime momentDateTime = moment.atZone(ZoneId.systemDefault()).toLocalDateTime();
+//
+////        LocalDate momentDate = moment.atZone(ZoneId.systemDefault()).toLocalDate();
+//        LocalDate actualDate = LocalDate.now();
+//
+////        LocalDateTime time = moment.atZone(ZoneId.systemDefault()).toLocalDateTime();
+//        LocalTime timeNow = LocalTime.now();
+//
+//        // Verify if the rental date is after now
+//        if(momentDateTime.toLocalDate().isAfter(actualDate)){
+//            if(momentDateTime.toLocalTime().isBefore(start) || momentDateTime.toLocalTime().isAfter(end)){
+//                throw new OutOfWorkingHoursException("This time can not be resolved");
+//            }
+////            return momentDateTime;
+//        // Verify if the rental is today, so need to verify if the hour is after the current hour.
+//        } else if(momentDateTime.toLocalDate().isEqual(actualDate)){
+//            if(momentDateTime.toLocalTime().isBefore(start) || momentDateTime.toLocalTime().isAfter(end) || momentDateTime.toLocalTime().isBefore(timeNow)){
+//                throw new OutOfWorkingHoursException("This time can not be resolved");
+//            }
+////            return momentDateTime;
+//        } else {
+//            throw new OutOfWorkingHoursException("This time can not be resolved");
+//        }
+//    }
 }
