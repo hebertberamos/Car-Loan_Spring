@@ -21,11 +21,11 @@ public class ReviewController {
     @Autowired
     private ReviewService service;
 
-    @GetMapping
-    public ResponseEntity<List<ReviewDTO>> findAll(){
-        List<ReviewDTO> dtos = service.findAll();
-        return ResponseEntity.ok().body(dtos);
-    }
+//    @GetMapping
+//    public ResponseEntity<List<ReviewDTO>> findAll(){
+//        List<ReviewDTO> dtos = service.findAll();
+//        return ResponseEntity.ok().body(dtos);
+//    }
 
     @GetMapping(value = "/vehicle/{vehicleId}")
     public ResponseEntity<List<ReviewDTO>> findAllByVehicle(@PathVariable Long vehicleId){

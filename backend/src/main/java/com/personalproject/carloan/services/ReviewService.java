@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,7 +39,7 @@ public class ReviewService {
     @Transactional(readOnly = true)
     public List<ReviewDTO> findAll(){
         List<Review> reviews = repository.findAll();
-        return reviews.stream().map(reviewMapper::toReviewDto).collect(Collectors.toList());
+        return reviews.stream().map(x -> reviewMapper.toReviewDto(x, x.getAuthor().getId(), x.getVehicle().getId())).collect(Collectors.toList());
     }
 
     @Transactional
@@ -53,7 +52,7 @@ public class ReviewService {
 
                 List<ReviewDTO> reviewsDto = new ArrayList<>();
                 for (Review r : reviews) {
-                    ReviewDTO reviewDTO = reviewMapper.toReviewDto(r);
+                    ReviewDTO reviewDTO = reviewMapper.toReviewDto(r, r.getAuthor().getId(), r.getVehicle().getId());
                     reviewsDto.add(reviewDTO);
                 }
 
@@ -77,7 +76,7 @@ public class ReviewService {
 
         repository.save(entity);
 
-        return reviewMapper.toReviewDto(entity);
+        return reviewMapper.toReviewDto(entity, entity.getAuthor().getId(), entity.getVehicle().getId());
     }
 
 }

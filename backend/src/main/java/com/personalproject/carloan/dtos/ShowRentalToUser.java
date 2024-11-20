@@ -1,10 +1,8 @@
 package com.personalproject.carloan.dtos;
 
 import com.personalproject.carloan.entities.Rental;
-import com.personalproject.carloan.entities.User;
 import com.personalproject.carloan.entities.Vehicle;
 import com.personalproject.carloan.mappers.UserMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Instant;
 

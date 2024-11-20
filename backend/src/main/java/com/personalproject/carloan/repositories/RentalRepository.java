@@ -1,6 +1,8 @@
 package com.personalproject.carloan.repositories;
 
 import com.personalproject.carloan.entities.Rental;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,4 +19,8 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
     List<Rental> findRentalsByCheckinDateTime(
             @Param("plus") Instant plus,
             @Param("minus") Instant minus);
+
+
+    @Query("SELECT r FROM Rental r WHERE FUNCTION('DATE', r.checkout) = CURRENT_DATE")
+    Page<Rental> findAllFinishToday(Pageable pageable);
 }

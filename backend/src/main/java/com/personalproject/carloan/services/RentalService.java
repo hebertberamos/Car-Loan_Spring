@@ -6,7 +6,6 @@ import com.personalproject.carloan.entities.Rental;
 import com.personalproject.carloan.entities.User;
 import com.personalproject.carloan.entities.Vehicle;
 import com.personalproject.carloan.mappers.RentalMapper;
-import com.personalproject.carloan.mappers.UserMapper;
 import com.personalproject.carloan.repositories.RentalRepository;
 import com.personalproject.carloan.repositories.UserRepository;
 import com.personalproject.carloan.repositories.VehicleRepository;
@@ -14,19 +13,18 @@ import com.personalproject.carloan.services.exceptions.NotAvailableVehicleExcept
 import com.personalproject.carloan.services.exceptions.OutOfWorkingHoursException;
 import com.personalproject.carloan.services.exceptions.ResourcesNotFoundException;
 import com.personalproject.carloan.services.exceptions.UnauthorizedException;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import org.springframework.boot.autoconfigure.web.format.DateTimeFormatters;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -62,8 +60,8 @@ public class RentalService {
         if(rentalDto.getCheckin().isBefore(rentalDto.getCheckout())){
             if(vehicle.isAvailable()) {
                 Rental rental = new Rental();
-                rental.setCheckin(rentalDto.getCheckin());  //checkinLocalDateTime.atZone(zoneI).toInstant()
-                rental.setCheckout(rentalDto.getCheckout()); //checkoutLocalDateTime.atZone(zoneI).toInstant()
+                rental.setCheckin(rentalDto.getCheckin());
+                rental.setCheckout(rentalDto.getCheckout());
                 rental.setRefundMoment(null);
                 rental.setRunning(false);
                 rental.setUser(user);
@@ -87,7 +85,7 @@ public class RentalService {
     @Transactional
     public RentalDTO createNewRentalToOtherUser(Long vehicleId, Long userId, RentalDTO rentalDto) {
         try{
-            authenticationService.validateAdminRole(userId);
+            authenticationService.validateAdminRole();
 
             User user = userRepository.findById(userId).orElseThrow(() -> new ResourcesNotFoundException("User not found"));
             Optional<Vehicle> optional = vehicleRepository.findById(vehicleId);
@@ -107,10 +105,10 @@ public class RentalService {
 
 
     @Transactional(readOnly = true)
-    public RentalDTO findById(Long id){
+    public ShowRentalToUser findById(Long id){
         Optional<Rental> optional = repository.findById(id);
         Rental rental = optional.orElseThrow(() -> new ResourcesNotFoundException("Id not found"));
-        return rentalMapper.toRentalDto(rental);
+        return new ShowRentalToUser(rental);
     }
 
     @Transactional
@@ -139,6 +137,36 @@ public class RentalService {
 
         return null;
     }
+
+    public Page<ShowRentalToUser> findAllFinishToday(Pageable pageable){
+        Page<Rental> rentalEntities = repository.findAllFinishToday(pageable);
+        return rentalEntities.map(x -> rentalMapper.toShowRentalToUser(x, new ShowUserToRental(x.getUser()), new ShowVehicleToRental(x.getRentedVehicle())));
+    }
+
+    public RentalDTO finishRental(Long id){
+        try {
+            authenticationService.validateAdminRole();
+
+            Rental rentalEntity = repository.findById(id).orElseThrow(() -> new ResourcesNotFoundException("id " + id + " not found"));
+            Vehicle vehicleEntity = vehicleRepository.findById(rentalEntity.getRentedVehicle().getId()).orElseThrow(() -> new ResourcesNotFoundException("vehicle id " + id + " not found"));
+
+            // update the vehicle available to true / update the rental running to false and the refund_moment adding the actual date.
+
+            vehicleEntity.setAvailable(true);
+
+            rentalEntity.setRunning(false);
+            rentalEntity.setRefundMoment(Instant.now());
+
+            vehicleRepository.save(vehicleEntity);
+            repository.save(rentalEntity);
+
+            return new RentalDTO(rentalEntity);
+        }
+        catch(UnauthorizedException e){
+            throw new UnauthorizedException("Error!! You trying to do something you are note able!\nJust ADM can see this\n" + e.getMessage());
+        }
+    }
+
 
     private static void checkMoment(Instant moment) throws OutOfWorkingHoursException {
         LocalTime start = LocalTime.of(8,0);

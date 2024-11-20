@@ -45,10 +45,10 @@ public class AuthenticationService implements UserDetailsService {
         }
     }
 
-    public void validateAdminRole(Long id){
+    public void validateAdminRole(){
         User user = authenticated();
 
-        if(!user.hasRoleAdmin() == true){
+        if(!user.hasRoleAdmin()){
             throw new ForbiddenException("Access danied");
         }
     }

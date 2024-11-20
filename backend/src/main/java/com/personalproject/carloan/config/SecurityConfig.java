@@ -37,6 +37,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/vehicles").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/vehicles/update/{id}").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/vehicles/delete/{id}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/rentals/{id}/finish").hasRole("ADMIN")
                         .anyRequest().permitAll())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
