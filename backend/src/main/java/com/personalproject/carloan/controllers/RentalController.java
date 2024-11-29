@@ -3,11 +3,14 @@ package com.personalproject.carloan.controllers;
 import com.personalproject.carloan.dtos.RentalDTO;
 import com.personalproject.carloan.dtos.ShowRentalToUser;
 import com.personalproject.carloan.services.RentalService;
+import com.personalproject.carloan.services.exceptions.OutOfWorkingHoursException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/rentals")
@@ -23,9 +26,32 @@ public class RentalController {
         return ResponseEntity.ok().body(dto);
     }
 
-    @GetMapping(value = "/all/current-date")
-    public ResponseEntity<Page<ShowRentalToUser>> findAllFinishToday(Pageable pageable){
-        return ResponseEntity.ok(service.findAllFinishToday(pageable));
+    @GetMapping(value = "/all")
+    public ResponseEntity<Page<ShowRentalToUser>> findAllFinishToday(
+            @RequestParam(value = "finishTodayOnly", defaultValue = "false") Boolean finishTodayOnly,
+            @RequestParam(value = "alreadyFinishedOnly", defaultValue = "false") Boolean alreadyFinishedOnly,
+            @RequestParam(value = "runningOnly", defaultValue = "false") Boolean runningOnly,
+            @RequestParam(required = false, value = "checkinDate", defaultValue = "") String checkinDate,
+            @RequestParam(required = false, value = "endDate", defaultValue = "") String endDate,
+            Pageable pageable){
+
+        LocalDate localDateCheckin = null;
+        LocalDate localDateEndDate = null;
+
+        if(!checkinDate.isEmpty() && endDate.isEmpty()){
+            localDateCheckin = LocalDate.parse(checkinDate);
+        }
+
+        if(!checkinDate.isEmpty() && !endDate.isEmpty()){
+            localDateCheckin = LocalDate.parse(checkinDate);
+            localDateEndDate = LocalDate.parse(endDate);
+        }
+
+        if(checkinDate.isEmpty() && !endDate.isEmpty()){
+            throw new OutOfWorkingHoursException("DEV: error when trying to add the endDate and not the checkinDate in rental's method findAll. (need to create a message to show to the user here)");
+        }
+
+        return ResponseEntity.ok(service.findRentals(finishTodayOnly, alreadyFinishedOnly, runningOnly, localDateCheckin, localDateEndDate, pageable));
     }
 
     @PutMapping(value = "/{id}")
