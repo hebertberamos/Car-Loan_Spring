@@ -25,6 +25,27 @@ public class RentalCalculator {
         return days * pricePerDay;
     }
 
+    public double calculateRefoundTax(Instant checkoutInstant, Instant refoundInstant, double rentalAmount){
+        double taxValue = 0.0;
+
+        if(checkoutInstant.isBefore(refoundInstant)){
+            Duration duration = Duration.between(checkoutInstant, refoundInstant);
+            long durationInt = duration.toMinutes();
+
+            if(duration.toMinutes() > 15 && duration.toMinutes() <= 30){
+                taxValue = calculateTheAmountTax(rentalAmount, 1);
+            }
+            else if(duration.toMinutes() > 30 && duration.toMinutes() <= 50){
+                taxValue = calculateTheAmountTax(rentalAmount, 2);
+            }
+            else if(duration.toMinutes() > 50){
+                taxValue = calculateTheAmountTax(rentalAmount, 3);
+            }
+        }
+
+        return taxValue;
+    }
+
     private int calculateHoursQuantity(Instant checkin, Instant checkout){
         int hours = 0;
         Duration duration = Duration.between(checkin, checkout);
@@ -42,12 +63,18 @@ public class RentalCalculator {
         return days;
     }
 
-    public static void main(String[] args) {
-        RentalCalculator calculator = new RentalCalculator();
+    private static double calculateTheAmountTax(double amount, int delayLevel){
 
-        double value = calculator.calculateRentalValue(Instant.now(), Instant.now().plus(2, ChronoUnit.DAYS), 100.00, 300.00);
-
-        System.out.println("Valor: " + value);
+        return switch (delayLevel) {
+            case 1 -> amount * 0.20;
+            case 2 -> amount * 0.35;
+            case 3 -> amount * 0.60;
+            default -> 0.0;
+        };
     }
 
+
+    public static void main(String[] args) {
+
+    }
 }

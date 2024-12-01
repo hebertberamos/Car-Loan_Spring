@@ -145,7 +145,7 @@ public class RentalService {
         try {
             authenticationService.validateAdminRole();
 
-            Rental rentalEntity = repository.findById(id).orElseThrow(() -> new ResourcesNotFoundException("id " + id + " not found"));
+            Rental rentalEntity = repository.findById(id).orElseThrow(() -> new ResourcesNotFoundException("Rental id " + id + " not found"));
             Vehicle vehicleEntity = vehicleRepository.findById(rentalEntity.getRentedVehicle().getId()).orElseThrow(() -> new ResourcesNotFoundException("vehicle id " + id + " not found"));
 
             vehicleEntity.setAvailable(true);
@@ -153,8 +153,14 @@ public class RentalService {
             rentalEntity.setRunning(false);
             rentalEntity.setRefundMoment(Instant.now());
 
+            double refundTax = rentalCalculator.calculateRefoundTax(rentalEntity.getCheckout(), rentalEntity.getRefundMoment(), rentalEntity.getRentalValue());
+            double totalRentalValue = rentalEntity.getRentalValue() + refundTax;
+
+            rentalEntity.setRentalValue(totalRentalValue);
+
             vehicleRepository.save(vehicleEntity);
             repository.save(rentalEntity);
+
 
             return new RentalDTO(rentalEntity);
         }
