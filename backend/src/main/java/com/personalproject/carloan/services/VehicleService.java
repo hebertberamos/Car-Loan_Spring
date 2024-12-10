@@ -152,8 +152,6 @@ public class VehicleService {
 
     @Transactional
     public ShowRentalToUser createRentalByVehicle(Long id, RentalDTO rentalDto) {
-
-        // =>  Identify the user making the request
         User user = authenticationService.authenticated();
 
         Optional<Vehicle> optional = repository.findById(id);

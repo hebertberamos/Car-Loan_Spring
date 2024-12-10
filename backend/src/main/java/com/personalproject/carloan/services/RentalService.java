@@ -2,6 +2,7 @@ package com.personalproject.carloan.services;
 
 import com.personalproject.carloan.calculators.RentalCalculator;
 import com.personalproject.carloan.dtos.*;
+import com.personalproject.carloan.entities.RentNote;
 import com.personalproject.carloan.entities.Rental;
 import com.personalproject.carloan.entities.User;
 import com.personalproject.carloan.entities.Vehicle;
@@ -9,6 +10,7 @@ import com.personalproject.carloan.mappers.RentalMapper;
 import com.personalproject.carloan.repositories.RentalRepository;
 import com.personalproject.carloan.repositories.UserRepository;
 import com.personalproject.carloan.repositories.VehicleRepository;
+import com.personalproject.carloan.senders.RentalDocumentMessageSender;
 import com.personalproject.carloan.services.exceptions.NotAvailableVehicleException;
 import com.personalproject.carloan.services.exceptions.OutOfWorkingHoursException;
 import com.personalproject.carloan.services.exceptions.ResourcesNotFoundException;
@@ -42,6 +44,9 @@ public class RentalService {
     @Autowired
     private RentalCalculator rentalCalculator;
 
+    @Autowired
+    private RentalDocumentMessageSender documentMessageSender;
+
     private final RentalMapper rentalMapper;
 
     public RentalService(RentalMapper rentalMapper) {
@@ -64,6 +69,30 @@ public class RentalService {
                 rental.setUser(user);
                 rental.setRentedVehicle(vehicle);
                 rental.setRentalValue(rentalAmount);
+
+                //Send the message (rent note) to the queue to process and generate the contract pdf file
+                ZoneId zoneId = ZoneId.systemDefault();
+
+                LocalDateTime checkinDateTime = LocalDateTime.ofInstant(rental.getCheckin(),zoneId);
+                LocalDateTime checkoutDateTime = LocalDateTime.ofInstant(rental.getCheckout(), zoneId);
+
+                RentNote rentNote = new RentNote(/*rental.getUser().getName(), rental.getUser().getEmail(), rental.getUser().getCpf(), rental.getRentedVehicle().getName(), rental.getRentedVehicle().getBrand(), rental.getRentedVehicle().getPlate(), checkinDateTime, checkoutDateTime, null, rental.getRentalValue(), null*/);
+                rentNote.setUserName(rental.getUser().getName());
+                rentNote.setUserEmail(rental.getUser().getEmail());
+                rentNote.setUserCpf(rental.getUser().getCpf());
+                rentNote.setVehicleName(rental.getRentedVehicle().getName());
+                rentNote.setVehicleBrand(rental.getRentedVehicle().getBrand());
+                rentNote.setVehiclePlate(rental.getRentedVehicle().getPlate());
+                rentNote.setRentalCheckin(checkinDateTime);
+                rentNote.setRentalCheckout(checkoutDateTime);
+                rentNote.setRefundMoment(null);
+                rentNote.setFirstRentalValue(rental.getRentalValue());
+                rentNote.setLastRentalValue(null);
+
+
+
+                documentMessageSender.feedDocumentGeneratorQueue(rentNote);
+                System.out.printf("INFO |-| Document %s - %s - %s created!", rental.getUser().getName(), rental.getUser().getCpf(), rental.getRentedVehicle().getName());
 
                 return repository.save(rental);
             }
