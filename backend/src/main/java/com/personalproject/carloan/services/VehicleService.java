@@ -19,9 +19,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class VehicleService {
@@ -58,28 +63,137 @@ public class VehicleService {
     public Page<VehicleDTO> findAll(boolean availableOnly, String brand, String vehicleName, Integer vehicleType, Pageable pageable){
 
         Page<Vehicle> page = repository.findVehicles(availableOnly, brand, vehicleName, vehicleType, pageable);
-        return page.map(x -> vehicleMapper.toVehicleDto(x));
+        return page.map(VehicleDTO::new);
     }
 
     @Transactional(readOnly = true)
-    public VehicleDTO findById(Long id){
+    public VehicleDTO findById(Long id) throws Exception {
         Optional<Vehicle> optional = repository.findById(id);
         Vehicle entity = optional.orElseThrow(() -> new ResourcesNotFoundException("Id not found"));
 
+        List<Rental> vehicleRentals = rentalRepository.findAllByVehicleId(entity.getId()); // all the vehicle rentals
+        List<LocalDate> datesBetweenCheckinAndCheckout = new ArrayList<>(); // all the dates that the vehicle is unavailable
+
+        ShowRentalToVehicle runningRental = null;
+
         if(entity instanceof Car carEntity) {
-            return vehicleMapper.toCarDto(carEntity);
+            CarDTO carDTO = new CarDTO(carEntity);
+            for (Rental r : vehicleRentals) {
+                ShowRentalToVehicle showRentalToVehicleEntity = new ShowRentalToVehicle(r);
+                generateRentals(r, showRentalToVehicleEntity, datesBetweenCheckinAndCheckout, runningRental, null, carDTO);
+            }
+
+            return carDTO;
         }
         else if(entity instanceof Motorcycle motorcycleEntity){
-            return vehicleMapper.toMotorcycleDto(motorcycleEntity);
+            MotorcycleDTO motorcycleDTO = new MotorcycleDTO(motorcycleEntity);
+
+            for(Rental r : vehicleRentals){
+                ShowRentalToVehicle showRentalToVehicleEntity = new ShowRentalToVehicle(r);
+                generateRentals(r, showRentalToVehicleEntity, datesBetweenCheckinAndCheckout, runningRental, motorcycleDTO, null);
+            }
+
+            return motorcycleDTO;
         }
 
-        return vehicleMapper.toVehicleDto(entity);
+        throw new Exception("TEST | the vehicle type was not found");
     }
 
+    private void generateRentals(Rental r, ShowRentalToVehicle showRentalToVehicleEntity, List<LocalDate> datesBetweenCheckinAndCheckout, ShowRentalToVehicle runningRental, MotorcycleDTO motorcycleDTO, CarDTO carDTO){
+//      CAR
+        if(carDTO != null && motorcycleDTO == null){
+            if(!r.isRunning() && r.getRefundMoment() == null){
+
+                //Get the checkin and checkout date (date and time) and all the dates that is between this two.
+                showRentalToVehicleEntity.setCheckinLocalDateTime(fromInstantToLocalDateTime(r.getCheckin()));
+                showRentalToVehicleEntity.setCheckoutLocalDateTime(fromInstantToLocalDateTime(r.getCheckout()));
+                datesBetweenCheckinAndCheckout = getDateBetween(fromInstantToLocalDateTime(r.getCheckin()), fromInstantToLocalDateTime(r.getCheckout()));
+
+                if(!datesBetweenCheckinAndCheckout.isEmpty()){
+                    for(LocalDate date : datesBetweenCheckinAndCheckout) {
+                        showRentalToVehicleEntity.getDatesBetweenCheckinAndCheckout().add(date);
+                    }
+                }
+
+                carDTO.getScheduledRentals().add(showRentalToVehicleEntity);
+            }
+            //Get the running rental if exists
+            else if(r.isRunning() && r.getRefundMoment() == null){
+                runningRental = new ShowRentalToVehicle(r);
+                runningRental.setCurrently(true);
+                runningRental.setCheckinLocalDateTime(fromInstantToLocalDateTime(r.getCheckin()));
+                runningRental.setCheckoutLocalDateTime(fromInstantToLocalDateTime(r.getCheckout()));
+                datesBetweenCheckinAndCheckout = getDateBetween(fromInstantToLocalDateTime(r.getCheckin()), fromInstantToLocalDateTime(r.getCheckout()));
+
+                if(!datesBetweenCheckinAndCheckout.isEmpty()){
+                    for(LocalDate date : datesBetweenCheckinAndCheckout) {
+                        runningRental.getDatesBetweenCheckinAndCheckout().add(date);
+                    }
+                }
+
+//                carDTO.setCurrentRental(runningRental);
+            }
+        }
+//      MOTORCYCLE
+        else if(motorcycleDTO != null && carDTO == null){
+            if(!r.isRunning() && r.getRefundMoment() == null){
+
+                //Get the checkin and checkout date (date and time) and all the dates that is between this two.
+                showRentalToVehicleEntity.setCheckinLocalDateTime(fromInstantToLocalDateTime(r.getCheckin()));
+                showRentalToVehicleEntity.setCheckoutLocalDateTime(fromInstantToLocalDateTime(r.getCheckout()));
+                datesBetweenCheckinAndCheckout = getDateBetween(fromInstantToLocalDateTime(r.getCheckin()), fromInstantToLocalDateTime(r.getCheckout()));
+
+                if(!datesBetweenCheckinAndCheckout.isEmpty()){
+                    for(LocalDate date : datesBetweenCheckinAndCheckout) {
+                        showRentalToVehicleEntity.getDatesBetweenCheckinAndCheckout().add(date);
+                    }
+                }
+
+                motorcycleDTO.getScheduledRentals().add(showRentalToVehicleEntity);
+            }
+            //Get the running rental if exists
+            else if(r.isRunning() && r.getRefundMoment() == null){
+                runningRental = new ShowRentalToVehicle(r);
+                runningRental.setCurrently(true);
+                runningRental.setCheckinLocalDateTime(fromInstantToLocalDateTime(r.getCheckin()));
+                runningRental.setCheckoutLocalDateTime(fromInstantToLocalDateTime(r.getCheckout()));
+                datesBetweenCheckinAndCheckout = getDateBetween(fromInstantToLocalDateTime(r.getCheckin()), fromInstantToLocalDateTime(r.getCheckout()));
+
+                if(!datesBetweenCheckinAndCheckout.isEmpty()){
+                    for(LocalDate date : datesBetweenCheckinAndCheckout) {
+                        runningRental.getDatesBetweenCheckinAndCheckout().add(date);
+                    }
+                }
+
+//                motorcycleDTO.setCurrentRental(runningRental);
+            }
+        }
+    }
+
+    private List<LocalDate> getDateBetween(LocalDateTime checkin, LocalDateTime checkout){
+        List<LocalDate> dates = new ArrayList<>();
+
+        LocalDate checkinDate = checkin.toLocalDate().plusDays(1);
+        LocalDate checkoutDate = checkout.toLocalDate();
+
+        while(checkinDate.isBefore(checkoutDate)){
+            dates.add(checkinDate);
+            checkinDate = checkinDate.plusDays(1);
+        }
+
+        return dates;
+    }
+
+    private LocalDateTime fromInstantToLocalDateTime(Instant instantDate){
+        ZoneId zoneId = ZoneId.systemDefault();
+        LocalDateTime responseDate = LocalDateTime.ofInstant(instantDate, zoneId);
+
+        return responseDate;
+    }
 
     @Transactional
     public MotorcycleDTO createMotorcycle(MotorcycleDTO dto){
-        Motorcycle entity = repository.save(new Motorcycle(dto.getImg(), dto.getVehicleName(), dto.getBrand(), dto.getPlate(), dto.getManufactureYear(), dto.getVehicleStatus(), dto.getVehicleDescription(), dto.isAvailable(), dto.getRating(), /*dto.getVehicleType(),*/ true, null));
+        Motorcycle entity = repository.save(new Motorcycle(dto.getImg(), dto.getVehicleName(), dto.getBrand(), dto.getPlate(), dto.getManufactureYear(), dto.getVehicleStatus(), dto.getVehicleDescription(), dto.isAvailable(), dto.getRating(), /*dto.getVehicleType(),*/ true/*, null*/));
         repository. save(entity);
 
         return vehicleMapper.toMotorcycleDto(entity);
@@ -87,9 +201,10 @@ public class VehicleService {
 
     @Transactional
     public CarDTO createCar(CarDTO dto) {
-        Car carEntity = new Car(dto.getImg(), dto.getVehicleName(), dto.getBrand(), dto.getPlate(), dto.getManufactureYear(), dto.getVehicleStatus(), dto.getVehicleDescription(), dto.isAvailable(), dto.getRating(), dto.getNumberOfDoors(), dto.getTrunkSpace(), dto.isHasStep(), null);
+        Car carEntity = new Car(dto.getImg(), dto.getVehicleName(), dto.getBrand(), dto.getPlate(), dto.getManufactureYear(), dto.getVehicleStatus(), dto.getVehicleDescription(), dto.isAvailable(), dto.getRating(), dto.getNumberOfDoors(), dto.getTrunkSpace(), dto.isHasStep()/*, null*/);
         repository.save(carEntity);
-        return vehicleMapper.toCarDto(carEntity);
+//        return vehicleMapper.toCarDto(carEntity);
+        return new CarDTO(carEntity);
     }
 
     @Transactional
@@ -125,7 +240,8 @@ public class VehicleService {
 
         carRepository.save(entity);
 
-        return vehicleMapper.toCarDto(entity);
+//        return vehicleMapper.toCarDto(entity);
+        return new CarDTO(entity);
     }
 
     public MotorcycleDTO updateMotorcycle(Long id, MotorcycleDTO dto){

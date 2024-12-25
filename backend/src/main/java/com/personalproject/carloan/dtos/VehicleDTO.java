@@ -1,9 +1,6 @@
 package com.personalproject.carloan.dtos;
 
-import com.personalproject.carloan.entities.Car;
-import com.personalproject.carloan.entities.Motorcycle;
-import com.personalproject.carloan.entities.Review;
-import com.personalproject.carloan.entities.Vehicle;
+import com.personalproject.carloan.entities.*;
 import com.personalproject.carloan.entities.enums.StatusVehicle;
 
 import java.util.ArrayList;
@@ -23,8 +20,9 @@ public class VehicleDTO {
     private Double pricePerDay;
     private boolean available;
     private Double rating;
-    private ShowRentalToVehicle rental;
-    private List<ShowReviewToVehicle> reviews = new ArrayList<>();
+    private ShowRentalToVehicle currentRental;
+    private final List<ShowRentalToVehicle> scheduledRentals = new ArrayList<>();
+    private final List<ShowReviewToVehicle> reviews = new ArrayList<>();
 
     public VehicleDTO() {}
 
@@ -42,16 +40,26 @@ public class VehicleDTO {
         pricePerDay = entity.getPricePerDay();
         available = entity.isAvailable();
         rating = entity.getRating();
-//        vehicleType = entity.getVehicleType();
 
         if(entity.getReviews() != null) {
             for(Review r : entity.getReviews()){
                 reviews.add(new ShowReviewToVehicle(r));
             }
         }
-        if(entity.getRental() != null) {
-            if (!entity.isAvailable() && entity.getRental().isRunning()) {
-                rental = new ShowRentalToVehicle(entity.getRental());
+//        if(entity.getCurrentRental() != null) {
+//            if (!entity.isAvailable() && entity.getCurrentRental().isRunning()) {
+//                currentRental = new ShowRentalToVehicle(entity.getCurrentRental());
+//            }
+//        }
+
+        List<Rental> rentals = entity.getScheduledRentals();
+        if(!rentals.isEmpty()){
+            for(Rental r : entity.getScheduledRentals()){
+                scheduledRentals.add(new ShowRentalToVehicle(r));
+
+                if(r.isRunning()){
+                    currentRental = new ShowRentalToVehicle(r);
+                }
             }
         }
     }
@@ -70,9 +78,15 @@ public class VehicleDTO {
                 reviews.add(new ShowReviewToVehicle(r));
             }
         }
-        if(entity.getRental() != null) {
-            if (!entity.isAvailable() &&  entity.getRental().isRunning()) {
-                rental = new ShowRentalToVehicle(entity.getRental());
+//        if(entity.getCurrentRental() != null) {
+//            if (!entity.isAvailable() &&  entity.getCurrentRental().isRunning()) {
+//                currentRental = new ShowRentalToVehicle(entity.getCurrentRental());
+//            }
+//        }
+
+        if(entity.getScheduledRentals() != null){
+            for(Rental r : entity.getScheduledRentals()){
+                scheduledRentals.add(new ShowRentalToVehicle(r));
             }
         }
     }
@@ -91,41 +105,47 @@ public class VehicleDTO {
                 reviews.add(new ShowReviewToVehicle(r));
             }
         }
-        if(entity.getRental() != null) {
-            if (!entity.isAvailable() &&  entity.getRental().isRunning()) {
-                rental = new ShowRentalToVehicle(entity.getRental());
+//        if(entity.getCurrentRental() != null) {
+//            if (!entity.isAvailable() &&  entity.getCurrentRental().isRunning()) {
+//                currentRental = new ShowRentalToVehicle(entity.getCurrentRental());
+//            }
+//        }
+
+        if(entity.getScheduledRentals() != null){
+            for(Rental r : entity.getScheduledRentals()){
+                scheduledRentals.add(new ShowRentalToVehicle(r));
             }
         }
     }
 
     // =>  Constructor to use in find all method
-    public VehicleDTO(Long vehicleId, String img, String vehicleName, String brand, StatusVehicle vehicleStatus, boolean available, Double rating, Double pricePerHour, Double pricePerDay) {
-        this.vehicleId = vehicleId;
-        this.img = img;
-        this.vehicleName = vehicleName;
-        this.brand = brand;
-        this.vehicleStatus = vehicleStatus;
-        this.available = available;
-        this.rating = rating;
-        this.pricePerHour = pricePerHour;
-        this.pricePerDay = pricePerDay;
-    }
+//    public VehicleDTO(Long vehicleId, String img, String vehicleName, String brand, StatusVehicle vehicleStatus, boolean available, Double rating, Double pricePerHour, Double pricePerDay) {
+//        this.vehicleId = vehicleId;
+//        this.img = img;
+//        this.vehicleName = vehicleName;
+//        this.brand = brand;
+//        this.vehicleStatus = vehicleStatus;
+//        this.available = available;
+//        this.rating = rating;
+//        this.pricePerHour = pricePerHour;
+//        this.pricePerDay = pricePerDay;
+//    }
 
-    public VehicleDTO(String img, String vehicleName, String brand, String plate, Integer manufactureYear, String vehicleDescription, boolean available, Double rating, ShowRentalToVehicle rental, List<ShowReviewToVehicle> reviews) {
-        this.img = img;
-        this.vehicleName = vehicleName;
-        this.brand = brand;
-        this.plate = plate;
-        this.manufactureYear = manufactureYear;
-        this.vehicleDescription = vehicleDescription;
-        this.available = available;
-        this.rating = rating;
-        this.rental = rental;
-
-        for(ShowReviewToVehicle rev : reviews){
-            reviews.add(rev);
-        }
-    }
+//    public VehicleDTO(String img, String vehicleName, String brand, String plate, Integer manufactureYear, String vehicleDescription, boolean available, Double rating/*, ShowRentalToVehicle rental*/, List<ShowReviewToVehicle> reviews) {
+//        this.img = img;
+//        this.vehicleName = vehicleName;
+//        this.brand = brand;
+//        this.plate = plate;
+//        this.manufactureYear = manufactureYear;
+//        this.vehicleDescription = vehicleDescription;
+//        this.available = available;
+//        this.rating = rating;
+////        this.currentRental = rental;
+//
+//        for(ShowReviewToVehicle rev : reviews){
+//            reviews.add(rev);
+//        }
+//    }
 
     public Long getId() {
         return vehicleId;
@@ -223,15 +243,17 @@ public class VehicleDTO {
         this.rating = rating;
     }
 
-    public ShowRentalToVehicle getRental() {
-        return rental;
+    public ShowRentalToVehicle getCurrentRental() {
+        return currentRental;
     }
 
-    public void setRental(ShowRentalToVehicle rental) {
-        this.rental = rental;
+    public void setCurrentRental(ShowRentalToVehicle currentRental) {
+        this.currentRental = currentRental;
     }
 
     public List<ShowReviewToVehicle> getReviews() {
         return reviews;
     }
+
+    public List<ShowRentalToVehicle> getScheduledRentals(){return scheduledRentals;}
 }

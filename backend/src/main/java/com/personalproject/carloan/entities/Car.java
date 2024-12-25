@@ -14,8 +14,8 @@ public class Car extends Vehicle{
 
     public Car() {}
     
-    public Car (String img, String name, String brand, String plate, Integer manufactureYear, StatusVehicle vehicleStatus, String description, boolean available, Double rating, Integer numberOfDoors, Double trunkSpace, boolean hasStep, Rental rental){
-        super(img, name, brand, plate, manufactureYear, vehicleStatus, description, available, rating, rental);
+    public Car (String img, String name, String brand, String plate, Integer manufactureYear, StatusVehicle vehicleStatus, String description, boolean available, Double rating, Integer numberOfDoors, Double trunkSpace, boolean hasStep/*, Rental rental*/){
+        super(img, name, brand, plate, manufactureYear, vehicleStatus, description, available, rating/*, rental*/);
 
         if(vehicleStatus.equals(StatusVehicle.VIP)){
             this.setPricePerHour(300.0);
@@ -33,8 +33,8 @@ public class Car extends Vehicle{
         this.hasStep = hasStep;
     }
 
-    public Car(Long id, String img, String name, String brand, String plate, Integer manufactureYear, StatusVehicle vehicleStatus, String description, boolean available, Double rating, Integer numberOfDoors, Double trunkSpace, boolean hasStep, Rental rental) {
-        super(id, img, name, brand, plate, manufactureYear, vehicleStatus, description, available, rating, rental);
+    public Car(Long id, String img, String name, String brand, String plate, Integer manufactureYear, StatusVehicle vehicleStatus, String description, boolean available, Double rating, Integer numberOfDoors, Double trunkSpace, boolean hasStep/*, Rental rental*/) {
+        super(id, img, name, brand, plate, manufactureYear, vehicleStatus, description, available, rating/*, rental*/);
 
         if(vehicleStatus.equals(StatusVehicle.VIP)){
             this.setPricePerHour(300.0);

@@ -24,6 +24,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -56,8 +58,7 @@ public class RentalService {
     public Rental createRental(RentalDTO rentalDto, Vehicle vehicle, User user) throws OutOfWorkingHoursException {
         double rentalAmount = rentalCalculator.calculateRentalValue(rentalDto.getCheckin(), rentalDto.getCheckout(), vehicle.getPricePerHour(), vehicle.getPricePerDay());
 
-        checkMoment(rentalDto.getCheckin());
-        checkMoment(rentalDto.getCheckout());
+        checkRequestedRentalDates(rentalDto.getCheckin(), rentalDto.getCheckout(), vehicle);
 
         if(rentalDto.getCheckin().isBefore(rentalDto.getCheckout())){
             if(vehicle.isAvailable()) {
@@ -97,8 +98,10 @@ public class RentalService {
                 return repository.save(rental);
             }
             else {
+                Rental currentRental = repository.findCurrentByVehicleId(vehicle.getId());
+
                 DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yy - HH:mm").withZone(ZoneId.systemDefault());
-                String formatDate = dateTimeFormatter.format(vehicle.getRental().getCheckout());
+                String formatDate = dateTimeFormatter.format(currentRental.getCheckout());
 
                 throw new NotAvailableVehicleException("The vehicle is not available... This vehicle is available just (" + formatDate + ") Fell free to choice another one available vehicle!");
             }
@@ -199,28 +202,106 @@ public class RentalService {
     }
 
 
-    private static void checkMoment(Instant moment) throws OutOfWorkingHoursException {
+    private void checkRequestedRentalDates(Instant checkin, Instant checkout,  Vehicle vehicle) throws OutOfWorkingHoursException {
+
+        LocalDateTime checkinDateTime = checkin.atZone(ZoneId.systemDefault()).toLocalDateTime();
+        LocalDateTime checkoutDateTime = checkout.atZone(ZoneId.systemDefault()).toLocalDateTime();
+
+        checkMoment(checkinDateTime);
+        checkMoment(checkoutDateTime);
+
+        // Get all vehicle's rentals
+        List<Rental> allVehiclesRental = repository.findAllByVehicleId(vehicle.getId()); // Get all scheduled or running vehicle's rental
+        List<LocalDate> requestedDates = getDateBetween(checkin, checkout); // Dates between checkin and checkout rental.
+
+        List<LocalDate> rentalDates = new ArrayList<>(); // To save all the rental dates
+        List<LocalDate> unavailableDates = new ArrayList<>(); // To save all the unavailable vehicle dates.
+
+        //Catch all Rental dates.
+        for(Rental r : allVehiclesRental){
+            rentalDates = getDateBetween(r.getCheckin(), r.getCheckout());
+            // Add the captured dates to the list with all dates.
+            for(LocalDate date : rentalDates){
+                unavailableDates.add(date);
+            }
+        }
+
+        // Verify if the request dates are the same or if it's between some scheduled or running rental.
+       verifyIfRequestedDatesIsAvailable(checkin, checkout, requestedDates, unavailableDates, allVehiclesRental);
+    }
+
+    private void checkMoment(LocalDateTime moment){
         LocalTime start = LocalTime.of(8,0);
         LocalTime end = LocalTime.of(18, 0);
-
-        LocalDateTime momentDateTime = moment.atZone(ZoneId.systemDefault()).toLocalDateTime();
 
         LocalDate actualDate = LocalDate.now();
 
         LocalTime timeNow = LocalTime.now();
 
         // Verify if the rental date is after now
-        if(momentDateTime.toLocalDate().isAfter(actualDate)){
-            if(momentDateTime.toLocalTime().isBefore(start) || momentDateTime.toLocalTime().isAfter(end)){
+        if(moment.toLocalDate().isAfter(actualDate)){
+            if(moment.toLocalTime().isBefore(start) || moment.toLocalTime().isAfter(end)){
                 throw new OutOfWorkingHoursException("This time can not be resolved");
             }
-        // Verify if the rental is today, so need to verify if the hour is after the current hour.
-        } else if(momentDateTime.toLocalDate().isEqual(actualDate)){
-            if(momentDateTime.toLocalTime().isBefore(start) || momentDateTime.toLocalTime().isAfter(end) || momentDateTime.toLocalTime().isBefore(timeNow)){
+            // Verify if the rental is today, so need to verify if the hour is after the current hour.
+        } else if(moment.toLocalDate().isEqual(actualDate)){
+            if(moment.toLocalTime().isBefore(start) || moment.toLocalTime().isAfter(end) || moment.toLocalTime().isBefore(timeNow)){
                 throw new OutOfWorkingHoursException("This time can not be resolved");
             }
         } else {
             throw new OutOfWorkingHoursException("This time can not be resolved");
         }
     }
+
+    private List<LocalDate> getDateBetween(Instant checkin, Instant checkout) {
+        List<LocalDate> dates = new ArrayList<>();
+
+
+        ZoneId zoneId = ZoneId.systemDefault();
+        LocalDateTime checkinDateTime = LocalDateTime.ofInstant(checkin, zoneId);
+        LocalDateTime checkoutDateTime = LocalDateTime.ofInstant(checkout, zoneId);
+
+        LocalDate checkinDate = checkinDateTime.toLocalDate().plusDays(1);
+        LocalDate checkoutDate = checkoutDateTime.toLocalDate();
+
+        while (checkinDate.isBefore(checkoutDate)) {
+            dates.add(checkinDate);
+            checkinDate = checkinDate.plusDays(1);
+        }
+
+        return dates;
+    }
+
+    private void verifyIfRequestedDatesIsAvailable(Instant checkin, Instant checkout, List<LocalDate> datesBetweenCheckinAndCheckout, List<LocalDate> unavailableDates, List<Rental> allVehiclesRental){
+        ZoneId zoneId = ZoneId.systemDefault();
+
+        LocalDate checkinDate = checkin.atZone(zoneId).toLocalDate();
+        LocalDate checkoutDate = checkout.atZone(zoneId).toLocalDate();
+
+        for(LocalDate unavailableDate : unavailableDates){
+            if(unavailableDate.isEqual(checkinDate) || unavailableDate.isEqual(checkoutDate)){
+                throw new OutOfWorkingHoursException("This time can not be resolved");
+            }
+            for(LocalDate requestedDates : datesBetweenCheckinAndCheckout){
+                if(unavailableDate.isEqual(requestedDates)){
+                    throw new OutOfWorkingHoursException("This time can not be resolved");
+                }
+            }
+        }
+
+        LocalDateTime checkinDateTime = LocalDateTime.ofInstant(checkin, zoneId);
+        LocalDateTime checkoutDateTime = LocalDateTime.ofInstant(checkout, zoneId);
+
+        for(Rental scheduledRental : allVehiclesRental){
+            LocalDateTime scheduledRentalCheckinDateTime = LocalDateTime.ofInstant(scheduledRental.getCheckin(), zoneId);
+            LocalDateTime scheduledRentalCheckoutDateTime = LocalDateTime.ofInstant(scheduledRental.getCheckout(), zoneId);
+
+            if(scheduledRentalCheckinDateTime.isEqual(checkinDateTime) || scheduledRentalCheckinDateTime.isEqual(checkoutDateTime) || scheduledRentalCheckoutDateTime.isEqual(checkinDateTime) || scheduledRentalCheckoutDateTime.isEqual(checkoutDateTime)){
+                throw new OutOfWorkingHoursException("This time can not be resolved");
+            }
+
+        }
+
+    }
+
 }

@@ -18,8 +18,8 @@ public class RentalDocumentMessageSender {
     private RabbitTemplate rabbitTemplate;
 
     public void feedDocumentGeneratorQueue(RentNote message){
-        rabbitTemplate.convertAndSend(exchange, bindingKey, message);
-        System.out.println("INFO |-| message sent to ms.document-generator!");
+//        rabbitTemplate.convertAndSend(exchange, bindingKey, message);
+//        System.out.println("INFO |-| message sent to ms.document-generator!");
     }
 
 }

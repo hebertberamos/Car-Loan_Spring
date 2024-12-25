@@ -1,6 +1,7 @@
 package com.personalproject.carloan.controllers;
 
 import com.personalproject.carloan.dtos.*;
+import com.personalproject.carloan.entities.Vehicle;
 import com.personalproject.carloan.services.RentalService;
 import com.personalproject.carloan.services.VehicleService;
 import jakarta.validation.Valid;
@@ -9,6 +10,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequestMapping("/vehicles")
@@ -32,10 +36,21 @@ public class VehicleController {
         return ResponseEntity.ok().body(pageVehicles);
     }
 
+//    @GetMapping
+//    public ResponseEntity<List<VehicleDTO>> findAll(){
+//        List<VehicleDTO> vehicleList = service.findALl();
+//        return ResponseEntity.ok().body(vehicleList);
+//    }
+
     @GetMapping(value = "/{id}")
     public ResponseEntity<VehicleDTO> findById(@PathVariable Long id){
-        VehicleDTO dto = service.findById(id);
-        return ResponseEntity.ok().body(dto);
+        try {
+            VehicleDTO dto = service.findById(id);
+            return ResponseEntity.ok().body(dto);
+        } catch(Exception e) {
+            System.out.println(Arrays.toString(e.getStackTrace()));
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
     @PostMapping(value = "/leinsert/motorcyc")
