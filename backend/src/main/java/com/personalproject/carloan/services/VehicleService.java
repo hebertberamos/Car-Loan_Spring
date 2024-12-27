@@ -26,7 +26,6 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class VehicleService {
@@ -96,7 +95,7 @@ public class VehicleService {
             return motorcycleDTO;
         }
 
-        throw new Exception("TEST | the vehicle type was not found");
+        throw new Exception("TEST | vehicle type not found");
     }
 
     private void generateRentals(Rental r, ShowRentalToVehicle showRentalToVehicleEntity, List<LocalDate> datesBetweenCheckinAndCheckout, ShowRentalToVehicle runningRental, MotorcycleDTO motorcycleDTO, CarDTO carDTO){
@@ -216,7 +215,7 @@ public class VehicleService {
             throw new ResourcesNotFoundException("Id not found (" + id + ")");
         }
         catch(DataIntegrityViolationException e){
-            throw new DatabaseException("This vehicle can't be deleted. LINKD VEHICLE");
+            throw new DatabaseException("This vehicle can't be deleted. LINKED VEHICLE");
         }
     }
 

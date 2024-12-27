@@ -43,6 +43,24 @@ public class VehicleAvailableStatusUpdate {
                 rentalRepository.save(rental);
             }
         }
+
+        checkIfThereRentalThatNeedToBeStarted();
+    }
+
+    //Method to be used inside updateVehicleAvailableStatusInstantNow to verify if exist some rental that needed to start running before start the application
+    private void checkIfThereRentalThatNeedToBeStarted(){
+        // I need to get just the rentals that have the checkin before the actual instant and the checkout after the actual instant
+        List<Rental> rentalsBeforeNow = rentalRepository.findAllRentalsBeforeActualInstantThatNeedToBeStarted(Instant.now());
+        for(Rental rental : rentalsBeforeNow){
+            if(!rental.isRunning()) {
+                Vehicle rentedVehicle = rental.getRentedVehicle();
+                rentedVehicle.setAvailable(false);
+                vehicleRepository.save(rentedVehicle);
+
+                rental.setRunning(true);
+                rentalRepository.save(rental);
+            }
+        }
     }
 
 }
