@@ -55,58 +55,71 @@ public class RentalService {
         this.rentalMapper = rentalMapper;
     }
 
-    public Rental createRental(RentalDTO rentalDto, Vehicle vehicle, User user) throws OutOfWorkingHoursException {
+    public Rental createRental(RentalDTO rentalDto, Vehicle vehicle, User user){
         double rentalAmount = rentalCalculator.calculateRentalValue(rentalDto.getCheckin(), rentalDto.getCheckout(), vehicle.getPricePerHour(), vehicle.getPricePerDay());
 
-        checkRequestedRentalDates(rentalDto.getCheckin(), rentalDto.getCheckout(), vehicle);
+        List<Rental> rentalsInProgress = repository.findAllRentalsRunning();
 
-        if(rentalDto.getCheckin().isBefore(rentalDto.getCheckout())){
-            if(vehicle.isAvailable()) {
-                Rental rental = new Rental();
-                rental.setCheckin(rentalDto.getCheckin());
-                rental.setCheckout(rentalDto.getCheckout());
-                rental.setRefundMoment(null);
-                rental.setRunning(false);
-                rental.setUser(user);
-                rental.setRentedVehicle(vehicle);
-                rental.setRentalValue(rentalAmount);
+        try {
+            checkRequestedRentalDates(rentalDto.getCheckin(), rentalDto.getCheckout(), vehicle);
 
-                //Send the message (rent note) to the queue to process and generate the contract pdf file
-                ZoneId zoneId = ZoneId.systemDefault();
+            if (rentalDto.getCheckin().isBefore(rentalDto.getCheckout())) {
+                if (vehicle.isAvailable()) {
 
-                LocalDateTime checkinDateTime = LocalDateTime.ofInstant(rental.getCheckin(),zoneId);
-                LocalDateTime checkoutDateTime = LocalDateTime.ofInstant(rental.getCheckout(), zoneId);
+                    // Check if the user already is in a rental.
+                    for (Rental r : rentalsInProgress) {
+                        if (r.getUser().getId() == user.getId()) {
+                            throw new Exception("TEST | User already in a Rental");
+                        }
+                    }
 
-                RentNote rentNote = new RentNote(/*rental.getUser().getName(), rental.getUser().getEmail(), rental.getUser().getCpf(), rental.getRentedVehicle().getName(), rental.getRentedVehicle().getBrand(), rental.getRentedVehicle().getPlate(), checkinDateTime, checkoutDateTime, null, rental.getRentalValue(), null*/);
-                rentNote.setUserName(rental.getUser().getName());
-                rentNote.setUserEmail(rental.getUser().getEmail());
-                rentNote.setUserCpf(rental.getUser().getCpf());
-                rentNote.setVehicleName(rental.getRentedVehicle().getName());
-                rentNote.setVehicleBrand(rental.getRentedVehicle().getBrand());
-                rentNote.setVehiclePlate(rental.getRentedVehicle().getPlate());
-                rentNote.setRentalCheckin(checkinDateTime);
-                rentNote.setRentalCheckout(checkoutDateTime);
-                rentNote.setRefundMoment(null);
-                rentNote.setFirstRentalValue(rental.getRentalValue());
-                rentNote.setLastRentalValue(null);
+                    Rental rental = new Rental();
+                    rental.setCheckin(rentalDto.getCheckin());
+                    rental.setCheckout(rentalDto.getCheckout());
+                    rental.setRefundMoment(null);
+                    rental.setRunning(false);
+                    rental.setUser(user);
+                    rental.setRentedVehicle(vehicle);
+                    rental.setRentalValue(rentalAmount);
+
+                    //Send the message (rent note) to the queue to process and generate the contract pdf file
+                    ZoneId zoneId = ZoneId.systemDefault();
+
+                    LocalDateTime checkinDateTime = LocalDateTime.ofInstant(rental.getCheckin(), zoneId);
+                    LocalDateTime checkoutDateTime = LocalDateTime.ofInstant(rental.getCheckout(), zoneId);
+
+                    RentNote rentNote = new RentNote(/*rental.getUser().getName(), rental.getUser().getEmail(), rental.getUser().getCpf(), rental.getRentedVehicle().getName(), rental.getRentedVehicle().getBrand(), rental.getRentedVehicle().getPlate(), checkinDateTime, checkoutDateTime, null, rental.getRentalValue(), null*/);
+                    rentNote.setUserName(rental.getUser().getName());
+                    rentNote.setUserEmail(rental.getUser().getEmail());
+                    rentNote.setUserCpf(rental.getUser().getCpf());
+                    rentNote.setVehicleName(rental.getRentedVehicle().getName());
+                    rentNote.setVehicleBrand(rental.getRentedVehicle().getBrand());
+                    rentNote.setVehiclePlate(rental.getRentedVehicle().getPlate());
+                    rentNote.setRentalCheckin(checkinDateTime);
+                    rentNote.setRentalCheckout(checkoutDateTime);
+                    rentNote.setRefundMoment(null);
+                    rentNote.setFirstRentalValue(rental.getRentalValue());
+                    rentNote.setLastRentalValue(null);
 
 
+                    documentMessageSender.feedDocumentGeneratorQueue(rentNote);
+                    System.out.printf("INFO |-| Document %s - %s - %s created!", rental.getUser().getName(), rental.getUser().getCpf(), rental.getRentedVehicle().getName());
 
-                documentMessageSender.feedDocumentGeneratorQueue(rentNote);
-                System.out.printf("INFO |-| Document %s - %s - %s created!", rental.getUser().getName(), rental.getUser().getCpf(), rental.getRentedVehicle().getName());
+                    return repository.save(rental);
+                } else {
+                    Rental currentRental = repository.findCurrentByVehicleId(vehicle.getId());
 
-                return repository.save(rental);
+                    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yy - HH:mm").withZone(ZoneId.systemDefault());
+                    String formatDate = dateTimeFormatter.format(currentRental.getCheckout());
+
+                    throw new NotAvailableVehicleException("The vehicle is not available... This vehicle is available just (" + formatDate + ") Fell free to choice another one available vehicle!");
+                }
+
+
             }
-            else {
-                Rental currentRental = repository.findCurrentByVehicleId(vehicle.getId());
-
-                DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yy - HH:mm").withZone(ZoneId.systemDefault());
-                String formatDate = dateTimeFormatter.format(currentRental.getCheckout());
-
-                throw new NotAvailableVehicleException("The vehicle is not available... This vehicle is available just (" + formatDate + ") Fell free to choice another one available vehicle!");
-            }
+        } catch (Exception e){
+            System.out.println("ERROR | " + e.getMessage());
         }
-
         throw new OutOfWorkingHoursException("Checkin never can be after checkout");
     }
 

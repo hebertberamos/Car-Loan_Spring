@@ -41,4 +41,7 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
     @Query("SELECT r FROM Rental r WHERE r.checkin < :actualInstant AND r.checkout > :actualInstant AND r.running = false")
     List<Rental> findAllRentalsBeforeActualInstantThatNeedToBeStarted(Instant actualInstant);
 
+    @Query("SELECT r FROM Rental r WHERE r.running = true")
+    List<Rental> findAllRentalsRunning();
+
 }
